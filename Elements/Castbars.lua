@@ -57,7 +57,7 @@ do
 	function CastingBarFrameTicksSet(Castbar, unit, name, stop)
 		Castbar.ticks = Castbar.ticks or {}
 		local function CreateATick()
-			local spark = Castbar:CreateTexture(nil, 'OVERLAY')
+			local spark = Castbar:CreateTexture(nil, 'OVERLAY', nil, 1)
 			spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
 			spark:SetVertexColor(1, 1, 1, 1)
 			spark:SetBlendMode('ADD')
@@ -149,7 +149,7 @@ function ns.CreateCastbars(self)
 		Castbar.Ticks = ns.config.castbarticks
 	end
 	
-	local Spark = Castbar:CreateTexture(nil, "ARTWORK")
+	local Spark = Castbar:CreateTexture(nil, "ARTWORK", nil, 1)
 	Spark:SetSize(15, (uconfig.cbheight * 2))
 	Spark:SetBlendMode("ADD")	
 	Castbar.Spark = Spark
