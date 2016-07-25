@@ -85,8 +85,8 @@ local function CreateArenaLayout(self, unit)
 
 	-- PvP Icon
 	self.PvP = self:CreateTexture(nil, 'OVERLAY')
-	self.PvP:SetSize(54, 54)
-	self.PvP:SetPoint('TOPLEFT', self.Texture, -8, -8)
+	self.PvP:SetSize(43, 43)
+	self.PvP:SetPoint('TOPLEFT', self.Texture, -18, -8)
 
 	--portrait Timer
 	self.PortraitTimer = CreateFrame('Frame', nil, self.Health)
@@ -99,6 +99,7 @@ local function CreateArenaLayout(self, unit)
 
 	--Auras
 	self.Buffs = ns.AddBuffs(self, 'TOPLEFT', 28, 5, 6, 1)
+	self.Buffs:SetSize(43, 43)
 	self.Buffs:SetPoint('TOPLEFT', self.Power, 'BOTTOMLEFT', 0, -7)
 	self.Buffs.CustomFilter   = ns.CustomAuraFilters.arena
 
