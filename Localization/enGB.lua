@@ -83,6 +83,18 @@ L.Enable = _G.ENABLE
 	L.General_Shrooms = "Show Mushroom icons"
 	L.General_ShroomsTip = "Display the textures around the icons, instead of just the text."
 
+	L.General_showRunes = "Enable Runes"
+	L.General_showAdditionalPower = "Enable Additional Power Bar"
+	L.General_showTotems = "Enable Totems"
+	L.General_showArcaneStacks = "Enable Arcane Charge"
+	L.General_showChi = "Enable Chi Points"
+	L.General_showStagger = "Enable Stagger bar"
+	L.General_showHolyPower = "Enable Holy Power"
+	L.General_showInsanity = "Enable Insanity Overlay"
+	L.General_showShards = "Enable Shards"
+
+
+
 	---- TEXTURES,
 	L.Texture = "Textures"
 	L.Texture_Statusbar = "Statusbar Texture"

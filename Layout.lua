@@ -456,7 +456,7 @@ local function CreateUnitLayout(self, unit)
 			local portrait = self.Portrait
 			local _, class = UnitClass(self.unit)
 			if config.classPortraits and UnitIsPlayer(unit) and class then
-				portrait:SetTexCoord(unpack(CLASS_BUTTONS[class]))
+				portrait:SetTexCoord(unpack((CLASS_BUTTONS or CLASS_ICON_TCOORDS)[class]))
 				portrait:SetTexture[[Interface\TargetingFrame\UI-Classes-Circles]]
 			else
 				portrait:SetTexCoord(0, 1, 0, 1)
@@ -630,36 +630,28 @@ local function CreateUnitLayout(self, unit)
 
 	-- Update layout
 	UpdateUnitFrameLayout(self, cUnit)
-	-- Load Class Modules
-	if ns.classModule[playerClass] and config then
-		self.classPowerBar = ns.classModule[playerClass](self, config, uconfig)
-	end
 		
 	--[[ 	Player Frame		]] --
 	if (cUnit == 'player') then	
-		-- Vengeance support REMOVED MAYBE
-		if config.showVengeance then
-			--self.Resolve = ns.CreateOutsideBar(self, true, 1, 0, 0)
-		end
 		-- Combo Points
-		--if playerClass == "DRUID" or playerClass == "ROGUE" then
 		ComboPointPlayerFrame:ClearAllPoints()
 		ComboPointPlayerFrame:SetParent(self)
 		ComboPointPlayerFrame:SetPoint('TOP', self, 'BOTTOM', 30, 0)
+		ComboPointPlayerFrame.SetPoint = function() end
+		ns.PaintFrames(ComboPointPlayerFrame.Background, 0.1)
 
-		local origComboSetPoint = ComboPointPlayerFrame.SetPoint
-		function ComboPointPlayerFrame.SetPoint(self, a,s,d,f,g,h)
-			origComboSetPoint(self, 'TOP', self, 'BOTTOM', 30, 0)
+		-- Totems
+		if config[playerClass].showTotems then
+			ns.classModule.Totems(self, config, uconfig)
 		end
-
-		--hooksecurefunc(ComboPointPlayerFrame, "SetPoint", function() print(debugstack()) end )
-
-
-		--end
-		--Totems
-		ns.classModule.Totems(self, config, uconfig)
-		--Alternate Mana Bar
-		ns.classModule.alternatePowerBar(self, config, uconfig)
+		-- Alternate Mana Bar
+		if config[playerClass].showAdditionalPower then
+			ns.classModule.alternatePowerBar(self, config, uconfig)
+		end
+		-- Load Class Modules
+		if ns.classModule[playerClass] then
+			self.classPowerBar = ns.classModule[playerClass](self, config, uconfig)
+		end
 
 		-- PvP Timer
 		self.PvPTimer = ns.CreateFontString(self, 13, 'CENTER')

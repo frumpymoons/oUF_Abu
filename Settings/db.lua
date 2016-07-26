@@ -67,26 +67,59 @@ ns.defaultConfig = {
 
 	focMod = 'shift-',
 	focBut = '1',
-	showVengeance = true,
-	showWeakenedSoul = true,
-	showEnraged = true,
-	showArcStacks = true,
 	castbarticks = true,
 	useAuraTimer = true,
 	clickThrough = false,
-	showAnticipation = true,
-	showSlicenDice = true,
 	classPortraits = false,
-	showShrooms = true,
 
-	-- blizzard class stuff
-	DEATHKNIGHT = true,
-	DRUID = true,
-	PALADIN = true,
-	SHAMAN = true,
-	PRIEST = true,
-	MONK = true,
-	WARLOCK = true,
+	-- class stuff
+	DEATHKNIGHT = {
+		showRunes = true,
+		showTotems = true,
+	},
+	DEMONHUNTER = {
+	},
+	DRUID = {
+		showTotems = true,
+		showAdditionalPower = true,
+	},
+	HUNTER = {
+		showTotems = true,
+	},
+	MAGE = {
+		showArcaneStacks = true,
+		showTotems = true,
+	},
+	MONK = {
+		showStagger = true,
+		showChi = true,
+		showTotems = true,
+		showAdditionalPower = true,
+	},
+	PALADIN = {
+		showHolyPower = true,
+		showTotems = true,
+		showAdditionalPower = true,
+	},
+	PRIEST = {
+		showInsanity = true,
+		showAdditionalPower = true,
+	},
+	ROGUE = {
+	},
+	SHAMAN = {
+		showTotems = true,
+		showAdditionalPower = true,
+	},
+	WARLOCK = {
+		showShards = true,
+		showTotems = true,
+	},
+	WARRIOR = {
+		showTotems = true,
+	},
+
+	showComboPoints = true,
 
 	absorbBar = true,
 	absorbtexture = 'Interface\\AddOns\\oUF_Abu\\Media\\Texture\\absorbTexture',
