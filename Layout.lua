@@ -276,7 +276,8 @@ local function UpdatePlayerFrame(self, ...)
 		self.Level:Show()
 
 		self.LFDRole:SetAlpha(1)
-		self.PvP:SetPoint('TOPLEFT', self.Texture, 26, -20)
+		self.PvP:SetSize(43, 43)
+		self.PvP:SetPoint('TOPLEFT', self.Texture, 18, -20)
 		self.Leader:SetPoint('TOPLEFT', self.Portrait, 3, 2)
 		self.MasterLooter:SetPoint('TOPRIGHT', self.Portrait, -3, 3)
 		self.RaidIcon:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
@@ -480,8 +481,8 @@ local function CreateUnitLayout(self, unit)
 
 		--[[ PvP Icon  ]] --
 		self.PvP = self:CreateTexture(nil, 'OVERLAY')
-		self.PvP:SetSize(54, 54)
-		self.PvP:SetPoint('TOPRIGHT', self.Texture, -7, -20)
+		self.PvP:SetSize(43, 43)
+		self.PvP:SetPoint('TOPRIGHT', self.Texture, -18, -20)
 
 		--[[	Special Bars 		]]
 		-- Incoming Heals
