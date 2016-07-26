@@ -276,8 +276,7 @@ local function UpdatePlayerFrame(self, ...)
 		self.Level:Show()
 
 		self.LFDRole:SetAlpha(1)
-		self.PvP:SetSize(43, 43)
-		self.PvP:SetPoint('TOPLEFT', self.Texture, 18, -20)
+		self.PvP:SetPoint('TOPLEFT', self.Texture, 20, -20)
 		self.Leader:SetPoint('TOPLEFT', self.Portrait, 3, 2)
 		self.MasterLooter:SetPoint('TOPRIGHT', self.Portrait, -3, 3)
 		self.RaidIcon:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
@@ -457,7 +456,7 @@ local function CreateUnitLayout(self, unit)
 			local portrait = self.Portrait
 			local _, class = UnitClass(self.unit)
 			if config.classPortraits and UnitIsPlayer(unit) and class then
-				portrait:SetTexCoord(unpack((CLASS_BUTTONS or CLASS_ICON_TCOORDS)[class]))
+				portrait:SetTexCoord(unpack(CLASS_ICON_TCOORDS[class]))
 				portrait:SetTexture[[Interface\TargetingFrame\UI-Classes-Circles]]
 			else
 				portrait:SetTexCoord(0, 1, 0, 1)
@@ -481,8 +480,8 @@ local function CreateUnitLayout(self, unit)
 
 		--[[ PvP Icon  ]] --
 		self.PvP = self:CreateTexture(nil, 'OVERLAY')
-		self.PvP:SetSize(43, 43)
-		self.PvP:SetPoint('TOPRIGHT', self.Texture, -18, -20)
+		self.PvP:SetSize(40, 40)
+		self.PvP:SetPoint('TOPRIGHT', self.Texture, -20, -20)
 
 		--[[	Special Bars 		]]
 		-- Incoming Heals
@@ -634,29 +633,32 @@ local function CreateUnitLayout(self, unit)
 		
 	--[[ 	Player Frame		]] --
 	if (cUnit == 'player') then	
+	
 		-- Combo Points
 		ComboPointPlayerFrame:ClearAllPoints()
 		ComboPointPlayerFrame:SetParent(self)
-		ComboPointPlayerFrame:SetPoint('TOP', self, 'BOTTOM', 30, 0)
+		ComboPointPlayerFrame:SetPoint('TOP', self, 'BOTTOM', 30, 2)
 		ComboPointPlayerFrame.SetPoint = function() end
 		ns.PaintFrames(ComboPointPlayerFrame.Background, 0.1)
 
 		-- Totems
-		if config[playerClass].showTotems then
+		if ( config[playerClass].showTotems ) then
 			ns.classModule.Totems(self, config, uconfig)
 		end
+		
 		-- Alternate Mana Bar
-		if config[playerClass].showAdditionalPower then
+		if ( config[playerClass].showAdditionalPower ) then
 			ns.classModule.alternatePowerBar(self, config, uconfig)
 		end
+		
 		-- Load Class Modules
-		if ns.classModule[playerClass] then
+		if ( ns.classModule[playerClass] ) then
 			self.classPowerBar = ns.classModule[playerClass](self, config, uconfig)
-		end
+ 		end
 
 		-- PvP Timer
 		self.PvPTimer = ns.CreateFontString(self, 13, 'CENTER')
-		self.PvPTimer:SetPoint('BOTTOM', self.PvP, 'TOP', -9, -3   )
+		self.PvPTimer:SetPoint('BOTTOM', self.PvP, 'TOP', 2, -24  )
 		self.PvPTimer.frequentUpdates = 0.5
 		self:Tag(self.PvPTimer, '[pvptimer]')
 
@@ -664,7 +666,7 @@ local function CreateUnitLayout(self, unit)
 		self.Combat = self:CreateTexture(nil, 'OVERLAY')
 		self.Combat:SetPoint('CENTER', self.Level, 1, 0)
 		self.Combat:SetSize(31, 33)
-
+		
 		-- Resting icon
 		self.Resting = self:CreateTexture(nil, 'OVERLAY')
 		self.Resting:SetPoint('CENTER', self.Level, -0.5, 0)
@@ -701,14 +703,14 @@ local function CreateUnitLayout(self, unit)
 				else
 					columns, rows = 6, 3
 				end
-				initialAnchor, relAnchor, offX, offY = 'BOTTOMLEFT', 'TOPLEFT', -3, 20
+				initialAnchor, relAnchor, offX, offY = 'BOTTOMLEFT', 'TOPLEFT', -2, 20
 			elseif (mode == "BOTTOM") then
 				if isFocus then
 					columns, rows = 3, 3
 				else
 					columns, rows = 4, 3
 				end
-				initialAnchor, relAnchor, offX, offY = 'TOPLEFT', 'BOTTOMLEFT', -3, -8
+				initialAnchor, relAnchor, offX, offY = 'TOPLEFT', 'BOTTOMLEFT', -2, -8
 			elseif (mode == "LEFT") then
 				if isFocus then
 					columns, rows = 5, 3
