@@ -99,7 +99,6 @@ local function CreateArenaLayout(self, unit)
 
 	--Auras
 	self.Buffs = ns.AddBuffs(self, 'TOPLEFT', 28, 5, 6, 1)
-	self.Buffs:SetSize(43, 43)
 	self.Buffs:SetPoint('TOPLEFT', self.Power, 'BOTTOMLEFT', 0, -7)
 	self.Buffs.CustomFilter   = ns.CustomAuraFilters.arena
 
