@@ -85,8 +85,8 @@ local function CreateArenaLayout(self, unit)
 
 	-- PvP Icon
 	self.PvP = self:CreateTexture(nil, 'OVERLAY')
-	self.PvP:SetSize(43, 43)
-	self.PvP:SetPoint('TOPLEFT', self.Texture, -18, -8)
+	self.PvP:SetSize(40, 40)
+	self.PvP:SetPoint('TOPLEFT', self.Texture, -20, -20)
 
 	--portrait Timer
 	self.PortraitTimer = CreateFrame('Frame', nil, self.Health)
