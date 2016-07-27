@@ -104,7 +104,7 @@ local function SetValueText(element, tag, cur, max, color, notMana)
 	if tag == TEXT_SHORT then
 		s = format('%s', cur > 0 and FormatValue(cur) or '')
 	elseif tag == TEXT_LONG then
-		s = format('%s - %d%%', FormatValue(cur), cur / max * 100)
+		s = format('%s - %.1f%%', FormatValue(cur), cur / max * 100)
 	elseif tag == TEXT_MINMAX then
 		s = format('%s/%s', FormatValue(cur), FormatValue(max))
 	elseif tag == TEXT_MAX then
@@ -406,7 +406,8 @@ function ns.CreateStatusBar(parent, layer, name, AddBackdrop)
 	if type(layer) ~= 'string' then layer = 'BORDER' end
 	local bar = CreateFrame('StatusBar', name, parent)
 	bar:SetStatusBarTexture(ns.config.statusbar, layer)
-
+	bar.statusbar = ns.config.statusbar
+	
 	if AddBackdrop then
 		bar:SetBackdrop({bgFile = 'Interface\\Buttons\\WHITE8x8'})
 		local r,g,b,a = unpack(ns.config.backdropColor)

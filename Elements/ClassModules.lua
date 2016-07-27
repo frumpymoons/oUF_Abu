@@ -4,25 +4,33 @@ ns.classModule = {}
 local function updateTotemPosition()
 	local _, class = UnitClass("player")
 	TotemFrame:ClearAllPoints()
-	if ( class == "PALADIN" or class == "DEATHKNIGHT" or class == "MONK" ) then --runes/holyower
-		TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", 22, 0)
+	if ( class == "PALADIN" or class == "DEATHKNIGHT"  ) then
+		local hasPet = oUF_AbuPet and oUF_AbuPet:IsShown();
+		if (hasPet) then
+			TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", -18, -12)
+		else
+			TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", 17, 0)
+		end
 	elseif ( class == "DRUID" ) then
 		local form  = GetShapeshiftFormID();
-		if ( form == MOONKIN_FORM or not form ) and ( GetSpecialization() == 1 ) then
-			TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", 37, -5)
-		elseif ( form == BEAR_FORM or form == CAT_FORM ) then
+		if ( form == CAT_FORM ) then
 			TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", 37, -5)
 		else
 			TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", 57, 0)
 		end
 	elseif ( class == "MAGE" ) then
-		TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", 30, -5)
+		TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", 0, -12)
+	elseif ( class == "MONK" ) then
+		TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", -18, -12)
+	elseif ( class == "SHAMAN" ) then
+		local form  = GetShapeshiftFormID();
+		if ( ( GetSpecialization() == SPEC_SHAMAN_RESTORATION ) or ( form == 16 ) ) then -- wolf form 
+			TotemFrame:SetPoint('TOP', oUF_AbuPlayer, 'BOTTOM', 27, 2)
+		else
+			TotemFrame:SetPoint('TOP', oUF_AbuPlayer, 'BOTTOM', 27, -10)
+		end		
 	elseif ( class == "WARLOCK" ) then
-		TotemFrame:SetPoint("BOTTOMLEFT", oUF_AbuPlayer, "TOPLEFT", 40, -20) --not sure where to put this
-	elseif ( class == "SHAMAN" ) and ( GetSpecialization() == 1 ) then
-		TotemFrame:SetPoint('TOP', oUF_AbuPlayer, 'BOTTOM', 6, -7)
-	else
-		TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", 37, -5)
+		TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", -18, -12)
 	end
 end
 
@@ -36,7 +44,6 @@ function ns.classModule.Totems(self, config, uconfig)
 		ns.PaintFrames(totemBorder:GetRegions())
 
 		_G['TotemFrameTotem'..i]:SetFrameStrata('LOW')
-
 		_G['TotemFrameTotem'..i.. 'Duration']:SetParent(totemBorder)
 		_G['TotemFrameTotem'..i.. 'Duration']:SetDrawLayer('OVERLAY')
 		_G['TotemFrameTotem'..i.. 'Duration']:ClearAllPoints()
@@ -67,7 +74,10 @@ function ns.classModule.DEATHKNIGHT(self, config, uconfig)
 		RuneFrame:SetParent(self)
 		RuneFrame_OnLoad(RuneFrame)
 		RuneFrame:ClearAllPoints()
-		RuneFrame:SetPoint('TOP', self, 'BOTTOM', 32, -2)
+		RuneFrame:SetPoint('TOP', self, 'BOTTOM', 33, -1)
+		if (ns.config.playerStyle == 'normal') then 
+			RuneFrame:SetFrameStrata("LOW");
+		end
 		for i = 1, 6 do
 			local b = _G['RuneButtonIndividual'..i].Border
 			ns.PaintFrames(b:GetRegions())
@@ -111,9 +121,10 @@ end
 function ns.classModule.PALADIN(self, config, uconfig)
 	if (config.PALADIN.showHolyPower) then
 		PaladinPowerBarFrame:SetParent(self)
-		PaladinPowerBarFrame:SetScale(uconfig.scale * 0.78)
+		PaladinPowerBarFrame:SetScale(uconfig.scale * 0.81)
 		PaladinPowerBarFrame:ClearAllPoints()
-		PaladinPowerBarFrame:SetPoint('TOP', self, 'BOTTOM', 28, 2)
+		PaladinPowerBarFrame:SetPoint('TOP', self, 'BOTTOM', 27, 4)
+		PaladinPowerBarFrame:SetFrameStrata("LOW");
 		ns.PaintFrames(PaladinPowerBarFrameBG, 0.1)
 		return PaladinPowerBarFrame
 	end
@@ -128,15 +139,14 @@ function ns.classModule.PRIEST(self, config, uconfig)
 	end
 end
 
-
 function ns.classModule.WARLOCK(self, config, uconfig)
 	if (config.WARLOCK.showShards) then
 		WarlockPowerFrame:SetParent(self)
 		WarlockPowerFrame:ClearAllPoints()
-		WarlockPowerFrame:SetScale(uconfig.scale * 0.81)
-		WarlockPowerFrame:SetPoint('TOP', self, 'BOTTOM', 30, -1)
-
-		-- Affliction
+		WarlockPowerFrame:SetPoint('TOP', self, 'BOTTOM', 29, -2)
+		if (ns.config.playerStyle == 'normal') then 
+			WarlockPowerFrame:SetFrameStrata("LOW");
+		end
 		for i = 1, 5 do
 			local shard = _G["WarlockPowerFrameShard"..i];
 			ns.PaintFrames(select(5,shard:GetRegions()), .2)
@@ -176,4 +186,4 @@ end
 			self.Aurabar = Aurabar
 		end
 	end
-]]
+]] 
