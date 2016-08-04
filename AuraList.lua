@@ -174,11 +174,10 @@ AuraList.Taunt = {
 	--114198 removed,	-- Mocking Banner
 }
 
+local s = ""
 for k, v in pairs(AuraList) do
 	for i = 1, #v do
-		if not GetSpellInfo(v[i]) then
-			print(string.format("Invalid spellID %d in : %s", v[i], s))
-		end
+		assert(GetSpellInfo(v[i]), string.format("Invalid spellID: %d", v[i]))
 	end
 end
 

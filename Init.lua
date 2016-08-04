@@ -268,7 +268,7 @@ function oUFAbu:PLAYER_REGEN_ENABLED(event)
 		return;
 	end
 	InterfaceOptionsFrame_OpenToCategory('oUF Abu')
-	InterfaceOptionsFrame_OpenToCategory('oUF Abu')
+	--InterfaceOptionsFrame_OpenToCategory('oUF Abu')
 end
 
 function oUFAbu:OnSlashCommand(command)
@@ -276,7 +276,7 @@ function oUFAbu:OnSlashCommand(command)
 		self:ToggleAllAnchors()
 	elseif self:LoadOptions() then
 		InterfaceOptionsFrame_OpenToCategory('oUF Abu')
-		InterfaceOptionsFrame_OpenToCategory('oUF Abu')
+		--InterfaceOptionsFrame_OpenToCategory('oUF Abu') maybe not needed anymore?
 	end
 end
 
