@@ -53,10 +53,7 @@ oUF.Tags.Methods['name'] = function(unit)
 	if not unitName then
 		local id = unit:match'arena(%d)$'
 		if(id) then
-			local specID = GetArenaOpponentSpec(tonumber(id))
-			if(specID and specID > 0) then
-				_, unitName = GetSpecializationInfoByID(specID)
-			end
+			unitName = 'Arena '..id
 		end
 	end
 

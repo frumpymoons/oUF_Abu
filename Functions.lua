@@ -147,10 +147,17 @@ do
 		end
 
 		if absent then
-			Health:SetStatusBarColor(0.5, 0.5, 0.5)
-			if Health.Value then
-				Health.Value:SetText(absent)
-			end
+			local id = unit:match'arena(%d)$'
+			if (cur == 1 and max == 1 and id) then 
+				local specID = GetArenaOpponentSpec(tonumber(id))
+				if(specID and specID > 0) then
+					Health.Value:SetText(GetSpecializationInfoByID(specID))
+				end
+			else
+				Health:SetStatusBarColor(0.5, 0.5, 0.5)
+				if Health.Value then
+					Health.Value:SetText(absent)
+				end
 			return
 		end
 
