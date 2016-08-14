@@ -158,6 +158,7 @@ do
 				if Health.Value then
 					Health.Value:SetText(absent)
 				end
+			end
 			return
 		end
 
