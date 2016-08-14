@@ -77,12 +77,6 @@ local function CreateArenaLayout(self, unit)
 	self:Tag(self.Name, '[name]')
 	self.UNIT_NAME_UPDATE = UpdateFrame
 
-	-- raidicons (justin case)
-	self.RaidIcon = self:CreateTexture(nil, 'OVERLAY', self)
-	self.RaidIcon:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
-	self.RaidIcon:SetTexture('Interface\\TargetingFrame\\UI-RaidTargetingIcons')
-	self.RaidIcon:SetSize(26, 26)
-
 	-- PvP Icon
 	self.PvP = self:CreateTexture(nil, 'OVERLAY')
 	self.PvP:SetSize(40, 40)
