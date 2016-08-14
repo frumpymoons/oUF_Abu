@@ -151,10 +151,6 @@ oUF:Factory(function(self)
 			end
 
 			SetPortraitToTexture(arena[i].Portrait, icon)
-
-			if event == 'ARENA_PREP_OPPONENT_SPECIALIZATIONS' then
-				arena[i].Health.Value:SetText(spec)
-			end
 		end
 	end)
 end)

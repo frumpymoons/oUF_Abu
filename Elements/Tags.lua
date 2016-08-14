@@ -50,6 +50,16 @@ oUF.Tags.Methods['name'] = function(unit)
 		unitName = unitName..' (*)'
 	end
 
+	if not unitName then
+		local id = unit:match'arena(%d)$'
+		if(id) then
+			local specID = GetArenaOpponentSpec(tonumber(id))
+			if(specID and specID > 0) then
+				_, unitName = GetSpecializationInfoByID(specID)
+			end
+		end
+	end
+
 	if ns.config.TextNameColorMode == "CLASS" then
 		if UnitIsPlayer(unit) then
 			color = oUF.colors.class[class]

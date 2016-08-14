@@ -278,6 +278,8 @@ function ns.UnitFrame_OnEnter(self)
 	if self.__owner then
 		self = self.__owner
 	end
+	if not UnitName(self.unit) then return end --arena prep
+
 	UnitFrame_OnEnter(self)
 
 	self.isMouseOver = true
@@ -296,6 +298,7 @@ function ns.UnitFrame_OnLeave(self)
 	if self.__owner then
 		self = self.__owner
 	end
+	if not UnitName(self.unit) then return end
 	UnitFrame_OnLeave(self)
 
 	self.isMouseOver = nil
