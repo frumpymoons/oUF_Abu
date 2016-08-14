@@ -3,7 +3,20 @@ local config
 
 local textPath = 'Interface\\AddOns\\oUF_Abu\\Media\\Frames\\'
 
-local function CreateBaseFrames(self)
+local function CreateArenaLayout(self, unit)
+	self.cUnit = ns.cUnit(unit)
+	local uconfig = ns.config[self.cUnit]
+
+	self:RegisterForClicks('AnyUp')
+	
+	if (config.focBut ~= 'NONE') then
+		self:SetAttribute(config.focMod.."type"..config.focBut, 'focus')
+	end
+	self.mouseovers = {}
+	
+	self:HookScript("OnEnter", ns.UnitFrame_OnEnter)
+	self:HookScript("OnLeave", ns.UnitFrame_OnLeave)
+
 	self.Texture = self:CreateTexture(nil, 'BORDER')
 	self.Texture:SetTexture(textPath.. 'Arena')
 	self.Texture:SetSize(230, 100)
@@ -26,6 +39,7 @@ local function CreateBaseFrames(self)
 	self.Portrait = self.Health:CreateTexture(nil, 'BACKGROUND')
 	self.Portrait:SetSize(64, 64)
 	self.Portrait:SetPoint('TOPLEFT', self.Health, -64, 13)
+	self.Portrait.Override = nop
 
 	self.Health.Value = ns.CreateFontString(self.Health, 13)
 	self.Health.Value:SetPoint('CENTER', self.Health)
@@ -35,23 +49,6 @@ local function CreateBaseFrames(self)
 
 	self:SetSize(167, 46)
 	self:SetScale(ns.config.arena.scale)
-end
-
-local function CreateArenaLayout(self, unit)
-	self.cUnit = ns.cUnit(unit)
-	local uconfig = ns.config[self.cUnit]
-
-	self:RegisterForClicks('AnyUp')
-	
-	if (config.focBut ~= 'NONE') then
-		self:SetAttribute(config.focMod.."type"..config.focBut, 'focus')
-	end
-	self.mouseovers = {}
-	
-	self:HookScript("OnEnter", ns.UnitFrame_OnEnter)
-	self:HookScript("OnLeave", ns.UnitFrame_OnLeave)
-
-	CreateBaseFrames(self)
 
 	self.Health:SetStatusBarColor(unpack(config.healthcolor))
 	self.Health.colorClass = config.healthcolormode == 'CLASS'
@@ -75,7 +72,6 @@ local function CreateArenaLayout(self, unit)
 	self.Name:SetSize(110, 10)
 	self.Name:SetPoint('BOTTOM', self.Health, 'TOP', 0, 6)
 	self:Tag(self.Name, '[name]')
-	self.UNIT_NAME_UPDATE = UpdateFrame
 
 	-- PvP Icon
 	self.PvP = self:CreateTexture(nil, 'OVERLAY')
@@ -138,66 +134,26 @@ oUF:Factory(function(self)
 	end
 	
 	local a = ns.CreateUnitAnchor(arena[1], arena[1], arena[5], nil, "arena1", "arena2", "arena3", "arena4", "arena5")
-	--arena[1]:SetPoint('TOPRIGHT', a)
-
-	local arenaprep = {}
-	for i = 1, 5 do
-		arenaprep[i] = CreateFrame('Frame', 'oUF_AbuArenaPrep '..i, UIParent)
-		arenaprep[i]:SetAllPoints(arena[i])
-
-		CreateBaseFrames(arenaprep[i])
-		arenaprep[i].Power:SetStatusBarTexture('Interface\\Buttons\\WHITE8x8')
-
-		arenaprep[i]:Hide()
-	end
 
 	local arenaprepUpdate = CreateFrame("Frame")
 	arenaprepUpdate:RegisterEvent("PLAYER_ENTERING_WORLD")
 	arenaprepUpdate:RegisterEvent("ARENA_OPPONENT_UPDATE")
 	arenaprepUpdate:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS")
 	arenaprepUpdate:SetScript("OnEvent", function(self, event)
-		if event == "ARENA_OPPONENT_UPDATE" then
-			for i = 1, 5 do
-				arenaprep[i]:Hide()
+		local numOpps = GetNumArenaOpponentSpecs() or 0
+
+		for i = 1, numOpps do
+			local specID = GetArenaOpponentSpec(i)
+			local icon, spec, _ = "Interface\\Icons\\Spell_Shadow_SacrificialShield", "UNKNOWN"
+
+			if specID and specID > 0 then
+				_, spec, _, icon = GetSpecializationInfoByID(specID)
 			end
-		else
-			local numOpps = GetNumArenaOpponentSpecs()
 
-			if numOpps > 0 then
-				for i = 1, 5 do
-					local f = arenaprep[i]
+			SetPortraitToTexture(arena[i].Portrait, icon)
 
-					if i <= numOpps then
-						local specID = GetArenaOpponentSpec(i)
-						local icon, spec, class = "Interface\\Icons\\Spell_Shadow_SacrificialShield", "UNKNOWN", "UNKNOWN"
-
-						if specID and specID > 0 then
-							_, spec, _, icon, _, _, class = GetSpecializationInfoByID(specID)
-						end
-
-						if class and icon then
-							local color = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class]
-							if color then
-								f.Health:SetStatusBarColor(color.r, color.g, color.b)
-							else
-								f.Health:SetStatusBarColor(0,1,0)
-							end
-							f.Power:SetStatusBarColor(0,0,0)
-							f.Power:SetAlpha(0.55)
-							f.Health.Value:SetText("arena"..i)
-							f.Power.Value:SetText(spec)
-							SetPortraitToTexture(arenaprep[i].Portrait, icon)
-							SetPortraitToTexture(arena[i].Portrait, icon)
-							f:Show()
-						end
-					else
-						f:Hide()
-					end
-				end
-			else
-				for i = 1, 5 do
-					arenaprep[i]:Hide()
-				end
+			if event == 'ARENA_PREP_OPPONENT_SPECIALIZATIONS' then
+				arena[i].Health.Value:SetText(spec)
 			end
 		end
 	end)
