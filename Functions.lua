@@ -54,14 +54,14 @@ end
 -------------------------------------------------------------------------------
 local UnitIsGhost, GetSpellInfo, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsPlayer, UnitReaction, UnitIsEnemy, UnitSelectionColor =
 	  UnitIsGhost, GetSpellInfo, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsPlayer, UnitReaction, UnitIsEnemy, UnitSelectionColor
-local UnitPowerType, UnitPower, UnitPowerMax, UnitHasVehicleUI, UnitClass, UnitIsTapped, UnitIsTappedByPlayer, format = 
-	  UnitPowerType, UnitPower, UnitPowerMax, UnitHasVehicleUI, UnitClass, UnitIsTapped, UnitIsTappedByPlayer, format
+local UnitPowerType, UnitPower, UnitPowerMax, UnitHasVehicleUI, UnitClass, UnitIsTapDenied, format = 
+	  UnitPowerType, UnitPower, UnitPowerMax, UnitHasVehicleUI, UnitClass, UnitIsTapDenied, format
 
 local function getClassColor(unit)
 	if UnitIsPlayer(unit) then
 		local _, class = UnitClass(unit)
 		return colors.class[class]
-	elseif UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit) then
+	elseif UnitIsTapDenied(unit) then
 		return colors.tapped
 	elseif UnitIsEnemy(unit, "player") then
 		return colors.reaction[1]
@@ -146,18 +146,11 @@ do
 			self.Name.Bg:SetVertexColor(UnitSelectionColor(unit))
 		end
 
+		
 		if absent then
-			local id = unit:match'arena(%d)$'
-			if (cur == 1 and max == 1 and id) then 
-				local specID = GetArenaOpponentSpec(tonumber(id))
-				if(specID and specID > 0) then
-					Health.Value:SetText(GetSpecializationInfoByID(specID))
-				end
-			else
-				Health:SetStatusBarColor(0.5, 0.5, 0.5)
-				if Health.Value then
-					Health.Value:SetText(absent)
-				end
+			Health:SetStatusBarColor(0.5, 0.5, 0.5)
+			if Health.Value then
+				Health.Value:SetText(absent)
 			end
 			return
 		end
@@ -286,7 +279,7 @@ function ns.UnitFrame_OnEnter(self)
 	if self.__owner then
 		self = self.__owner
 	end
-	if not UnitName(self.unit) then return end --arena prep
+	if not self:IsEnabled() then return end --arena prep
 
 	UnitFrame_OnEnter(self)
 
@@ -306,7 +299,7 @@ function ns.UnitFrame_OnLeave(self)
 	if self.__owner then
 		self = self.__owner
 	end
-	if not UnitName(self.unit) then return end
+	if not self:IsEnabled() then return end --arena prep
 	UnitFrame_OnLeave(self)
 
 	self.isMouseOver = nil

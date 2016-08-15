@@ -3,6 +3,29 @@ local config
 
 local textPath = 'Interface\\AddOns\\oUF_Abu\\Media\\Frames\\'
 
+local function arenaPrep(self, event, ...)
+	if event ~= "ArenaPreparation" then return; end
+	
+	local specID = GetArenaOpponentSpec(self.id)
+	local _, spec, _, icon, _, _, class = GetSpecializationInfoByID(specID)
+
+	SetPortraitToTexture(self.Portrait, icon)
+	self.Health.Value:SetText(GetSpecializationInfoByID(specID))
+	self.Name:SetText(ARENA .. ' ' .. tostring(self.id))
+
+	self.Health:SetMinMaxValues(0, 1)
+	self.Health:SetValue(1)
+	self.Health:SetStatusBarColor(unpack(oUF.colors.class[class]))
+end
+
+local function updatePortrait(self, event, ...)
+	local specID = GetArenaOpponentSpec(self.id)
+	if specID then
+		local _, _, _, icon = GetSpecializationInfoByID(specID)
+		SetPortraitToTexture(self.Portrait, icon)
+	end
+end
+
 local function CreateArenaLayout(self, unit)
 	self.cUnit = ns.cUnit(unit)
 	local uconfig = ns.config[self.cUnit]
@@ -39,7 +62,8 @@ local function CreateArenaLayout(self, unit)
 	self.Portrait = self.Health:CreateTexture(nil, 'BACKGROUND')
 	self.Portrait:SetSize(64, 64)
 	self.Portrait:SetPoint('TOPLEFT', self.Health, -64, 13)
-	self.Portrait.Override = nop
+	self.Portrait.Override = updatePortrait
+	self:RegisterEvent('ARENA_OPPONENT_UPDATE', updatePortrait)
 
 	self.Health.Value = ns.CreateFontString(self.Health, 13)
 	self.Health.Value:SetPoint('CENTER', self.Health)
@@ -83,7 +107,7 @@ local function CreateArenaLayout(self, unit)
 	self.PortraitTimer.Icon = self.PortraitTimer:CreateTexture(nil, 'BACKGROUND')
 	self.PortraitTimer.Icon:SetAllPoints(self.Portrait)
 
-	self.PortraitTimer.Remaining = ns.CreateFontString(self.PortraitTimer, self.Portrait:GetWidth()/3.5, 'CENTER')
+	self.PortraitTimer.Remaining = ns.CreateFontString(self.PortraitTimer, self.Portrait:GetWidth()/3.5, 'CENTER', 'OUTLINE')
 	self.PortraitTimer.Remaining:SetPoint('CENTER', self.PortraitTimer.Icon)
 	self.PortraitTimer.Remaining:SetTextColor(1, 1, 1)
 
@@ -113,6 +137,8 @@ local function CreateArenaLayout(self, unit)
 
 	ns.PaintFrames(self.Trinket.Border.Texture)
 
+	self.PostUpdate = arenaPrep
+
 	return self
 end
 
@@ -134,25 +160,6 @@ oUF:Factory(function(self)
 	end
 	
 	local a = ns.CreateUnitAnchor(arena[1], arena[1], arena[5], nil, "arena1", "arena2", "arena3", "arena4", "arena5")
-
-	local arenaprepUpdate = CreateFrame("Frame")
-	arenaprepUpdate:RegisterEvent("PLAYER_ENTERING_WORLD")
-	arenaprepUpdate:RegisterEvent("ARENA_OPPONENT_UPDATE")
-	arenaprepUpdate:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS")
-	arenaprepUpdate:SetScript("OnEvent", function(self, event)
-		local numOpps = GetNumArenaOpponentSpecs() or 0
-
-		for i = 1, numOpps do
-			local specID = GetArenaOpponentSpec(i)
-			local icon, spec, _ = "Interface\\Icons\\Spell_Shadow_SacrificialShield", "UNKNOWN"
-
-			if specID and specID > 0 then
-				_, spec, _, icon = GetSpecializationInfoByID(specID)
-			end
-
-			SetPortraitToTexture(arena[i].Portrait, icon)
-		end
-	end)
 end)
 
 -- For testing /run oUFAbu.TestArena()
