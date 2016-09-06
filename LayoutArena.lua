@@ -18,11 +18,13 @@ local function arenaPrep(self, event, ...)
 	self.Health:SetStatusBarColor(unpack(oUF.colors.class[class]))
 end
 
-local function updatePortrait(self, event, ...)
+local function updatePortrait(self, event, unit)
 	local specID = GetArenaOpponentSpec(self.id)
 	if specID then
 		local _, _, _, icon = GetSpecializationInfoByID(specID)
 		SetPortraitToTexture(self.Portrait, icon)
+	elseif unit and UnitIsUnit(self.unit, unit) then
+		SetPortraitTexture(self.Portrait, unit)
 	end
 end
 

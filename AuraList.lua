@@ -46,6 +46,9 @@ AuraList.Defensive = {
 	871,	-- Shield Wall
 	45182,	-- Cheating Death
 	6940,	-- Hand of Sacrifice
+	195181, -- Bone Shield
+	192081, -- IronFur
+	192083, -- Mark of Ursol
 }
 
 AuraList.Offensive = {
