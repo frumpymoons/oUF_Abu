@@ -31,6 +31,7 @@ end
 
 local function Update(self, event, unit)
 	local bar = self.Aurabar
+	if not bar.active then return end
 	if bar.PreUpdate then
 		bar:PreUpdate(unit)
 	end
@@ -66,6 +67,15 @@ local Visibility = function(self, event, unit)
 	if bar.Visibility then
 		shouldshow = bar.Visibility(self, event, unit)
 	end
+
+	if not bar.filter then bar.filter = "HELPFUL" end
+	if bar.spellID then
+		bar.spellName, bar.rank = GetSpellInfo(bar.spellID)
+	else
+		shouldshow = false
+	end
+	if not bar.rank then bar.rank = ""; end
+
 	if UnitHasVehicleUI("player")
 		or ((HasVehicleActionBar() and UnitVehicleSkin("player") and UnitVehicleSkin("player") ~= "")
 		or (HasOverrideActionBar() and GetOverrideBarSkin() and GetOverrideBarSkin() ~= ""))
@@ -92,6 +102,7 @@ local function VisibilityPath(self, ...)
 end
 
 local function ForceUpdate(bar)
+	VisibilityPath(bar.__owner, "ForceUpdate", bar.__owner.unit)
 	return Path(bar.__owner, "ForceUpdate", bar.__owner.unit)
 end
 
@@ -100,16 +111,6 @@ local function Enable(self, unit)
 	if bar then
 		bar.__owner = self
 		bar.ForceUpdate = ForceUpdate
-
-		if not bar.filter then bar.filter = "HELPFUL" end
-		if bar.spellID then
-			bar.spellName, bar.rank = GetSpellInfo(bar.spellID)
-		end
-
-		if not bar.spellName then
-			error(string.format('Invalid spell ID: %d', bar.spellID))
-		end
-		if not bar.rank then bar.rank = ""; end
 		
 		if(not bar:GetStatusBarTexture()) then
 			bar:SetStatusBarTexture([=[Interface\TargetingFrame\UI-StatusBar]=])

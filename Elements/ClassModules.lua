@@ -155,35 +155,23 @@ function ns.classModule.WARLOCK(self, config, uconfig)
 		return WarlockPowerFrame
 	end
 end
---[[
-	function ns.classModule.ROGUENOPE(self, config, uconfig)
-		if self.cUnit == "player" and config.showSlicenDice then
-			local Aurabar = ns.CreateOutsideBar(self, true, 1, .6, 0)
-			Aurabar.spellID = 5171
-			self.Aurabar = Aurabar
+
+function ns.classModule.addAuraBar(self, config, uconfig)
+	local Aurabar = ns.CreateOutsideBar(self, true, 1, 0, 0)
+
+	Aurabar.Visibility = function(self, event, unit)
+		local bar = self.Aurabar
+		local index = GetSpecialization()
+		if not index then return false end
+
+		local specID = GetSpecializationInfo(index)
+		local barconfig = config.classBar[specID]
+		if barconfig then
+			bar:SetStatusBarColor(barconfig.r, barconfig.g, barconfig.b)
+			bar.spellID = barconfig.spellID
+			return GetSpellInfo(bar.spellID)
 		end
+		return false
 	end
-
-	function ns.classModule.WARRIORNOPE(self, config, uconfig)
-		if self.cUnit == "player" and config.showEnraged then
-			local Aurabar = ns.CreateOutsideBar(self, true, 1, 0, 0)
-			Aurabar.spellID = 136224
-
-			Aurabar.Visibility = function(self, event, unit)
-				local bar = self.Aurabar
-				local index = GetSpecialization() or 0
-
-				if (index == 2) then -- Enrage(fury)
-					bar:SetStatusBarColor(1, 0, 0)
-					bar.spellName, bar.rank = GetSpellInfo(136224)
-				elseif (index == 1) then --Sweeping(arms)
-					bar:SetStatusBarColor(1, .6, 0)
-					bar.spellName, bar.rank = GetSpellInfo(12328)
-				end
-				return (index == 2 or index == 1)
-			end
-
-			self.Aurabar = Aurabar
-		end
-	end
-]] 
+	return Aurabar
+end

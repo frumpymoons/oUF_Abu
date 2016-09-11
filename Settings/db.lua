@@ -72,6 +72,8 @@ ns.defaultConfig = {
 	clickThrough = false,
 	classPortraits = false,
 
+	classBar = {},
+
 	-- class stuff
 	DEATHKNIGHT = {
 		showRunes = true,

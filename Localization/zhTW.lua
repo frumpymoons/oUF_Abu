@@ -84,6 +84,8 @@ local L = ns.L
 	L.General_showInsanityTip = "Show the overlay over priests power bar when Insanity is used"
 	L.General_showShards = "Enable Shards"
 	L.General_showShardsTip = "Show the Warlock Shards beneath the player frame"
+	L.General_classAuraBar = "%s Aurabar"
+	L.General_classAuraBarTip = "Display an aura bar above the player frame for your specialization. \n Set the spell ID of the aura and set a color for the bar"
 
 	---- TEXTURES,
 	L.Texture = "材質"

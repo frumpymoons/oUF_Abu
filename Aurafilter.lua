@@ -100,8 +100,7 @@ Filters:
 	'Whitelist'		1 	 = Only show own
 --]]-------------------------------------------------------------------
 
-local IsInInstance, UnitCanAttack, UnitIsFriend, UnitIsUnit, UnitPlayerControlled, UnitIsPlayer
-	= IsInInstance, UnitCanAttack, UnitIsFriend, UnitIsUnit, UnitPlayerControlled, UnitIsPlayer
+local UnitCanAttack, UnitPlayerControlled = UnitCanAttack, UnitPlayerControlled
 
 local isPlayer = { player = true, pet = true, vehicle = true }
 
@@ -113,35 +112,36 @@ local filters = {
 }
 
 ns.CustomAuraFilters = {
-	pet = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, canStealOrPurge, shouldConsolidate, spellId, canApplyAura, isBossDebuff, isCastByPlayer, ...)
+	pet = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
 		return (caster and isPlayer[caster]) and (not genFilter[spellId] == 3)
 	end,
-	target = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, canStealOrPurge, shouldConsolidate, spellId, canApplyAura, isBossDebuff, isCastByPlayer, ...)
+	target = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
 		local v = genFilter[spellId]
 		if v and filters[v] then 					-- [[ In Filters ]]--
 			return filters[v](self, unit, caster)
 		elseif UnitPlayerControlled(unit) then 		-- [[	Player   ]]--
-			if UnitCanAttack("player", unit) then 	-- [[   Hostile  ]]--
-				return true
-			else 									-- [[  Friendly  ]]--
-				return (not shouldConsolidate) or (canApplyAura)
-			end
+			---if UnitCanAttack("player", unit) then 	-- [[   Hostile  ]]--
+			---	return true
+			---else 									-- [[  Friendly  ]]--
+			---	return (nameplateShowPersonal) or (canApplyAura)
+			---end
+			return true
 		else 										-- [[ 	NPC 	 ]]--
 			-- Always show BUFFS, Show boss debuffs, aura cast by the unit, or auras cast by the player's vehicle.
-			return (iconFrame.filter == "HELPFUL") or (isBossDebuff) or (isPlayer[caster]) or (caster == unit) 
+			return (iconFrame.filter == "HELPFUL") or (isBossDebuff) or nameplateShowPersonal or (isPlayer[caster]) or (caster == unit) 
 		end
 	end,
-	party = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, canStealOrPurge, shouldConsolidate, spellId, canApplyAura, isBossDebuff, isCastByPlayer, ...)
+	party = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
 		if (iconFrame.filter == "HELPFUL") then -- BUFFS
-			return (not shouldConsolidate and isPlayer[caster]) or isBossDebuff
+			return (nameplateShowPersonal and isPlayer[caster]) or isBossDebuff
 		else
 			return genFilter[spellId] ~= 3 	-- DEBUFFS
 		end
 	end,
-	arena = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, canStealOrPurge, shouldConsolidate, spellId, canApplyAura, isBossDebuff, isCastByPlayer, ...)
+	arena = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
 		return arenaFilter[spellId]
 	end,
-	boss = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, canStealOrPurge, shouldConsolidate, spellId, canApplyAura, isBossDebuff, isCastByPlayer, ...)
+	boss = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
 		local v = bossFilter[spellId]
 		if v == 1 then
 			return isPlayer[caster]

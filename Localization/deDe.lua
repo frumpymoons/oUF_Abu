@@ -87,6 +87,8 @@ local L = ns.L
 	L.General_showInsanityTip = "Zeigt die Überblendung an der Ressoucenleiste der Priester, wenn Wahnsinn aktiv ist"
 	L.General_showShards = "Splitter aktivieren Shards"
 	L.General_showShardsTip = "Zeigt die Hexenmeister-Splitter unter dem Spielerfenster"
+	L.General_classAuraBar = "%s Aurabar"
+	L.General_classAuraBarTip = "Display an aura bar above the player frame for your specialization. \n Set the spell ID of the aura and set a color for the bar"
 	
 	---- TEXTURES,
 	L.Texture = "Texturen"

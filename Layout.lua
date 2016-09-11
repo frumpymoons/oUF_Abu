@@ -655,6 +655,7 @@ local function CreateUnitLayout(self, unit)
 		if ( ns.classModule[playerClass] ) then
 			self.classPowerBar = ns.classModule[playerClass](self, config, uconfig)
  		end
+ 		self.Aurabar = ns.classModule.addAuraBar(self, config, uconfig)
 
 		-- PvP Timer
 		self.PvPTimer = ns.CreateFontString(self, 13, 'CENTER')

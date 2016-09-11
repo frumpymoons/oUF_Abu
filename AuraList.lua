@@ -26,7 +26,6 @@ AuraList.CCImmunity = {
 
 AuraList.Defensive = {
 	122470,	--Touch of Karma
-	--110913 removed,	-- Dark Bagrain
 	115176,	-- Zen Meditation
 	115203,	-- Fortifying Brew
 	115610,	-- Temporal Shield
@@ -34,7 +33,6 @@ AuraList.Defensive = {
 	122278,	-- Dampen Harm
 	122783,	-- Diffuse Magic
 	22812,	-- Barskin
-	--30823 removed,	-- Shamanistic Rage 
 	33206,	-- Pain Suppression
 	47788,	-- Guardian Spirit
 	48707,	-- Anti-Magic Shell
@@ -49,20 +47,19 @@ AuraList.Defensive = {
 	195181, -- Bone Shield
 	192081, -- IronFur
 	192083, -- Mark of Ursol
+	212800, -- blur
 }
 
 AuraList.Offensive = {
 	31884,	-- Avenging Wrath
-	--51713 removed,	-- Shadow Dance
+	185313,	-- Shadow Dance
 	1719,	-- Recklessness
 	12472,	-- Icy Veins
 	102342,	-- Ironbark
 
 	102543,	-- Incarnation: King of the Jungle
 	102560,	-- Incarnation: Chosen of Elune
-	--113858 removed,	-- Dark Soul
-	--113861 removed,	-- Dark Soul
-	--113860 removed,	-- Dark Soul
+	162264, -- Metamorphosis
 }
 
 AuraList.Helpful = {
@@ -83,6 +80,7 @@ AuraList.Helpful = {
 	77764,	-- Stampeding Roar (cat)
 	85499,	-- Speed of Light
 	--96268 removed,	-- Deaths Advance
+	188501, -- Speci
 }
 
 AuraList.Misc = {
@@ -114,7 +112,9 @@ AuraList.Stun = {
 	163505,	-- Rake
 	22570,	-- Maim
 	--115001 removed,	-- Remorseless Winter
-	--115000 removed ,	-- Remorseless Winter
+	200166,	-- Metamorphosis stun
+	211881,	-- Fel Eruption
+	179057,	-- Chaos Nova
 }
 
 AuraList.CC = {
@@ -152,17 +152,18 @@ AuraList.CC = {
 	91807, 	-- Shambling Rush (Leap with DT)
 	99,		-- Disorienting Roar
 	1776,	-- Gouge
+	217832, -- imprison (demon)
+	207685, -- Sigil of misery
 }
 
 AuraList.Silence = {
-	--114238 removed,	-- Fae Silence (Glyph of Fae Silence)
 	1330,	-- Garrote - Silence
 	15487,	-- Silence (priest)
 	19647,	-- Spell Lock
 	28730,	-- Arcane Torrent
 	47476,	-- Strangulate
-	--58357 removed,	-- Glyph of Gag Order
 	81261,	-- Solar Beam
+	204490, -- sigil of silence
 }
 
 AuraList.Taunt = {
@@ -170,11 +171,11 @@ AuraList.Taunt = {
 	57604,	-- Death Grip
 	20736,	-- Distracting Shot
 	6795,	-- Growl
-	--118585 removed,	-- Leer of the Ox 
 	116189,	-- Provoke
 	62124,	-- Reckoning
 	355,	-- Taunt
-	--114198 removed,	-- Mocking Banner
+	185245, -- Torment
+
 }
 
 for k, v in pairs(AuraList) do
