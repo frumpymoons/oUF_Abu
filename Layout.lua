@@ -210,6 +210,18 @@ local function GetTargetTexture(cUnit, type)
 	end
 end
 
+local function updatePlayerStatus(element, ...)
+	local self = element.__owner
+	if UnitAffectingCombat('player') then
+		self.Resting:Hide()
+		self.Level:Hide()
+	elseif IsResting() then
+		self.Resting:Show()
+		self.Level:Hide()
+	else
+		self.Level:Show()
+	end
+end
 
 local function UpdatePlayerFrame(self, ...)
 	local data = GetData(self.cUnit)
@@ -473,9 +485,9 @@ local function CreateUnitLayout(self, unit)
 	if (self.IsMainFrame) then
 		--[[ 	Level text		]]
 		self.Level = self:CreateFontString(nil, 'ARTWORK')
-		self.Level:SetFont('Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontNumber.ttf', 16, 'THINOUTLINE')
+		self.Level:SetFont('Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontNumber.ttf', 14, 'THINOUTLINE')
 		self.Level:SetShadowOffset(0, 0)
-		self.Level:SetPoint('CENTER', self.Texture, (cUnit == 'player' and -63) or 63, -16)
+		self.Level:SetPoint('CENTER', self.Texture, (cUnit == 'player' and -63) or 63, -15.5)
 		self:Tag(self.Level, '[level]')
 
 		--[[ PvP Icon  ]] --
@@ -667,11 +679,13 @@ local function CreateUnitLayout(self, unit)
 		self.Combat = self:CreateTexture(nil, 'OVERLAY')
 		self.Combat:SetPoint('CENTER', self.Level, 1, 0)
 		self.Combat:SetSize(31, 33)
+		self.Combat.PostUpdate = updatePlayerStatus
 		
 		-- Resting icon
 		self.Resting = self:CreateTexture(nil, 'OVERLAY')
 		self.Resting:SetPoint('CENTER', self.Level, -0.5, 0)
 		self.Resting:SetSize(31, 34)
+		self.Resting.PostUpdate = updatePlayerStatus
 
 		-- player frame vehicle/normal update
 		self:RegisterEvent('UNIT_ENTERED_VEHICLE', UpdatePlayerFrame)
