@@ -128,14 +128,17 @@ ns.CustomAuraFilters = {
 			return true
 		else 										-- [[ 	NPC 	 ]]--
 			-- Always show BUFFS, Show boss debuffs, aura cast by the unit, or auras cast by the player's vehicle.
-			return (iconFrame.filter == "HELPFUL") or (isBossDebuff) or nameplateShowPersonal or (isPlayer[caster]) or (caster == unit) 
+			return (iconFrame.filter == "HELPFUL") or (isBossDebuff) or nameplateShowAll or (isPlayer[caster]) or (caster == unit) 
 		end
 	end,
 	party = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
-		if (iconFrame.filter == "HELPFUL") then -- BUFFS
-			return (nameplateShowPersonal and isPlayer[caster]) or isBossDebuff
+		local v = genFilter[spellId]
+		if v and filters[v] then
+			return filters[v](self, unit, caster)
+		elseif (iconFrame.filter == "HELPFUL") then -- BUFFS
+			return (nameplateShowPersonal and isPlayer[caster]) or isBossDebuff or nameplateShowAll
 		else
-			return genFilter[spellId] ~= 3 	-- DEBUFFS
+			return true
 		end
 	end,
 	arena = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
