@@ -788,9 +788,9 @@ local function CreateUnitLayout(self, unit)
 	return self
 end
 
---[[local function fixPetFrame(self, event, ...) -- Petframe doesnt always update correctly
+local function fixPetFrame(self, event, ...) -- Petframe doesnt always update correctly
 	oUF_AbuPet:GetScript('OnAttributeChanged')(oUF_AbuPet, 'unit', 'pet')
-end]] -- fixed in newer oUF
+end -- fixed in newer oUF
 
 function _G.PlayerFrame_ToVehicleArt() end --disable blizzard frame swap
 function _G.PlayerFrame_ToPlayerArt() end
@@ -807,7 +807,7 @@ oUF:Factory( function(self)
 
 	local pet = self:Spawn('pet', 'oUF_AbuPet')
 	ns.CreateUnitAnchor(pet, pet, pet, nil, 'pet')
-	--player:RegisterEvent('UNIT_PET', fixPetFrame)
+	player:RegisterEvent('UNIT_PET', fixPetFrame)
 
 	local target = self:Spawn('target', 'oUF_AbuTarget')
 	ns.CreateUnitAnchor(target, target, target, nil, 'target')
