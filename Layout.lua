@@ -288,7 +288,7 @@ local function UpdatePlayerFrame(self, ...)
 		self.Level:Show()
 
 		self.LFDRole:SetAlpha(1)
-		self.PvP:SetPoint('TOPLEFT', self.Texture, 20, -20)
+		self.PvP:SetPoint('TOPLEFT', self.Texture, 23, -23)
 		self.Leader:SetPoint('TOPLEFT', self.Portrait, 3, 2)
 		self.MasterLooter:SetPoint('TOPRIGHT', self.Portrait, -3, 3)
 		self.RaidIcon:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
@@ -492,8 +492,11 @@ local function CreateUnitLayout(self, unit)
 
 		--[[ PvP Icon  ]] --
 		self.PvP = self:CreateTexture(nil, 'OVERLAY')
-		self.PvP:SetSize(40, 40)
-		self.PvP:SetPoint('TOPRIGHT', self.Texture, -20, -20)
+		self.PvP:SetSize(30, 30)
+		self.PvP:SetPoint('TOPRIGHT', self.Texture, -23, -23)
+		self.PvP.Prestige = self:CreateTexture(nil, 'ARTWORK')
+   		self.PvP.Prestige:SetSize(50, 52)
+	   	self.PvP.Prestige:SetPoint('CENTER', self.PvP, 'CENTER')
 
 		--[[	Special Bars 		]]
 		-- Incoming Heals
@@ -818,10 +821,10 @@ oUF:Factory( function(self)
 
 	local player = self:Spawn('player', 'oUF_AbuPlayer')
 	ns.CreateUnitAnchor(player, player, player, nil, 'player')
+	player:RegisterEvent('UNIT_PET', fixPetFrame)
 
 	local pet = self:Spawn('pet', 'oUF_AbuPet')
 	ns.CreateUnitAnchor(pet, pet, pet, nil, 'pet')
-	player:RegisterEvent('UNIT_PET', fixPetFrame)
 
 	local target = self:Spawn('target', 'oUF_AbuTarget')
 	ns.CreateUnitAnchor(target, target, target, nil, 'target')
