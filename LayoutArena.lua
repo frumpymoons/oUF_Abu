@@ -10,7 +10,7 @@ local function arenaPrep(self, event, ...)
 	local _, spec, _, icon, _, _, class = GetSpecializationInfoByID(specID)
 
 	SetPortraitToTexture(self.Portrait, icon)
-	self.Health.Value:SetText(GetSpecializationInfoByID(specID))
+	self.Health.Value:SetText(spec)
 	self.Name:SetText(ARENA .. ' ' .. tostring(self.id))
 
 	self.Health:SetMinMaxValues(0, 1)
