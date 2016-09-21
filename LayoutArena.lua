@@ -10,9 +10,11 @@ local function arenaPrep(self, event, ...)
 	local _, spec, _, icon, _, _, class = GetSpecializationInfoByID(specID)
 
 	SetPortraitToTexture(self.Portrait, icon)
-	self.Health.Value:SetText(spec)
+	self.Portrait:SetVertexColor(1,1,1,1)
+
 	self.Name:SetText(ARENA .. ' ' .. tostring(self.id))
 
+	self.Health.Value:SetText(spec)
 	self.Health:SetMinMaxValues(0, 1)
 	self.Health:SetValue(1)
 	self.Health:SetStatusBarColor(unpack(oUF.colors.class[class]))
