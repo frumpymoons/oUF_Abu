@@ -213,7 +213,10 @@ function ns.PostCastFailed(Castbar, unit, spellname, castid)
 end
 
 function ns.PostCastInterrupted(Castbar, unit, spellname, castid)
-	--Castbar:SetStatusBarColor(1, 0, 0)
+	if (Castbar.Text) then
+		Castbar.Text:SetText(INTERRUPTED) 
+	end
+	Castbar:SetStatusBarColor(1, 0, 0)
 	if (Castbar.max) then -- Some spells got trough without castbar
 		Castbar:SetValue(Castbar.max)
 	end

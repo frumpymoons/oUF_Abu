@@ -40,8 +40,8 @@ local colors = oUF.colors
 ]]
 
 _G.CASTING_BAR_ALPHA_STEP = 0.05
-_G.CASTING_BAR_FLASH_STEP = 0.1
-_G.CASTING_BAR_FLASH_STEPOUT = 0.03
+_G.CASTING_BAR_FLASH_STEP = 0.05
+_G.CASTING_BAR_FLASH_STEPOUT = 0.05
 _G.CASTING_BAR_HOLD_TIME = 0.7
 
 local UnitName = UnitName
@@ -108,13 +108,6 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 		sf:SetPoint'TOP'
 		sf:SetPoint'BOTTOM'
 		updateSafeZone(castbar)
-	end
-	if castbar.Flash then
-		if castbar.flash then
-			castbar.Flash:SetAlpha(1)
-		else
-			castbar.Flash:Hide()
-		end
 	end
 
 	castbar:SetAlpha(1.0)
@@ -233,7 +226,7 @@ local UNIT_SPELLCAST_STOP = function(self, event, unit, spellname, _, castid)
 		end
 
 		castbar.holdTime = 0
-		castbar.flash = 1
+		castbar.flash = true
 		castbar.fadeOut = 1
 		castbar.casting = nil
 		castbar.channeling = nil
@@ -261,7 +254,7 @@ local UNIT_SPELLCAST_CHANNEL_STOP = function(self, event, unit, spellname)
 
 		castbar.channeling = nil
 		castbar.interrupt = nil
-		castbar.flash = 1
+		castbar.flash = true
 		castbar.fadeOut = 1
 		castbar.holdTime = 0
 
@@ -305,14 +298,6 @@ local UNIT_SPELLCAST_CHANNEL_START = function(self, event, unit, spellname)
 		shield:Show()
 	elseif (shield) then
 		shield:Hide()
-	end
-
-	if castbar.Flash then
-		if castbar.flash then
-			castbar.Flash:SetAlpha(1)
-		else
-			castbar.Flash:Hide()
-		end
 	end
 
 	local sf = castbar.SafeZone
@@ -365,6 +350,26 @@ local UNIT_PET = function(self, event, unit)
 	end
 end
 
+local function flashOut(element)
+	local alpha = element:GetAlpha() - CASTING_BAR_FLASH_STEPOUT
+	if (alpha > 0.05) then
+		element:SetAlpha(alpha)
+	else
+		element:SetAlpha(0.0)
+		return true
+	end	
+end
+
+local function flashIn(element)
+	local alpha = element:GetAlpha() + CASTING_BAR_FLASH_STEP
+	if (alpha < 0.95) then
+		element:SetAlpha(alpha)
+	else
+		element:SetAlpha(1.0)
+		return true
+	end	
+end
+
 local onUpdate = function(self, elapsed)
 	local barSpark = self.Spark
 	local barFlash = self.Flash
@@ -382,7 +387,7 @@ local onUpdate = function(self, elapsed)
 			end
 
 			self.holdTime = 0
-			self.flash = 1
+			self.flash = true
 			self.fadeOut = 1
 			self.casting = nil
 			self.channeling = nil
@@ -411,16 +416,14 @@ local onUpdate = function(self, elapsed)
 		self.duration = duration
 		self:SetValue(duration)
 
-		if(barFlash and self.flash) then
-			local alpha = 0
-			alpha = barFlash:GetAlpha() - CASTING_BAR_FLASH_STEPOUT
-
-			if (alpha > 0.05) then
-				barFlash:SetAlpha(alpha)
+		if (barFlash) then
+			if self.flash then
+				if flashOut(barFlash) then
+					self.flash = nil
+				end
 			else
 				barFlash:Hide()
-				self.flash = nil
-			end	
+			end
 		end
 
 		if(barSpark) then
@@ -438,7 +441,7 @@ local onUpdate = function(self, elapsed)
 				self.Flash:Show()
 			end
 
-			self.flash = 1
+			self.flash = true
 			self.fadeOut = 1
 			self.casting = nil
 			self.channeling = nil
@@ -467,33 +470,27 @@ local onUpdate = function(self, elapsed)
 
 		self.duration = duration
 		self:SetValue(duration)
-		if(barFlash and self.flash) then
-			local alpha = 0
-			alpha = barFlash:GetAlpha() - CASTING_BAR_FLASH_STEPOUT
 
-			if (alpha > 0.05) then
-				barFlash:SetAlpha(alpha)
+		if (barFlash) then
+			if self.flash then
+				if flashOut(barFlash) then
+					self.flash = nil
+				end
 			else
 				barFlash:Hide()
-				self.flash = nil
-			end	
+			end
 		end
+
 		if(barSpark) then
 			barSpark:SetPoint("CENTER", self, "LEFT", (duration / self.max) * self:GetWidth(), 0)
 		end
 	elseif (GetTime() < self.holdTime) then
 		return
 	elseif (self.flash) then
-		local alpha = 0
 		if (barFlash) then
-			alpha = barFlash:GetAlpha() + CASTING_BAR_FLASH_STEP
-
-			if (alpha < .98) then
-				barFlash:SetAlpha(alpha)
-			else
-				barFlash:SetAlpha(1.0)
+			if (flashIn(barFlash)) then
 				self.flash = nil
-			end	
+			end
 		else
 			self.flash = nil
 		end
