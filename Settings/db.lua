@@ -38,6 +38,7 @@ ns.defaultConfig = {
 	healthcolor = { 0.0, 0.1, 0.0 },
 
 	powercolormode = 'TYPE',
+	powerUseAtlas = true, --todo
 	powercolor = { 0.0, 0.1, 0.0 },
 
 	backdropColor = {0, 0, 0, 0.55},

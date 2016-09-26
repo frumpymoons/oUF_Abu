@@ -410,7 +410,7 @@ function ns.CreateStatusBar(parent, layer, name, AddBackdrop)
 	if type(layer) ~= 'string' then layer = 'BORDER' end
 	local bar = CreateFrame('StatusBar', name, parent)
 	bar:SetStatusBarTexture(ns.config.statusbar, layer)
-	bar.statusbar = ns.config.statusbar
+	bar.texture = ns.config.statusbar
 	
 	if AddBackdrop then
 		bar:SetBackdrop({bgFile = 'Interface\\Buttons\\WHITE8x8'})
@@ -424,12 +424,18 @@ end
 
 function oUFAbu:SetAllStatusBars()
 	local file = ns.config.statusbar
+	local texture
 
 	for _, bar in ipairs(ns.statusbars) do
-		if bar.SetStatusBarTexture then
-			bar:SetStatusBarTexture(file)
-		else
-			bar:SetTexture(file)
+		bar.texture = file
+		--if bar.SetStatusBarTexture then
+		--	bar:SetStatusBarTexture(file)
+		--else
+		--	bar:SetTexture(file)
+		--end
+		texture = bar.GetStatusBarTexture and bar:GetStatusBarTexture() or bar
+		if ( not texture:GetAtlas() ) then
+			texture:SetTexture(file)
 		end
 	end
 	for i = 1, 3 do

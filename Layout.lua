@@ -449,6 +449,7 @@ local function CreateUnitLayout(self, unit)
 	if config.powercolormode == "CUSTOM" then self.Power:SetStatusBarColor(unpack(config.powercolor)) end
 	self.Power.colorClass = config.powercolormode == 'CLASS'
 	self.Power.colorPower = config.powercolormode == 'TYPE'
+	self.Power.useAtlas = config.powerUseAtlas
 
 	--[[	Power Text 		]]
 	if (data.mpt) then
@@ -661,7 +662,7 @@ local function CreateUnitLayout(self, unit)
 		if ( config[playerClass].showTotems ) then
 			ns.classModule.Totems(self, config, uconfig)
 		end
-		
+
 		-- Alternate Mana Bar
 		if ( config[playerClass].showAdditionalPower ) then
 			ns.classModule.alternatePowerBar(self, config, uconfig)

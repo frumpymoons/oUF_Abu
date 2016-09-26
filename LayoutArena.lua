@@ -90,6 +90,7 @@ local function CreateArenaLayout(self, unit)
 	self.Power:SetStatusBarColor(unpack(config.powercolor))
 	self.Power.colorClass = config.powercolormode == 'CLASS'
 	self.Power.colorPower = config.powercolormode == 'TYPE'
+	self.Power.useAtlas = config.powerUseAtlas
 
 	self.Power.Smooth = true
 	self.Power.PostUpdate = ns.PostUpdatePower	
