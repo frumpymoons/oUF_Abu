@@ -3,9 +3,10 @@ local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
 local trinketSpells = {
-	[59752] = 120,
-	[42292] = 120,
-	[7744] = 45,
+	[208683] = 120, --Gladiator's Medallion	
+	[195710] = 180, --honorable-medallion
+	--[7744] = 30, --will of the forsaken
+	--[59752] = 30, -- Every man for himself
 }
 
 local function GetTrinketIcon(unit)
