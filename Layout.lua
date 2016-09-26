@@ -218,8 +218,9 @@ local function updatePlayerStatus(element, ...)
 	elseif IsResting() then
 		self.Resting:Show()
 		self.Level:Hide()
-	else
+	elseif not self.Level:IsVisible() then
 		self.Level:Show()
+		self.Level:UpdateTag()
 	end
 end
 
