@@ -692,6 +692,39 @@ local function CreateUnitLayout(self, unit)
 			}
 			self.Power.Smooth = false
 		end
+
+		-- Power Prediction Bar (Display estimated cost of spells when casting)
+		if ( config.powerPredictionBar ) then
+			local mainBar = CreateFrame('StatusBar', nil, self.Power)
+	 		mainBar:SetFrameLevel(self.Power:GetFrameLevel())
+			mainBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar-Glow]], 'BORDER')
+			mainBar:GetStatusBarTexture():SetBlendMode'ADD'
+			mainBar:SetReverseFill(true)
+			mainBar:SetPoint'TOP'
+			mainBar:SetPoint'BOTTOM'
+			mainBar:SetPoint('RIGHT', self.Power:GetStatusBarTexture(), 'RIGHT')
+			mainBar:SetWidth(self.Power:GetWidth())
+			mainBar:SetStatusBarColor(1,1,1,.3)
+
+			if ( self.AdditionalPower ) then
+				local altBar = CreateFrame('StatusBar', nil, self.AdditionalPower)
+				altBar:SetFrameLevel(self.AdditionalPower:GetFrameLevel())
+				altBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar-Glow]], 'BORDER')
+				altBar:GetStatusBarTexture():SetBlendMode'ADD'
+				altBar:SetReverseFill(true)
+				altBar:SetPoint'TOP'
+				altBar:SetPoint'BOTTOM'
+				altBar:SetPoint('RIGHT', self.AdditionalPower:GetStatusBarTexture(), 'RIGHT')
+				altBar:SetWidth(self.AdditionalPower:GetWidth())
+				altBar:SetStatusBarColor(1,1,1,.3)
+			end
+
+			self.PowerPrediction = {
+				mainBar = mainBar,
+				altBar = altBar
+			}
+		end
+
 		-- PvP Timer
 		self.PvPTimer = ns.CreateFontString(self, 13, 'CENTER')
 		self.PvPTimer:SetPoint('BOTTOM', self.PvP, 'TOP', 2, -24  )

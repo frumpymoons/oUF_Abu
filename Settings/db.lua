@@ -39,6 +39,7 @@ ns.defaultConfig = {
 
 	powercolormode = 'TYPE',
 	powerUseAtlas = true, --todo
+	powerPredictionBar = true, --todoo
 	builderSpender = true, --todo
 	powercolor = { 0.0, 0.1, 0.0 },
 
