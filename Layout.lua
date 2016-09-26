@@ -458,7 +458,7 @@ local function CreateUnitLayout(self, unit)
 	--[[ 	Name Text		]]
 	if data.nam then
 		self.Name = ns.CreateFontStringBig(self, data.nam.s, data.nam.j)
-		self:Tag(self.Name, '[name]')
+		self:Tag(self.Name, '[abu:name]')
 	end
 
 	--[[ 	Portrait		]]
@@ -489,7 +489,7 @@ local function CreateUnitLayout(self, unit)
 		self.Level:SetFont('Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontNumber.ttf', 14, 'THINOUTLINE')
 		self.Level:SetShadowOffset(0, 0)
 		self.Level:SetPoint('CENTER', self.Texture, (cUnit == 'player' and -63) or 63, -15.5)
-		self:Tag(self.Level, '[level]')
+		self:Tag(self.Level, '[abu:level]')
 
 		--[[ PvP Icon  ]] --
 		self.PvP = self:CreateTexture(nil, 'OVERLAY')
@@ -677,7 +677,7 @@ local function CreateUnitLayout(self, unit)
 		self.PvPTimer = ns.CreateFontString(self, 13, 'CENTER')
 		self.PvPTimer:SetPoint('BOTTOM', self.PvP, 'TOP', 2, -24  )
 		self.PvPTimer.frequentUpdates = 0.5
-		self:Tag(self.PvPTimer, '[pvptimer]')
+		self:Tag(self.PvPTimer, '[abu:pvptimer]')
 
 		-- Combat icon
 		self.Combat = self:CreateTexture(nil, 'OVERLAY')

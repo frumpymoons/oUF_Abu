@@ -290,8 +290,8 @@ function ns.UnitFrame_OnEnter(self)
 		end
 	end
 
-	if (self.DruidMana and self.DruidMana.Value) then
-		self.DruidMana.Value:Show()
+	if (self.AdditionalPower and self.AdditionalPower.Value) then
+		self.AdditionalPower.Value:Show()
 	end
 end
 
@@ -309,8 +309,8 @@ function ns.UnitFrame_OnLeave(self)
 		end
 	end
 
-	if (self.DruidMana and self.DruidMana.Value) then
-		self.DruidMana.Value:Hide()
+	if (self.AdditionalPower and self.AdditionalPower.Value) then
+		self.AdditionalPower.Value:Hide()
 	end
 end
 

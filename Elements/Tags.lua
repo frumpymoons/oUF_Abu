@@ -13,8 +13,8 @@ local function FormatTime(time)
 	return format('%d', math.fmod(time, 60))
 end
 
-oUF.Tags.Events['druidmana'] = 'UNIT_POWER UNIT_DISPLAYPOWER UNIT_MAXPOWER'
-oUF.Tags.Methods['druidmana'] = function(unit)
+oUF.Tags.Events['abu:additionalpower'] = 'UNIT_POWER UNIT_DISPLAYPOWER UNIT_MAXPOWER'
+oUF.Tags.Methods['abu:additionalpower'] = function(unit)
 	local min, max = UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA)
 	if (min == max) then
 		return ns.FormatValue(min)
@@ -23,7 +23,7 @@ oUF.Tags.Methods['druidmana'] = function(unit)
 	end
 end
 
-oUF.Tags.Methods['pvptimer'] = function(unit)
+oUF.Tags.Methods['abu:pvptimer'] = function(unit)
 	local pvpTime = (GetPVPTimer() or 0)/1000
 	if (not IsPVPTimerRunning()) or (pvpTime < 1) or (pvpTime > 300) then --999?
 		return ''
@@ -32,7 +32,8 @@ oUF.Tags.Methods['pvptimer'] = function(unit)
 	return FormatTime(math.floor(pvpTime))
 end
 
-oUF.Tags.Methods['level'] = function(unit)
+oUF.Tags.Methods['abu:level'] = "UNIT_LEVEL PLAYER_LEVEL_UP"
+oUF.Tags.Methods['abu:level'] = function(unit)
 	local level = UnitLevel(unit)
 	if (level <= 0 or UnitIsCorpse(unit)) and (unit == "player" or unit == "target" or unit == "focus") then
 		return "|TInterface\\TargetingFrame\\UI-TargetingFrame-Skull:12:12:0:0|t" -- boss skull icon
@@ -42,7 +43,8 @@ oUF.Tags.Methods['level'] = function(unit)
 	return format('|cff%02x%02x%02x%s|r', colorL.r*255, colorL.g*255, colorL.b*255, level)
 end
 
-oUF.Tags.Methods['name'] = function(unit, realUnit)
+oUF.Tags.Events['abu:name'] = "UNIT_NAME_UPDATE"
+oUF.Tags.Methods['abu:name'] = function(unit, realUnit)
 	local color
 	local unitName, unitRealm = UnitName(realUnit or unit)
 	local _, class = UnitClass(realUnit or unit)

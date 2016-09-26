@@ -99,7 +99,7 @@ local function CreateArenaLayout(self, unit)
 	self.Name = ns.CreateFontStringBig(self.Health, 14, 'CENTER')
 	self.Name:SetSize(110, 10)
 	self.Name:SetPoint('BOTTOM', self.Health, 'TOP', 0, 6)
-	self:Tag(self.Name, '[name]')
+	self:Tag(self.Name, '[abu:name]')
 
 	-- PvP Icon
 	self.PvP = self:CreateTexture(nil, 'OVERLAY')
