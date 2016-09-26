@@ -60,13 +60,14 @@ function ns.classModule.Totems(self, config, uconfig)
 end
 
 function ns.classModule.alternatePowerBar(self, config, uconfig)
-	self.DruidMana = ns.CreateOutsideBar(self, false, 0, 0, 1)
-	self.DruidMana.colorPower = true
+	self.AdditionalPower = ns.CreateOutsideBar(self, false, 0, 0, 1)
+	self.DruidMana = self.AdditionalPower
+	self.AdditionalPower.colorPower = true
 
-	self.DruidMana.Value = ns.CreateFontString(self.DruidMana, 13, 'CENTER')
-	self.DruidMana.Value:SetPoint('CENTER', self.DruidMana, 0, 0.5)
-	self.DruidMana.Value:Hide()
-	self:Tag(self.DruidMana.Value, '[druidmana]')
+	self.AdditionalPower.Value = ns.CreateFontString(self.AdditionalPower, 13, 'CENTER')
+	self.AdditionalPower.Value:SetPoint('CENTER', self.AdditionalPower, 0, 0.5)
+	self.AdditionalPower.Value:Hide()
+	self:Tag(self.AdditionalPower.Value, '[abu:additionalpower]')
 end
 
 function ns.classModule.DEATHKNIGHT(self, config, uconfig)
