@@ -24,11 +24,12 @@ oUF.Tags.Methods['druidmana'] = function(unit)
 end
 
 oUF.Tags.Methods['pvptimer'] = function(unit)
-	if (not IsPVPTimerRunning() and GetPVPTimer() >= 0) then
+	local pvpTime = (GetPVPTimer() or 0)/1000
+	if (not IsPVPTimerRunning()) or (pvpTime < 1) or (pvpTime > 300) then --999?
 		return ''
 	end
 
-	return FormatTime(math.floor(GetPVPTimer()/1000))
+	return FormatTime(math.floor(pvpTime))
 end
 
 oUF.Tags.Methods['level'] = function(unit)
@@ -41,20 +42,18 @@ oUF.Tags.Methods['level'] = function(unit)
 	return format('|cff%02x%02x%02x%s|r', colorL.r*255, colorL.g*255, colorL.b*255, level)
 end
 
-oUF.Tags.Methods['name'] = function(unit)
+oUF.Tags.Methods['name'] = function(unit, realUnit)
 	local color
-	local unitName, unitRealm = UnitName(unit)
-	local _, class = UnitClass(unit)
-
-	if (unitRealm) and (unitRealm ~= '') then
-		unitName = unitName..' (*)'
-	end
+	local unitName, unitRealm = UnitName(realUnit or unit)
+	local _, class = UnitClass(realUnit or unit)
 
 	if not unitName then
 		local id = unit:match'arena(%d)$'
 		if(id) then
 			unitName = 'Arena '..id
 		end
+	elseif (unitRealm) and (unitRealm ~= '') then
+		unitName = unitName..' (*)'
 	end
 
 	if ns.config.TextNameColorMode == "CLASS" then
