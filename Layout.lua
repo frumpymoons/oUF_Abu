@@ -672,8 +672,26 @@ local function CreateUnitLayout(self, unit)
 		if ( ns.classModule[playerClass] ) then
 			self.classPowerBar = ns.classModule[playerClass](self, config, uconfig)
  		end
+
+ 		--Aurabar for a specific buff
  		self.Aurabar = ns.classModule.addAuraBar(self, config, uconfig)
 
+ 		--builderspender (white overlay when gaining/losing power)
+ 		if ( config.builderSpender ) then
+	 		local FeedbackFrame = CreateFrame('Frame', nil, self.Power, 'BuilderSpenderFrame')
+	 		FeedbackFrame:SetFrameLevel(self.Power:GetFrameLevel())
+	 		FeedbackFrame:SetAllPoints(self.Power)
+			FeedbackFrame:SetPoint('TOPLEFT', self.Power, 'TOPLEFT', 0, -1)
+			FeedbackFrame.BarTexture:SetTexture()
+
+	 		local FullPowerFrame = CreateFrame('Frame', nil, self.Power, 'FullResourcePulseFrame')
+	 		FullPowerFrame:SetAllPoints(self.Power)
+			self.BuilderSpender = {
+				FeedbackFrame = FeedbackFrame,
+				FullPowerFrame = FullPowerFrame,
+			}
+			self.Power.Smooth = false
+		end
 		-- PvP Timer
 		self.PvPTimer = ns.CreateFontString(self, 13, 'CENTER')
 		self.PvPTimer:SetPoint('BOTTOM', self.PvP, 'TOP', 2, -24  )
