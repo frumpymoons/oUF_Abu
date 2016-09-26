@@ -68,6 +68,7 @@ do
 		button.shadow = shadow
 
 		local cd = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
+		cd:SetFrameLevel(button:GetFrameLevel())
 		cd:SetAllPoints(button)
 		cd:SetReverse(true)
 		cd:SetDrawEdge(true)
@@ -82,10 +83,11 @@ do
 		button.count = count
 
 		local stealable = button:CreateTexture(nil, "OVERLAY")
-		stealable:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame-Stealable")
+		stealable:SetPoint('TOPLEFT', button.icon, 'TOPLEFT', -4, 4)
+		stealable:SetPoint('BOTTOMRIGHT', button.icon, 'BOTTOMRIGHT', 4, -4)
+		stealable:SetTexture(ns.config.textureBorderShadow)
+		stealable:SetVertexColor(1, 190/255, 82/255)
 		stealable:SetDrawLayer("OVERLAY", 1)
-		stealable:SetPoint("TOPLEFT", icon, "TOPLEFT")
-		stealable:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT")
 		stealable:SetBlendMode("ADD")
 		button.stealable = stealable
 
