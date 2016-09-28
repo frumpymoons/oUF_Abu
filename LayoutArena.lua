@@ -16,7 +16,7 @@ local function arenaPrep(self, event, ...)
 	self.Health.Value:SetText(spec)
 	self.Health:SetMinMaxValues(0, 1)
 	self.Health:SetValue(1)
-	self.Health:SetStatusBarColor(unpack(oUF.colors.class[class]))
+	self.Health:SetStatusBarColor(unpack(self.colors.class[class]))
 end
 
 local function updatePortrait(self, event, unit)
