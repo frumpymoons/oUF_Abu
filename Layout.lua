@@ -382,28 +382,25 @@ function oUFAbu:UpdateBaseFrames(optUnit)
 end
 
 local function CreateUnitLayout(self, unit)
-	local cUnit = ns.cUnit(unit)
-	self.cUnit = cUnit
-	local uconfig = ns.config[cUnit]
-	local data = GetData(cUnit)
-
-	self.IsMainFrame = ns.MultiCheck(cUnit, 'player', 'target', 'focus')
-	self.IsTargetFrame = ns.MultiCheck(cUnit, 'targettarget', 'focustarget')
-	self.IsPartyFrame = cUnit:match('party')
-	self.mouseovers = {}
+	self.cUnit = ns.cUnit(unit)
+	self.IsMainFrame = ns.MultiCheck(self.cUnit, 'player', 'target', 'focus')
+	self.IsTargetFrame = ns.MultiCheck(self.cUnit, 'targettarget', 'focustarget')
+	self.IsPartyFrame = self.cUnit:match('party')
 
 	if (self.IsTargetFrame) then
 		self:SetFrameLevel(4)
 	end
+	self:SetFrameStrata('LOW')
 
 	--[[	 Mouse Interraction		]]
 	self:RegisterForClicks('AnyUp')
 	
 	self:HookScript("OnEnter", ns.UnitFrame_OnEnter)
 	self:HookScript("OnLeave", ns.UnitFrame_OnLeave)
+	self.mouseovers = {}
 
 	if (config.focBut ~= 'NONE') then
-		if (cUnit == 'focus') then
+		if (self.cUnit == 'focus') then
 			self:SetAttribute(config.focMod.."type"..config.focBut, 'macro')
 			self:SetAttribute('macrotext', '/clearfocus')
 		else
@@ -411,9 +408,16 @@ local function CreateUnitLayout(self, unit)
 		end
 	end
 
+	if self.cUnit == 'arena' then
+		return ns.createArenaLayout(self, unit)
+	end
+
+	local uconfig = ns.config[self.cUnit]
+	local data = GetData(self.cUnit)
+
 	--[[	 Load Castbars 		]]
 	if config.castbars and uconfig and uconfig.cbshow then
-		ns.CreateCastbars(self, cUnit)
+		ns.CreateCastbars(self, self.cUnit)
 	end
 
 	--[[	 Textures 			]]
@@ -427,7 +431,7 @@ local function CreateUnitLayout(self, unit)
 	table.insert(self.mouseovers, self.Health)
 	self.Health.PostUpdate = ns.PostUpdateHealth
 	self.Health.Smooth = true
-	self.Health.frequentUpdates = cUnit == "boss"
+	self.Health.frequentUpdates = self.cUnit == "boss"
 
 	if config.healthcolormode == 'CUSTOM' then self.Health:SetStatusBarColor(unpack(config.healthcolor)) end
 	self.Health.colorTapping = config.healthcolormode ~= 'CUSTOM'
@@ -442,7 +446,7 @@ local function CreateUnitLayout(self, unit)
 	self.Power = ns.CreateStatusBar(self, nil, nil, true)
 	self.Power:SetFrameLevel(self:GetFrameLevel()-1)
 	table.insert(self.mouseovers, self.Power)
-	self.Power.frequentUpdates = cUnit == 'player' or cUnit == "boss"
+	self.Power.frequentUpdates = self.cUnit == 'player' or self.cUnit == "boss"
 	self.Power.PostUpdate = ns.PostUpdatePower
 	self.Power.Smooth = true
 
@@ -489,7 +493,7 @@ local function CreateUnitLayout(self, unit)
 		self.Level = self:CreateFontString(nil, 'ARTWORK')
 		self.Level:SetFont('Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontNumber.ttf', 14, 'THINOUTLINE')
 		self.Level:SetShadowOffset(0, 0)
-		self.Level:SetPoint('CENTER', self.Texture, (cUnit == 'player' and -63) or 63, -15.5)
+		self.Level:SetPoint('CENTER', self.Texture, (self.cUnit == 'player' and -63) or 63, -15.5)
 		self:Tag(self.Level, '[abu:level]')
 
 		--[[ PvP Icon  ]] --
@@ -507,7 +511,6 @@ local function CreateUnitLayout(self, unit)
 		incHeals:SetPoint('BOTTOMRIGHT')
 		incHeals:SetFrameLevel(self:GetFrameLevel() - 1)
 		incHeals:SetStatusBarColor(0, 1, 0, 0.5)
-		incHeals:SetFrameStrata('MEDIUM')
 		incHeals:Hide()
 
 		-- Absorbing Heals
@@ -564,7 +567,7 @@ local function CreateUnitLayout(self, unit)
 	self.RaidIcon = self:CreateTexture(nil, 'OVERLAY', self)
 	self.RaidIcon:SetTexture('Interface\\TargetingFrame\\UI-RaidTargetingIcons')
 
-	if cUnit == "boss" then
+	if self.cUnit == "boss" then
 		self.RaidIcon:SetPoint('CENTER', self, 'TOPRIGHT', -9, -10)
 		self.RaidIcon:SetSize(26, 26)
 		
@@ -589,7 +592,7 @@ local function CreateUnitLayout(self, unit)
 
 		self.MasterLooter = self:CreateTexture(nil, 'OVERLAY', self)
 		self.MasterLooter:SetSize(16, 16)
-		if (cUnit == 'target' or cUnit == 'focus') then
+		if (self.cUnit == 'target' or self.cUnit == 'focus') then
 			self.MasterLooter:SetPoint('TOPLEFT', self.Portrait, 3, 3)
 		elseif (self.IsTargetFrame) then
 			self.MasterLooter:SetPoint('CENTER', self.Portrait, 'TOPLEFT', 3, -3)
@@ -600,7 +603,7 @@ local function CreateUnitLayout(self, unit)
 
 		self.Leader = self:CreateTexture(nil, 'OVERLAY', self)
 		self.Leader:SetSize(16, 16)
-		if (cUnit == 'target' or cUnit == 'focus') then
+		if (self.cUnit == 'target' or self.cUnit == 'focus') then
 			self.Leader:SetPoint('TOPRIGHT', self.Portrait, -3, 2)
 		elseif (self.IsTargetFrame) then
 			self.Leader:SetPoint('TOPLEFT', self.Portrait, -3, 4)
@@ -623,7 +626,7 @@ local function CreateUnitLayout(self, unit)
 		self.OfflineIcon:SetPoint('TOPRIGHT', self.Portrait, 7, 7)
 		self.OfflineIcon:SetPoint('BOTTOMLEFT', self.Portrait, -7, -7)
 
-		if (cUnit == 'player' or self.IsPartyFrame) then
+		if (self.cUnit == 'player' or self.IsPartyFrame) then
 			self.ReadyCheck = self:CreateTexture(nil, 'OVERLAY')
 			self.ReadyCheck:SetPoint('TOPRIGHT', self.Portrait, -7, -7)
 			self.ReadyCheck:SetPoint('BOTTOMLEFT', self.Portrait, 7, 7)
@@ -631,11 +634,11 @@ local function CreateUnitLayout(self, unit)
 			self.ReadyCheck.fadeTime = 0.7
 		end
 
-		if (self.IsPartyFrame or cUnit == 'player' or cUnit == 'target') then
+		if (self.IsPartyFrame or self.cUnit == 'player' or self.cUnit == 'target') then
 			self.LFDRole = self:CreateTexture(nil, 'OVERLAY')
 			self.LFDRole:SetSize(20, 20)
 			
-			if (cUnit == 'player') then
+			if (self.cUnit == 'player') then
 				self.LFDRole:SetPoint('BOTTOMRIGHT', self.Portrait, -2, -3)
 			elseif (unit == 'target') then
 				self.LFDRole:SetPoint('TOPLEFT', self.Portrait, -10, -2)
@@ -646,16 +649,16 @@ local function CreateUnitLayout(self, unit)
 	end
 
 	-- Update layout
-	UpdateUnitFrameLayout(self, cUnit)
+	UpdateUnitFrameLayout(self, self.cUnit)
 		
 	--[[ 	Player Frame		]] --
-	if (cUnit == 'player') then	
+	if (self.cUnit == 'player') then	
 	
 		-- Combo Points
 		ComboPointPlayerFrame:ClearAllPoints()
 		ComboPointPlayerFrame:SetParent(self)
 		ComboPointPlayerFrame:SetPoint('TOP', self, 'BOTTOM', 30, 2)
-		ComboPointPlayerFrame.SetPoint = function() end
+		ComboPointPlayerFrame.SetPoint = nop
 		ns.PaintFrames(ComboPointPlayerFrame.Background, 0.1)
 
 		-- Totems
@@ -752,7 +755,7 @@ local function CreateUnitLayout(self, unit)
 	end
 	
 	--[[ 	Focus & Target Frame		]]
-	if (cUnit == 'target' or cUnit == 'focus') then
+	if (self.cUnit == 'target' or self.cUnit == 'focus') then
 		-- Questmob Icon	
 		self.QuestIcon = self:CreateTexture(nil, 'OVERLAY')
 		self.QuestIcon:SetSize(32, 32)
@@ -764,8 +767,8 @@ local function CreateUnitLayout(self, unit)
 	end
 
 	--[[ 	Auras		]]
-	if (cUnit == 'focus') or (cUnit == 'target') then
-		local isFocus = cUnit == 'focus'
+	if (self.cUnit == 'focus') or (self.cUnit == 'target') then
+		local isFocus = self.cUnit == 'focus'
 
 		local function GetAuraData(mode)
 			local size, gap, columns, rows, initialAnchor, relAnchor, offX, offY
@@ -821,7 +824,7 @@ local function CreateUnitLayout(self, unit)
 		self.Debuffs.CustomFilter   = ns.CustomAuraFilters.target
 		self.Debuffs:SetPoint('TOPLEFT', self.Health, 'TOPRIGHT', 7, 10)
 
-	elseif (cUnit == 'pet') then
+	elseif (self.cUnit == 'pet') then
 		self.Debuffs = ns.AddDebuffs(self, 'TOPLEFT', 20, 4, 6, 1)
 		self.Debuffs:SetPoint('TOPLEFT', self.Power, 'BOTTOMLEFT', 1, -3)
 		self.Debuffs.CustomFilter   = ns.CustomAuraFilters.pet
@@ -835,7 +838,7 @@ local function CreateUnitLayout(self, unit)
 		self.Buffs:SetPoint('TOPLEFT', self.Health, 'BOTTOMLEFT', 2, -11)
 		self.Buffs.CustomFilter   = ns.CustomAuraFilters.party
 
-	elseif (cUnit == "boss") then
+	elseif (self.cUnit == "boss") then
 		self.Buffs = ns.AddBuffs(self, 'TOPLEFT', 30, 4.5, 5, 1)
 		self.Buffs:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 3, -6)
 
@@ -845,7 +848,7 @@ local function CreateUnitLayout(self, unit)
 	end
 	
 	--[[ 	Range Fader 	]]
-	if (cUnit == 'pet' or self.IsPartyFrame) then
+	if (self.cUnit == 'pet' or self.IsPartyFrame) then
 		self.Range = {
 			insideAlpha = 1,
 			outsideAlpha = 0.8,
@@ -921,6 +924,19 @@ oUF:Factory( function(self)
 		end
 
 		ns.CreateUnitAnchor(boss[1], boss[1], boss[5], "DIALOG", 'boss1', 'boss2', 'boss3', 'boss4', 'boss5')
+	end
+
+	if (config.showArena) then 
+		local arena = {}
+		for i = 1, 5 do
+			arena[i] = self:Spawn('arena'..i, 'oUF_AbuArenaFrame'..i)
+			if (i == 1) then
+				arena[i]:SetPoint('TOPRIGHT', UIParent)
+			else
+				arena[i]:SetPoint('TOPLEFT', arena[i-1], 'BOTTOMLEFT', 0, -40)
+			end
+		end
+		ns.CreateUnitAnchor(arena[1], arena[1], arena[5], nil, "arena1", "arena2", "arena3", "arena4", "arena5")
 	end
 
 	--[[ MirrorTimers ]]--

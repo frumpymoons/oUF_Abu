@@ -113,6 +113,7 @@ function ns.CreateCastbars(self)
 
 	local Castbar = ns.CreateStatusBar(self, 'BORDER', self:GetName()..'Castbar')
 	Castbar:SetSize(uconfig.cbwidth, uconfig.cbheight)
+	Castbar:SetFrameStrata('HIGH')
 	ns.CreateBorder(Castbar, 11, 3)
 
 	if (BasePos[self.cUnit]) then

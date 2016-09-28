@@ -1,5 +1,4 @@
 local _, ns = ...
-local config
 
 local textPath = 'Interface\\AddOns\\oUF_Abu\\Media\\Frames\\'
 
@@ -30,19 +29,9 @@ local function updatePortrait(self, event, unit)
 	end
 end
 
-local function CreateArenaLayout(self, unit)
-	self.cUnit = ns.cUnit(unit)
-	local uconfig = ns.config[self.cUnit]
-
-	self:RegisterForClicks('AnyUp')
-	
-	if (config.focBut ~= 'NONE') then
-		self:SetAttribute(config.focMod.."type"..config.focBut, 'focus')
-	end
-	self.mouseovers = {}
-	
-	self:HookScript("OnEnter", ns.UnitFrame_OnEnter)
-	self:HookScript("OnLeave", ns.UnitFrame_OnLeave)
+function ns.createArenaLayout(self, unit)
+	local config = ns.config
+	local uconfig = config[self.cUnit]
 
 	self.Texture = self:CreateTexture(nil, 'BORDER')
 	self.Texture:SetTexture(textPath.. 'Arena')
@@ -145,46 +134,4 @@ local function CreateArenaLayout(self, unit)
 	self.PostUpdate = arenaPrep
 
 	return self
-end
-
-oUF:RegisterStyle('oUF_AbuArena', CreateArenaLayout)
-oUF:Factory(function(self)
-	config = ns.config
-	if not(config.showArena) then return end
-
-	oUF:SetActiveStyle('oUF_AbuArena')
-
-	local arena = {}
-	for i = 1, 5 do
-		arena[i] = self:Spawn('arena'..i, 'oUF_AbuArenaFrame'..i)
-		if (i == 1) then
-			arena[i]:SetPoint('TOPRIGHT', UIParent)
-		else
-			arena[i]:SetPoint('TOPLEFT', arena[i-1], 'BOTTOMLEFT', 0, -40)
-		end
-	end
-	
-	local a = ns.CreateUnitAnchor(arena[1], arena[1], arena[5], nil, "arena1", "arena2", "arena3", "arena4", "arena5")
-end)
-
--- For testing /run oUFAbu.TestArena()
-function oUFAbu:TestArena()
-	oUF_AbuArenaFrame1:Show(); oUF_AbuArenaFrame1.Hide = function() end oUF_AbuArenaFrame1.unit = "target"
-	oUF_AbuArenaFrame2:Show(); oUF_AbuArenaFrame2.Hide = function() end oUF_AbuArenaFrame2.unit = "target"
-	oUF_AbuArenaFrame3:Show(); oUF_AbuArenaFrame3.Hide = function() end oUF_AbuArenaFrame3.unit = "target"
-	oUF_AbuArenaFrame4:Show(); oUF_AbuArenaFrame4.Hide = function() end oUF_AbuArenaFrame4.unit = "target"
-	oUF_AbuArenaFrame5:Show(); oUF_AbuArenaFrame5.Hide = function() end oUF_AbuArenaFrame5.unit = "target"
-	local time = 0
-	local f = CreateFrame("Frame")
-	f:SetScript("OnUpdate", function(self, elapsed)
-		time = time + elapsed
-		if time > 5 then
-			oUF_AbuArenaFrame1:UpdateAllElements("ForceUpdate")
-			oUF_AbuArenaFrame2:UpdateAllElements("ForceUpdate")
-			oUF_AbuArenaFrame3:UpdateAllElements("ForceUpdate")
-			oUF_AbuArenaFrame4:UpdateAllElements("ForceUpdate")
-			oUF_AbuArenaFrame5:UpdateAllElements("ForceUpdate")
-			time = 0
-		end
-	end)
 end

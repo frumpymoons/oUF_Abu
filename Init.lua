@@ -189,7 +189,7 @@ function oUFAbu:MODIFIER_STATE_CHANGED(event, key, state)
 		end
 		for i = 1, #oUF.objects do
 			local object = oUF.objects[i]
-			if object.style == "oUF_Abu" or object.style == "oUF_AbuArena" then
+			if object.style == "oUF_Abu" then
 				local buffs = object.Auras or object.Buffs
 				local debuffs = object.Debuffs
 				if buffs and buffs[a] then
