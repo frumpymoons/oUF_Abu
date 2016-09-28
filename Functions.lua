@@ -428,11 +428,6 @@ function oUFAbu:SetAllStatusBars()
 
 	for _, bar in ipairs(ns.statusbars) do
 		bar.texture = file
-		--if bar.SetStatusBarTexture then
-		--	bar:SetStatusBarTexture(file)
-		--else
-		--	bar:SetTexture(file)
-		--end
 		texture = bar.GetStatusBarTexture and bar:GetStatusBarTexture() or bar
 		if ( not texture:GetAtlas() ) then
 			texture:SetTexture(file)

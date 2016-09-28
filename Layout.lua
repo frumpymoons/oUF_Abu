@@ -390,7 +390,7 @@ local function CreateUnitLayout(self, unit)
 	if (self.IsTargetFrame) then
 		self:SetFrameLevel(4)
 	end
-	self:SetFrameStrata('LOW')
+	--self:SetFrameStrata('LOW')
 
 	--[[	 Mouse Interraction		]]
 	self:RegisterForClicks('AnyUp')
