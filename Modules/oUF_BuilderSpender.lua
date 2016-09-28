@@ -14,7 +14,7 @@ self.Power.FullPowerFrame = FullPowerFrame
 local _, ns = ...
 local oUF = ns.oUF or oUF
 
-local function startFeedbackAnim(self, oldValue, newValue) --copied, only remove need for CVars
+local function startFeedbackAnim(self, oldValue, newValue) --copied, only removed need for CVars
 	if (not self.initialized) then
 		return;
 	end
@@ -74,7 +74,7 @@ local Update = function(self, event, unit)
 			-- Only show anim if change is more than 10%
 			local oldValue = element.currValue or 0;
 			if ( element.FeedbackFrame.maxValue ~= 0 and math.abs(currValue - oldValue) / element.FeedbackFrame.maxValue > 0.1 ) then
-				element.FeedbackFrame:StartFeedbackAnim(oldValue, currValue)
+				startFeedbackAnim(element.FeedbackFrame, oldValue, currValue)
 			end
 		end
 		if ( element.FullPowerFrame and element.FullPowerFrame.active ) then
