@@ -116,7 +116,7 @@ ns.CustomAuraFilters = {
 		return (caster and isPlayer[caster]) and (not genFilter[spellId] == 3)
 	end,
 	target = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
-		local v = genFilter[spellId]
+		local v = genFilter[spellID]
 		if v and filters[v] then 					-- [[ In Filters ]]--
 			return filters[v](self, unit, caster)
 		elseif UnitPlayerControlled(unit) then 		-- [[	Player   ]]--
@@ -132,7 +132,7 @@ ns.CustomAuraFilters = {
 		end
 	end,
 	party = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
-		local v = genFilter[spellId]
+		local v = genFilter[spellID]
 		if v and filters[v] then
 			return filters[v](self, unit, caster)
 		elseif (iconFrame.filter == "HELPFUL") then -- BUFFS
@@ -142,10 +142,10 @@ ns.CustomAuraFilters = {
 		end
 	end,
 	arena = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
-		return arenaFilter[spellId]
+		return arenaFilter[spellID]
 	end,
 	boss = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
-		local v = bossFilter[spellId]
+		local v = bossFilter[spellID]
 		if v == 1 then
 			return isPlayer[caster]
 		elseif v == 0 then
