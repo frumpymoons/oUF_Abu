@@ -167,7 +167,7 @@ local function GetDBUnit(cUnit)
 		return "target"
 	elseif cUnit == "focustarget" then
 		return "targettarget"
-	elseif cUnit == "player" or cUnit == "vehicle" then -- can player be vehicle?
+	elseif cUnit == "player" then -- can player be vehicle? no it cant
 		if UnitHasVehicleUI('player') then
 			if (UnitVehicleSkin('player') == 'Natural') then
 				return "vehicleorganic"
@@ -226,6 +226,11 @@ end
 
 local function UpdatePlayerFrame(self, ...)
 	local data = GetData(self.cUnit)
+	local uconfig = ns.config[self.cUnit]
+	-- Frame Size
+	self:SetSize(data.siz.w, data.siz.h)
+	self:SetScale(uconfig.scale or 1)
+	self:EnableMouse((not ns.config.clickThrough))
 
 	self.Texture:SetSize(data.tex.w, data.tex.h)
 	self.Texture:SetPoint('CENTER', self, data.tex.x, data.tex.y)
@@ -313,15 +318,10 @@ local function UpdatePlayerFrame(self, ...)
 	end
 end
 
-local function UpdateUnitFrameLayout(frame, unit)
+local function UpdateUnitFrameLayout(frame)
 	local cUnit = frame.cUnit
 	local data = GetData(cUnit)
 	local uconfig = ns.config[cUnit]
-
-	-- Frame Size
-	frame:SetSize(data.siz.w, data.siz.h)
-	frame:SetScale(uconfig.scale or 1)
-	frame:EnableMouse((not ns.config.clickThrough) or (frame.IsPartyFrame))
 
 	 -- Player frame, its special
 	if cUnit == "player" then 
@@ -330,6 +330,10 @@ local function UpdateUnitFrameLayout(frame, unit)
 		return; 
 	end
 
+	-- Frame Size
+	frame:SetSize(data.siz.w, data.siz.h)
+	frame:SetScale(uconfig.scale or 1)
+	frame:EnableMouse((not ns.config.clickThrough) or (frame.IsPartyFrame))
 	-- Texture
 	frame.Texture:SetTexture(data.tex.t)
 	frame.Texture:SetSize(data.tex.w, data.tex.h)
@@ -375,8 +379,8 @@ function oUFAbu:UpdateBaseFrames(optUnit)
 
 	for _, obj in pairs(oUF.objects) do
 		local unit = obj.cUnit
-		if (obj.style == 'oUF_Abu' and unit) and (not optUnit or optUnit == unit:match('^.%a+')) then
-			UpdateUnitFrameLayout(obj, unit)
+		if obj.style == 'oUF_Abu' and unit and (not optUnit or optUnit == unit:match('^.%a+')) then
+			UpdateUnitFrameLayout(obj)
 		end
 	end
 end
@@ -648,7 +652,7 @@ local function CreateUnitLayout(self, unit)
 	end
 
 	-- Update layout
-	UpdateUnitFrameLayout(self, self.cUnit)
+	UpdateUnitFrameLayout(self)
 		
 	--[[ 	Player Frame		]] --
 	if (self.cUnit == 'player') then	
