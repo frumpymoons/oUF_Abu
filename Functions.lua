@@ -24,6 +24,7 @@ local function FormatValue(value)
 		return value
 	end
 end
+
 ns.FormatValue = FormatValue
 function ns.cUnit(unit)
 	if (unit:match('vehicle')) then
@@ -185,7 +186,7 @@ end
 ------------------------------------------------------------------
 function ns.UpdateIncHeals(self, event, unit)
 	if (self.unit ~= unit) then return end
-	local hp = self.HealPrediction
+	local hp = self.HealthPrediction
 	local curHP, maxHP = UnitHealth(unit), UnitHealthMax(unit)
 	local incHeal = UnitGetIncomingHeals(unit) or 0
 	local healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
@@ -230,7 +231,7 @@ do
 		MINIMAL	=	{TEXT_SHORT, 	TEXT_PERCENT, 	TEXT_NONE },
 	}
 
-	function ns.PostUpdatePower(Power, unit, cur, max)
+	function ns.PostUpdatePower(Power, unit, cur, min, max)
 		local self = Power:GetParent()
 		local uconfig = ns.config[self.cUnit]
 

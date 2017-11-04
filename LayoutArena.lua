@@ -91,10 +91,10 @@ function ns.createArenaLayout(self, unit)
 	self.Name:SetPoint('BOTTOM', self.Health, 'TOP', 0, 6)
 	self:Tag(self.Name, '[abu:name]')
 
-	-- PvP Icon
-	self.PvP = self:CreateTexture(nil, 'OVERLAY')
-	self.PvP:SetSize(40, 40)
-	self.PvP:SetPoint('TOPLEFT', self.Texture, -20, -20)
+	-- PvPIndicator Icon
+	self.PvPIndicator = self:CreateTexture(nil, 'OVERLAY')
+	self.PvPIndicator:SetSize(40, 40)
+	self.PvPIndicator:SetPoint('TOPLEFT', self.Texture, -20, -20)
 
 	--portrait Timer
 	self.PortraitTimer = CreateFrame('Frame', nil, self.Health)

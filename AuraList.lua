@@ -28,7 +28,7 @@ AuraList.Defensive = {
 	122470,	--Touch of Karma
 	115176,	-- Zen Meditation
 	115203,	-- Fortifying Brew
-	115610,	-- Temporal Shield
+	--115610,	-- Temporal Shield
 	116888,	-- Shroud of Purgatory
 	122278,	-- Dampen Harm
 	122783,	-- Diffuse Magic
@@ -46,7 +46,7 @@ AuraList.Defensive = {
 	6940,	-- Hand of Sacrifice
 	195181, -- Bone Shield
 	192081, -- IronFur
-	192083, -- Mark of Ursol
+	--192083, -- Mark of Ursol
 	212800, -- blur
 }
 
@@ -181,7 +181,8 @@ AuraList.Taunt = {
 for k, v in pairs(AuraList) do
 	for i = 1, #v do
 		if not GetSpellInfo(v[i]) then
-			print(string.format("Invalid spellID %d in : %s", v[i], s))
+			print(string.format("Invalid spellID: %d, in AuraList.%s", v[i], k))
+			v[i] = nil
 		end
 	end
 end

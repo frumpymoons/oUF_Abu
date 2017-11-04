@@ -59,9 +59,8 @@ function ns.classModule.Totems(self, config, uconfig)
 	updateTotemPosition()
 end
 
-function ns.classModule.alternatePowerBar(self, config, uconfig)
+function ns.classModule.additionalPowerBar(self, config, uconfig)
 	self.AdditionalPower = ns.CreateOutsideBar(self, false, 0, 0, 1)
-	self.DruidMana = self.AdditionalPower
 	self.AdditionalPower.colorPower = true
 
 	self.AdditionalPower.Value = ns.CreateFontString(self.AdditionalPower, 13, 'CENTER')
@@ -73,15 +72,13 @@ end
 function ns.classModule.DEATHKNIGHT(self, config, uconfig)
 	if (config.DEATHKNIGHT.showRunes) then
 		RuneFrame:SetParent(self)
-		RuneFrame_OnLoad(RuneFrame)
 		RuneFrame:ClearAllPoints()
 		RuneFrame:SetPoint('TOP', self, 'BOTTOM', 33, -1)
 		if (ns.config.playerStyle == 'normal') then 
 			RuneFrame:SetFrameStrata("LOW");
 		end
-		for i = 1, 6 do
-			local b = _G['RuneButtonIndividual'..i].Border
-			ns.PaintFrames(b:GetRegions())
+		for k, v in next, RuneFrame.Runes do
+			ns.PaintFrames(v.Rune, 0.3)
 		end
 	end
 end
@@ -148,11 +145,13 @@ function ns.classModule.WARLOCK(self, config, uconfig)
 		if (ns.config.playerStyle == 'normal') then 
 			WarlockPowerFrame:SetFrameStrata("LOW");
 		end
-		for i = 1, 5 do
-			local shard = _G["WarlockPowerFrameShard"..i];
-			ns.PaintFrames(select(5,shard:GetRegions()), .2)
+		local shard = WarlockPowerFrame.Shards[#WarlockPowerFrame.Shards]
+		while shard do
+			--ns.PaintFrames(select(5,shard:GetRegions()), .2)
+
+			shard = shard.previousShard
 		end
-		
+		ns.PaintFrames(WarlockPowerFrame:GetRegions(), 0)
 		return WarlockPowerFrame
 	end
 end

@@ -115,15 +115,15 @@ local function PlayTargetSounds(unit)
 	if ( UnitExists(unit) ) then
 		memory[unit] = true
 		if ( UnitIsEnemy(unit, "player") ) then
-			PlaySound("igCreatureAggroSelect");
+			PlaySound(SOUNDKIT.IG_CREATURE_AGGRO_SELECT);
 		elseif ( UnitIsFriend("player", unit) ) then
-			PlaySound("igCharacterNPCSelect");
+			PlaySound(SOUNDKIT.IG_CHARACTER_NPC_SELECT);
 		else
-			PlaySound("igCreatureNeutralSelect");
+			PlaySound(SOUNDKIT.IG_CHARACTER_NPC_SELECT);
 		end
 	elseif memory[unit] then
 		memory[unit] = false
-		PlaySound("INTERFACESOUND_LOSTTARGETUNIT");
+		PlaySound(SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT);
 	end
 end
 

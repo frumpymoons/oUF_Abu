@@ -112,10 +112,10 @@ local filters = {
 }
 
 ns.CustomAuraFilters = {
-	pet = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
+	pet = function(self, unit, iconFrame, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, value1, value2, value3)
 		return (caster and isPlayer[caster]) and (not genFilter[spellId] == 3)
 	end,
-	target = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
+	target = function(self, unit, iconFrame, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, value1, value2, value3)
 		local v = genFilter[spellID]
 		if v and filters[v] then 					-- [[ In Filters ]]--
 			return filters[v](self, unit, caster)
@@ -131,7 +131,7 @@ ns.CustomAuraFilters = {
 			return (iconFrame.filter == "HELPFUL") or (isBossDebuff) or nameplateShowAll or (isPlayer[caster]) or (caster == unit) 
 		end
 	end,
-	party = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
+	party = function(self, unit, iconFrame, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, value1, value2, value3)
 		local v = genFilter[spellID]
 		if v and filters[v] then
 			return filters[v](self, unit, caster)
@@ -141,10 +141,10 @@ ns.CustomAuraFilters = {
 			return true
 		end
 	end,
-	arena = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
+	arena = function(self, unit, iconFrame, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, value1, value2, value3)
 		return arenaFilter[spellID]
 	end,
-	boss = function(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, unknown, nameplateShowAll, timeMod, value1, value2, value3)
+	boss = function(self, unit, iconFrame, name, rank, texture, count, dispelType, duration, expiration, caster, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, value1, value2, value3)
 		local v = bossFilter[spellID]
 		if v == 1 then
 			return isPlayer[caster]
