@@ -175,7 +175,6 @@ AuraList.Taunt = {
 	62124,	-- Reckoning
 	355,	-- Taunt
 	185245, -- Torment
-	1234312, 
 
 }
 
