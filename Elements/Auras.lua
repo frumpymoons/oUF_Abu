@@ -44,9 +44,9 @@ do
 	end
 
 	function createAuraIcon( element, index )
-		element.createdIcons = element.createdIcons + 1
+		--element.createdIcons = element.createdIcons + 1
 
-		local button = CreateFrame("Button", element:GetName()..index, element)
+		local button = CreateFrame("Button", element:GetDebugName() .. 'Button' .. index, element)
 
 		local icon = button:CreateTexture(nil, "BACKGROUND")
 		icon:SetAllPoints(button)
@@ -111,7 +111,7 @@ do
 			button.SetSize = function() end
 		end
 
-		element[element.createdIcons] = button
+		--element[element.createdIcons] = button
 		return button
 	end
 end
@@ -208,7 +208,7 @@ do
 		end
 
 		if (element.largeAuraList) then
-			element.largeAuraList[offset] = IS_PLAYER[button.owner]
+			element.largeAuraList[offset] = IS_PLAYER[button.caster]
 		end
 	end
 end

@@ -109,14 +109,13 @@ local Visibility = function(self, event, unit)
 			end
 		end
 		if (element.FullPowerFrame) then
-			element.FullPowerFrame:Initialize(info.fullPowerAnim)
+			element.FullPowerFrame:Initialize(PowerBarColor[powerToken].fullPowerAnim)
 			element.FullPowerFrame:SetMaxValue(UnitPowerMax(self.unit, powerType))
 		end
 	end
 
-	if ( element.powerType ~= powerType or element.powerType ~= powerType ) then
+	if ( element.powerType ~= powerType ) then
 		element.powerType = powerType;
-		element.powerToken = powerToken;
 		if ( element.FullPowerFrame ) then
 			element.FullPowerFrame:RemoveAnims();
 		end

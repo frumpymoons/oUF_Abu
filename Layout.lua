@@ -213,10 +213,10 @@ end
 local function updatePlayerStatus(element, ...)
 	local self = element.__owner
 	if UnitAffectingCombat('player') then
-		self.Resting:Hide()
+		self.RestingIndicator:Hide()
 		self.Level:Hide()
 	elseif IsResting() then
-		self.Resting:Show()
+		self.RestingIndicator:Show()
 		self.Level:Hide()
 	elseif not self.Level:IsVisible() then
 		self.Level:Show()
@@ -257,21 +257,28 @@ local function UpdatePlayerFrame(self, ...)
 		self.ThreatGlow:SetTexCoord(unpack(data.glo.c))
 	end
 	
-	self.PvP:ClearAllPoints()
-	
-	local inVehicle = UnitHasVehicleUI('player')
+	self.PvPIndicator:ClearAllPoints()
 
-	ComboFrame_Update(ComboPointPlayerFrame)
+
+	if not( config.showComboPoints ) then
+		ComboPointPlayerFrame:UnregisterAllEvents()
+		ComboPointPlayerFrame:Hide()
+	else
+		ComboPointPlayerFrame:Setup()
+	end
+	--ComboFrame_Update(ComboPointPlayerFrame)
+
+	local inVehicle = UnitHasVehicleUI('player')
 
 	if inVehicle then
 		self.Name:Show()
 		self.Level:Hide()
 
-		self.LFDRole:SetAlpha(0)
-		self.PvP:SetPoint('TOPLEFT', self.Texture, 4, -28)
-		self.Leader:SetPoint('TOPLEFT', self.Texture, 23, -14)
-		self.MasterLooter:SetPoint('TOPLEFT', self.Texture, 74, -14)
-		self.RaidIcon:SetPoint('CENTER', self.Portrait, 'TOP', 0, -5)
+		self.GroupRoleIndicator:SetAlpha(0)
+		self.PvPIndicator:SetPoint('TOPLEFT', self.Texture, 4, -28)
+		self.LeaderIndicator:SetPoint('TOPLEFT', self.Texture, 23, -14)
+		self.MasterLooterIndicator:SetPoint('TOPLEFT', self.Texture, 74, -14)
+		self.RaidTargetIndicator:SetPoint('CENTER', self.Portrait, 'TOP', 0, -5)
 		securecall('PlayerFrame_ShowVehicleTexture')
 
 		--ComboPointPlayerFrame:Hide()
@@ -283,7 +290,7 @@ local function UpdatePlayerFrame(self, ...)
 
 		if ( playerClass == "SHAMAN" ) then
 		elseif ( playerClass == "DRUID" ) then
-			EclipseBarFrame:Hide();
+			--EclipseBarFrame:Hide();
 		elseif ( playerClass == "DEATHKNIGHT" ) then
 			RuneFrame:Hide();
 		elseif ( playerClass == "PRIEST" ) then
@@ -293,11 +300,11 @@ local function UpdatePlayerFrame(self, ...)
 		self.Name:Hide()
 		self.Level:Show()
 
-		self.LFDRole:SetAlpha(1)
-		self.PvP:SetPoint('TOPLEFT', self.Texture, 23, -23)
-		self.Leader:SetPoint('TOPLEFT', self.Portrait, 3, 2)
-		self.MasterLooter:SetPoint('TOPRIGHT', self.Portrait, -3, 3)
-		self.RaidIcon:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
+		self.GroupRoleIndicator:SetAlpha(1)
+		self.PvPIndicator:SetPoint('TOPLEFT', self.Texture, 23, -23)
+		self.LeaderIndicator:SetPoint('TOPLEFT', self.Portrait, 3, 2)
+		self.MasterLooterIndicator:SetPoint('TOPRIGHT', self.Portrait, -3, 3)
+		self.RaidTargetIndicator:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
 		securecall('PlayerFrame_HideVehicleTexture')
 
 		--ComboPointPlayerFrame:Show()
@@ -309,7 +316,7 @@ local function UpdatePlayerFrame(self, ...)
 
 		if ( playerClass == "SHAMAN" ) then
 		elseif ( playerClass == "DRUID" ) then
-			EclipseBar_UpdateShown(EclipseBarFrame);
+			--EclipseBar_UpdateShown(EclipseBarFrame);
 		elseif ( playerClass == "DEATHKNIGHT" ) then
 			RuneFrame:Show();
 		elseif ( playerClass == "PRIEST" ) then
@@ -499,13 +506,13 @@ local function CreateUnitLayout(self, unit)
 		self.Level:SetPoint('CENTER', self.Texture, (self.cUnit == 'player' and -63) or 63, -15.5)
 		self:Tag(self.Level, '[abu:level]')
 
-		--[[ PvP Icon  ]] --
-		self.PvP = self:CreateTexture(nil, 'OVERLAY')
-		self.PvP:SetSize(30, 30)
-		self.PvP:SetPoint('TOPRIGHT', self.Texture, -23, -23)
-		self.PvP.Prestige = self:CreateTexture(nil, 'ARTWORK')
-   		self.PvP.Prestige:SetSize(50, 52)
-	   	self.PvP.Prestige:SetPoint('CENTER', self.PvP, 'CENTER')
+		--[[ PvPIndicator Icon  ]] --
+		self.PvPIndicator = self:CreateTexture(nil, 'OVERLAY')
+		self.PvPIndicator:SetSize(30, 30)
+		self.PvPIndicator:SetPoint('TOPRIGHT', self.Texture, -23, -23)
+		self.PvPIndicator.Prestige = self:CreateTexture(nil, 'ARTWORK')
+   		self.PvPIndicator.Prestige:SetSize(50, 52)
+	   	self.PvPIndicator.Prestige:SetPoint('CENTER', self.PvPIndicator, 'CENTER')
 
 		--[[	Special Bars 		]]
 		-- Incoming Heals
@@ -524,7 +531,7 @@ local function CreateUnitLayout(self, unit)
 		necroHeals:SetPoint('TOPLEFT')
 		necroHeals:SetPoint('BOTTOMRIGHT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 
-		self.HealPrediction = {
+		self.HealthPrediction = {
 			incHeals = incHeals,
 			necroHeals = necroHeals,
 			Override = ns.UpdateIncHeals,
@@ -545,7 +552,7 @@ local function CreateUnitLayout(self, unit)
 			spark:SetPoint('BOTTOMLEFT', absorb:GetStatusBarTexture(),'BOTTOMRIGHT')
 			spark:SetSize(5,5)
 			absorb.spark = spark
-			self.HealPrediction.TotalAbsorb = absorb
+			self.HealthPrediction.TotalAbsorb = absorb
 		end
 		
 		-- Combat CombatFeedbackText 
@@ -567,12 +574,12 @@ local function CreateUnitLayout(self, unit)
 		self.PortraitTimer.Remaining:SetTextColor(1, 1, 1)
 	end
 
-	self.RaidIcon = self:CreateTexture(nil, 'OVERLAY', self)
-	self.RaidIcon:SetTexture('Interface\\TargetingFrame\\UI-RaidTargetingIcons')
+	self.RaidTargetIndicator = self:CreateTexture(nil, 'OVERLAY', self)
+	self.RaidTargetIndicator:SetTexture('Interface\\TargetingFrame\\UI-RaidTargetingIcons')
 
 	if self.cUnit == "boss" then
-		self.RaidIcon:SetPoint('CENTER', self, 'TOPRIGHT', -9, -10)
-		self.RaidIcon:SetSize(26, 26)
+		self.RaidTargetIndicator:SetPoint('CENTER', self, 'TOPRIGHT', -9, -10)
+		self.RaidTargetIndicator:SetSize(26, 26)
 		
 		self.Name.Bg = self.Health:CreateTexture(nil, 'BACKGROUND')
 		self.Name.Bg:SetHeight(18)
@@ -590,38 +597,38 @@ local function CreateUnitLayout(self, unit)
 
 	else
 		--[[ 	Icons		]]
-		self.RaidIcon:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
-		self.RaidIcon:SetSize(data.por.w/2.5, data.por.w/2.5)
+		self.RaidTargetIndicator:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
+		self.RaidTargetIndicator:SetSize(data.por.w/2.5, data.por.w/2.5)
 
-		self.MasterLooter = self:CreateTexture(nil, 'OVERLAY', self)
-		self.MasterLooter:SetSize(16, 16)
+		self.MasterLooterIndicator = self:CreateTexture(nil, 'OVERLAY', self)
+		self.MasterLooterIndicator:SetSize(16, 16)
 		if (self.cUnit == 'target' or self.cUnit == 'focus') then
-			self.MasterLooter:SetPoint('TOPLEFT', self.Portrait, 3, 3)
+			self.MasterLooterIndicator:SetPoint('TOPLEFT', self.Portrait, 3, 3)
 		elseif (self.IsTargetFrame) then
-			self.MasterLooter:SetPoint('CENTER', self.Portrait, 'TOPLEFT', 3, -3)
+			self.MasterLooterIndicator:SetPoint('CENTER', self.Portrait, 'TOPLEFT', 3, -3)
 		elseif (self.IsPartyFrame) then  
-			self.MasterLooter:SetSize(14, 14)
-			self.MasterLooter:SetPoint('TOPLEFT', self.Texture, 29, 0)
+			self.MasterLooterIndicator:SetSize(14, 14)
+			self.MasterLooterIndicator:SetPoint('TOPLEFT', self.Texture, 29, 0)
 		end
 
-		self.Leader = self:CreateTexture(nil, 'OVERLAY', self)
-		self.Leader:SetSize(16, 16)
+		self.LeaderIndicator = self:CreateTexture(nil, 'OVERLAY', self)
+		self.LeaderIndicator:SetSize(16, 16)
 		if (self.cUnit == 'target' or self.cUnit == 'focus') then
-			self.Leader:SetPoint('TOPRIGHT', self.Portrait, -3, 2)
+			self.LeaderIndicator:SetPoint('TOPRIGHT', self.Portrait, -3, 2)
 		elseif (self.IsTargetFrame) then
-			self.Leader:SetPoint('TOPLEFT', self.Portrait, -3, 4)
+			self.LeaderIndicator:SetPoint('TOPLEFT', self.Portrait, -3, 4)
 		elseif (self.IsPartyFrame) then
-			self.Leader:SetSize(14, 14)
-			self.Leader:SetPoint('CENTER', self.Portrait, 'TOPLEFT', 1, -1)
+			self.LeaderIndicator:SetSize(14, 14)
+			self.LeaderIndicator:SetPoint('CENTER', self.Portrait, 'TOPLEFT', 1, -1)
 		end
 		
 		if (not self.IsTargetFrame) then
-			self.PhaseIcon = self:CreateTexture(nil, 'OVERLAY')
-			self.PhaseIcon:SetPoint('CENTER', self.Portrait, 'BOTTOM')
+			self.PhaseIndicator = self:CreateTexture(nil, 'OVERLAY')
+			self.PhaseIndicator:SetPoint('CENTER', self.Portrait, 'BOTTOM')
 			if (self.IsMainFrame) then
-				self.PhaseIcon:SetSize(26, 26)
+				self.PhaseIndicator:SetSize(26, 26)
 			else
-				self.PhaseIcon:SetSize(18, 18)
+				self.PhaseIndicator:SetSize(18, 18)
 			end
 		end
 
@@ -630,23 +637,23 @@ local function CreateUnitLayout(self, unit)
 		self.OfflineIcon:SetPoint('BOTTOMLEFT', self.Portrait, -7, -7)
 
 		if (self.cUnit == 'player' or self.IsPartyFrame) then
-			self.ReadyCheck = self:CreateTexture(nil, 'OVERLAY')
-			self.ReadyCheck:SetPoint('TOPRIGHT', self.Portrait, -7, -7)
-			self.ReadyCheck:SetPoint('BOTTOMLEFT', self.Portrait, 7, 7)
-			self.ReadyCheck.delayTime = 2
-			self.ReadyCheck.fadeTime = 0.7
+			self.ReadyCheckIndicator = self:CreateTexture(nil, 'OVERLAY')
+			self.ReadyCheckIndicator:SetPoint('TOPRIGHT', self.Portrait, -7, -7)
+			self.ReadyCheckIndicator:SetPoint('BOTTOMLEFT', self.Portrait, 7, 7)
+			self.ReadyCheckIndicator.delayTime = 2
+			self.ReadyCheckIndicator.fadeTime = 0.7
 		end
 
 		if (self.IsPartyFrame or self.cUnit == 'player' or self.cUnit == 'target') then
-			self.LFDRole = self:CreateTexture(nil, 'OVERLAY')
-			self.LFDRole:SetSize(20, 20)
+			self.GroupRoleIndicator = self:CreateTexture(nil, 'OVERLAY')
+			self.GroupRoleIndicator:SetSize(20, 20)
 			
 			if (self.cUnit == 'player') then
-				self.LFDRole:SetPoint('BOTTOMRIGHT', self.Portrait, -2, -3)
+				self.GroupRoleIndicator:SetPoint('BOTTOMRIGHT', self.Portrait, -2, -3)
 			elseif (unit == 'target') then
-				self.LFDRole:SetPoint('TOPLEFT', self.Portrait, -10, -2)
+				self.GroupRoleIndicator:SetPoint('TOPLEFT', self.Portrait, -10, -2)
 			else
-				self.LFDRole:SetPoint('BOTTOMLEFT', self.Portrait, -5, -5)
+				self.GroupRoleIndicator:SetPoint('BOTTOMLEFT', self.Portrait, -5, -5)
 			end
 		end
 	end
@@ -671,7 +678,7 @@ local function CreateUnitLayout(self, unit)
 
 		-- Alternate Mana Bar
 		if ( config[playerClass].showAdditionalPower ) then
-			ns.classModule.alternatePowerBar(self, config, uconfig)
+			ns.classModule.additionalPowerBar(self, config, uconfig)
 		end
 		
 		-- Load Class Modules
@@ -690,11 +697,18 @@ local function CreateUnitLayout(self, unit)
 			FeedbackFrame:SetPoint('TOPLEFT', self.Power, 'TOPLEFT', 0, -1)
 			FeedbackFrame.BarTexture:SetTexture()
 
-	 		local FullPowerFrame = CreateFrame('Frame', nil, self.Power, 'FullResourcePulseFrame')
-	 		FullPowerFrame:SetAllPoints(self.Power)
+	 		local POWER = CreateFrame('Frame', nil, self.Power, 'FullResourcePulseFrame')
+	 		POWER:SetSize(self.Power:GetSize())
+	 		POWER:SetPoint('BOTTOMLEFT', self.Power, 'BOTTOMLEFT', 4, -4)
+	 		for _,v in pairs({POWER.SpikeFrame.BigSpikeGlow, POWER.SpikeFrame.AlertSpikeStay, POWER.PulseFrame.YellowGlow, POWER.PulseFrame.SoftGlow}) do
+	 			local x,y = v:GetSize()
+	 			local scale = 1.4
+	 			v:SetSize(x*scale,y*scale)
+	 		end
+
 			self.BuilderSpender = {
 				FeedbackFrame = FeedbackFrame,
-				FullPowerFrame = FullPowerFrame,
+				FullPowerFrame = POWER,
 			}
 			self.Power.Smooth = false
 		end
@@ -732,23 +746,23 @@ local function CreateUnitLayout(self, unit)
 			}
 		end
 
-		-- PvP Timer
-		self.PvPTimer = ns.CreateFontString(self, 13, 'CENTER')
-		self.PvPTimer:SetPoint('BOTTOM', self.PvP, 'TOP', 2, -24  )
-		self.PvPTimer.frequentUpdates = 0.5
-		self:Tag(self.PvPTimer, '[abu:pvptimer]')
+		-- PvPIndicator Timer
+		self.PvPIndicatorTimer = ns.CreateFontString(self, 13, 'CENTER')
+		self.PvPIndicatorTimer:SetPoint('BOTTOM', self.PvPIndicator, 'TOP', 2, -24  )
+		self.PvPIndicatorTimer.frequentUpdates = 0.5
+		self:Tag(self.PvPIndicatorTimer, '[abu:pvptimer]')
 
 		-- Combat icon
-		self.Combat = self:CreateTexture(nil, 'OVERLAY')
-		self.Combat:SetPoint('CENTER', self.Level, 1, 0)
-		self.Combat:SetSize(31, 33)
-		self.Combat.PostUpdate = updatePlayerStatus
+		self.CombatIndicator = self:CreateTexture(nil, 'OVERLAY')
+		self.CombatIndicator:SetPoint('CENTER', self.Level, 1, 0)
+		self.CombatIndicator:SetSize(31, 33)
+		self.CombatIndicator.PostUpdate = updatePlayerStatus
 		
-		-- Resting icon
-		self.Resting = self:CreateTexture(nil, 'OVERLAY')
-		self.Resting:SetPoint('CENTER', self.Level, -0.5, 0)
-		self.Resting:SetSize(31, 34)
-		self.Resting.PostUpdate = updatePlayerStatus
+		-- RestingIndicator icon
+		self.RestingIndicator = self:CreateTexture(nil, 'OVERLAY')
+		self.RestingIndicator:SetPoint('CENTER', self.Level, -0.5, 0)
+		self.RestingIndicator:SetSize(31, 34)
+		self.RestingIndicator.PostUpdate = updatePlayerStatus
 
 		-- player frame vehicle/normal update
 		self:RegisterEvent('UNIT_ENTERED_VEHICLE', UpdatePlayerFrame)
@@ -760,9 +774,9 @@ local function CreateUnitLayout(self, unit)
 	--[[ 	Focus & Target Frame		]]
 	if (self.cUnit == 'target' or self.cUnit == 'focus') then
 		-- Questmob Icon	
-		self.QuestIcon = self:CreateTexture(nil, 'OVERLAY')
-		self.QuestIcon:SetSize(32, 32)
-		self.QuestIcon:SetPoint('CENTER', self.Health, 'TOPRIGHT', 1, 10)
+		self.QuestIndicator = self:CreateTexture(nil, 'OVERLAY')
+		self.QuestIndicator:SetSize(32, 32)
+		self.QuestIndicator:SetPoint('CENTER', self.Health, 'TOPRIGHT', 1, 10)
 
 		table.insert(self.__elements, function(self, _, unit)
 			self.Texture:SetTexture(GetTargetTexture(self.cUnit, UnitClassification(unit)))
