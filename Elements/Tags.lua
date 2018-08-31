@@ -13,7 +13,7 @@ local function FormatTime(time)
 	return format('%d', math.fmod(time, 60))
 end
 
-oUF.Tags.Events['abu:additionalpower'] = 'UNIT_POWER UNIT_DISPLAYPOWER UNIT_MAXPOWER'
+oUF.Tags.Events['abu:additionalpower'] = 'UNIT_POWER_UPDATE UNIT_DISPLAYPOWER UNIT_MAXPOWER'
 oUF.Tags.Methods['abu:additionalpower'] = function(unit)
 	local min, max = UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA)
 	if (min == max) then
@@ -32,9 +32,13 @@ oUF.Tags.Methods['abu:pvptimer'] = function(unit)
 	return FormatTime(math.floor(pvpTime))
 end
 
-oUF.Tags.Methods['abu:level'] = "UNIT_LEVEL PLAYER_LEVEL_UP"
+oUF.Tags.Events['abu:level'] = "UNIT_LEVEL PLAYER_LEVEL_UP"
 oUF.Tags.Methods['abu:level'] = function(unit)
 	local level = UnitLevel(unit)
+	if(UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit)) then
+		level = UnitBattlePetLevel(unit)
+	end
+
 	if (level <= 0 or UnitIsCorpse(unit)) and (unit == "player" or unit == "target" or unit == "focus") then
 		return "|TInterface\\TargetingFrame\\UI-TargetingFrame-Skull:12:12:0:0|t" -- boss skull icon
 	end
