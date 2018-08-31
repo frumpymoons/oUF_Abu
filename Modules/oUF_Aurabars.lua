@@ -35,10 +35,20 @@ local function Update(self, event, unit)
 	if bar.PreUpdate then
 		bar:PreUpdate(unit)
 	end
-	local timeleft
-	local name, _, icon, count, _, duration, expires = UnitAura(unit, bar.spellName, bar.rank, bar.filter)
+	local timeleft, duration
+
+	for i = 1, 40 do
+		local _, _, _, _, _, dur, expires, _, _, _, spellId = UnitAura(unit, i, bar.filter)
+		if not spellId then
+			break
+		elseif spellId == bar.spellID then
+			duration = dur
+			timeleft = expires - GetTime()
+			break
+		end
+	end
+
 	if duration then
-		timeleft = expires - GetTime()
 		if bar.timeleft and (bar.timeleft >= timeleft) then
 			bar.dur = bar.dur
 		else
@@ -63,18 +73,12 @@ end
 
 local Visibility = function(self, event, unit)
 	local bar = self.Aurabar
-	local shouldshow = true
-	if bar.Visibility then
-		shouldshow = bar.Visibility(self, event, unit)
-	end
+	local shouldshow
 
-	if not bar.filter then bar.filter = "HELPFUL" end
 	if bar.spellID then
-		bar.spellName, bar.rank = GetSpellInfo(bar.spellID)
-	else
-		shouldshow = false
+		--if not bar.filter then bar.filter = "HELPFUL" end
+		shouldshow = bar.Visibility and bar.Visibility(self, event, unit) or true
 	end
-	if not bar.rank then bar.rank = ""; end
 
 	if UnitHasVehicleUI("player")
 		or ((HasVehicleActionBar() and UnitVehicleSkin("player") and UnitVehicleSkin("player") ~= "")

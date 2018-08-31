@@ -175,14 +175,13 @@ AuraList.Taunt = {
 	62124,	-- Reckoning
 	355,	-- Taunt
 	185245, -- Torment
-
 }
 
 for k, v in pairs(AuraList) do
-	for i = 1, #v do
+	for i = #v, 1, -1 do
 		if not GetSpellInfo(v[i]) then
 			print(string.format("Invalid spellID: %d, in AuraList.%s", v[i], k))
-			v[i] = nil
+			table.remove(v, v[i])
 		end
 	end
 end

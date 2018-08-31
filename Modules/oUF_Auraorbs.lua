@@ -45,8 +45,15 @@ local Update = function(self, event, unit)
 	if (unit ~= self.unit) then return end
 	local orbs = self.AuraOrbs
 
-	local name, _, _, stack = UnitAura(unit, orbs.spellName, orbs.rank, orbs.filter)
-	stack = stack or 0
+	for i = 1, 40 do
+		local _, _, _, count, _, _, _, _, _, _, spellId = UnitAura(unit, i, bar.filter)
+		if not spellId then
+			break
+		elseif spellId == bar.spellID then
+			stack = count or 0
+			break
+		end
+	end
 
 	if stack == orbs.lastNumCount then return; end
 	orbs.lastNumStacks = stack;
@@ -109,11 +116,9 @@ local function Enable(self, unit)
 		orbs.__owner = self
 		orbs.ForceUpdate = ForceUpdate
 
-		if not orbs.filter then orbs.filter = "HELPFUL" end
+		--if not orbs.filter then orbs.filter = "HELPFUL" end
 		assert(type(orbs.maxStacks) == "number", "AuraOrbs.maxStacks isn't a number")
 		assert(type(orbs.spellID) == "number", "AuraOrbs.spellID isn't a number")
-
-		orbs.spellName, orbs.rank = GetSpellInfo(orbs.spellID)
 
 		self:RegisterEvent("PLAYER_TALENT_UPDATE", VisibilityPath)
 		self:RegisterEvent("UPDATE_OVERRIDE_ACTIONBAR", VisibilityPath, true)
