@@ -6,7 +6,7 @@ local trinketSpells = {
 	[208683] = 120, --Gladiator's Medallion	
 	[195710] = 180, --honorable-medallion
 	--[7744] = 30, --will of the forsaken
-	--[59752] = 30, -- Every man for himself
+	[59752] = 90, -- Every man for himself
 }
 
 local function GetTrinketIcon(unit)

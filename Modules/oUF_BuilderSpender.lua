@@ -78,7 +78,7 @@ local Update = function(self, event, unit)
 			end
 		end
 		if ( element.FullPowerFrame and element.FullPowerFrame.active ) then
-			element.FullPowerFrame:StartAnimIfFull(element.currValue or 0, currValue);
+			element.FullPowerFrame:StartAnimIfFull(element.currValue or 0, element.maxValue--[[currValue]]);
 		end
 		element.currValue = currValue
 	end

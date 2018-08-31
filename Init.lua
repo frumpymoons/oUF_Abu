@@ -41,6 +41,8 @@ oUF.colors.power["MANA"] = { 0.00, 0.5, 1.00 }
 --oUF.colors.power["FUEL"] = { 0.0, 0.55, 0.5 }
 
 -- To change class colors use a custom class color addon like Class Colors
+ALT_MANA_BAR_PAIR_DISPLAY_INFO.DRUID[1] = true
+ALT_MANA_BAR_PAIR_DISPLAY_INFO.DRUID[3] = true
 
 ------------------------------------------------------------------------
 --  Event handler

@@ -2,7 +2,31 @@ local _, ns = ...
 
 local textPath = 'Interface\\AddOns\\oUF_Abu\\Media\\Frames\\'
 
-local function arenaPrep(self, event, ...)
+------ Waiting for oUF:
+local function onEvent(self, e)
+	if (e == 'ARENA_OPPONENT_UPDATE') and (not UnitWatchRegistered(self)) then
+		self:Enable()
+		self:UpdateAllElements(e)
+		self:UnregisterEvent(e, onEvent)
+
+	elseif (e == 'ARENA_PREP_OPPONENT_SPECIALIZATIONS') or ((e == 'PLAYER_ENTERING_WORLD') and (not UnitExists(self.unit))) then
+		local id = self.id
+		if (not UnitWatchRegistered(self)) and GetNumArenaOpponentSpecs() < id then
+			return self:Hide()
+		end
+
+		if GetArenaOpponentSpec(id) then
+			if (UnitWatchRegistered(self)) then
+				self:UnregisterUnitWatch()
+				self:RegisterEvent('ARENA_OPPONENT_UPDATE', onEvent)
+			end
+			self:PostUpdate("ArenaPreparation")
+			self:Show()
+		end
+	end
+end
+
+local function postUpdateArenaPreparation(self, event, ...)
 	if event ~= "ArenaPreparation" then return; end
 	
 	local specID = GetArenaOpponentSpec(self.id)
@@ -32,6 +56,9 @@ end
 function ns.createArenaLayout(self, unit)
 	local config = ns.config
 	local uconfig = config[self.cUnit]
+
+	self:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", onEvent, true)
+	self:HookScript('OnEvent', onEvent)
 
 	self.Texture = self:CreateTexture(nil, 'BORDER')
 	self.Texture:SetTexture(textPath.. 'Arena')
@@ -131,7 +158,8 @@ function ns.createArenaLayout(self, unit)
 
 	ns.PaintFrames(self.Trinket.Border.Texture)
 
-	self.PostUpdate = arenaPrep
+	self.PostUpdate = postUpdateArenaPreparation
 
 	return self
 end
+

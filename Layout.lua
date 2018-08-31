@@ -228,9 +228,11 @@ local function UpdatePlayerFrame(self, ...)
 	local data = GetData(self.cUnit)
 	local uconfig = ns.config[self.cUnit]
 	-- Frame Size
-	self:SetSize(data.siz.w, data.siz.h)
-	self:SetScale(uconfig.scale or 1)
-	self:EnableMouse((not ns.config.clickThrough))
+	if not InCombatLockdown() then
+		self:SetSize(data.siz.w, data.siz.h)
+		self:SetScale(uconfig.scale or 1)
+		self:EnableMouse((not ns.config.clickThrough))
+	end
 
 	self.Texture:SetSize(data.tex.w, data.tex.h)
 	self.Texture:SetPoint('CENTER', self, data.tex.x, data.tex.y)
@@ -250,15 +252,29 @@ local function UpdatePlayerFrame(self, ...)
 	self.Portrait:SetPoint('CENTER', self.Texture, data.por.x, data.por.y)
 	self.Portrait:SetSize(data.por.w, data.por.h)
 
-	if self.ThreatGlow then
-		self.ThreatGlow:SetSize(data.glo.w, data.glo.h)
-		self.ThreatGlow:SetPoint('TOPLEFT', self.Texture, data.glo.x, data.glo.y)
-		self.ThreatGlow:SetTexture(data.glo.t)
-		self.ThreatGlow:SetTexCoord(unpack(data.glo.c))
+	if self.ThreatIndicator then
+		self.ThreatIndicator:SetSize(data.glo.w, data.glo.h)
+		self.ThreatIndicator:SetPoint('TOPLEFT', self.Texture, data.glo.x, data.glo.y)
+		self.ThreatIndicator:SetTexture(data.glo.t)
+		self.ThreatIndicator:SetTexCoord(unpack(data.glo.c))
+	end
+
+	 if self.BuilderSpender then
+ 		self.BuilderSpender.FeedbackFrame:SetFrameLevel(self.Power:GetFrameLevel())
+ 		self.BuilderSpender.FeedbackFrame:SetAllPoints(self.Power)
+		self.BuilderSpender.FeedbackFrame:SetPoint('TOPLEFT', self.Power, 'TOPLEFT', 0, -1)
+
+		local POWER = self.BuilderSpender.FullPowerFrame
+ 		POWER:SetSize(self.Power:GetSize())
+ 		POWER:SetPoint('BOTTOMLEFT', self.Power, 'BOTTOMLEFT', 4, -2)
+ 		for _,v in pairs({POWER.SpikeFrame.BigSpikeGlow, POWER.SpikeFrame.AlertSpikeStay, POWER.PulseFrame.YellowGlow, POWER.PulseFrame.SoftGlow}) do
+ 			local x,y = v:GetSize()
+ 			local scale = self.Power:GetHeight()/(PlayerFrameManaBar:GetHeight() or 12)
+ 			v:SetSize(x*scale,y*scale)
+ 		end
 	end
 	
 	self.PvPIndicator:ClearAllPoints()
-
 
 	if not( config.showComboPoints ) then
 		ComboPointPlayerFrame:UnregisterAllEvents()
@@ -277,7 +293,7 @@ local function UpdatePlayerFrame(self, ...)
 		self.GroupRoleIndicator:SetAlpha(0)
 		self.PvPIndicator:SetPoint('TOPLEFT', self.Texture, 4, -28)
 		self.LeaderIndicator:SetPoint('TOPLEFT', self.Texture, 23, -14)
-		self.MasterLooterIndicator:SetPoint('TOPLEFT', self.Texture, 74, -14)
+		--self.MasterLooterIndicator:SetPoint('TOPLEFT', self.Texture, 74, -14)
 		self.RaidTargetIndicator:SetPoint('CENTER', self.Portrait, 'TOP', 0, -5)
 		securecall('PlayerFrame_ShowVehicleTexture')
 
@@ -303,7 +319,7 @@ local function UpdatePlayerFrame(self, ...)
 		self.GroupRoleIndicator:SetAlpha(1)
 		self.PvPIndicator:SetPoint('TOPLEFT', self.Texture, 23, -23)
 		self.LeaderIndicator:SetPoint('TOPLEFT', self.Portrait, 3, 2)
-		self.MasterLooterIndicator:SetPoint('TOPRIGHT', self.Portrait, -3, 3)
+		--self.MasterLooterIndicator:SetPoint('TOPRIGHT', self.Portrait, -3, 3)
 		self.RaidTargetIndicator:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
 		securecall('PlayerFrame_HideVehicleTexture')
 
@@ -369,11 +385,11 @@ local function UpdateUnitFrameLayout(frame)
 		frame.Portrait:SetPoint('CENTER', frame.Texture, data.por.x, data.por.y)
 	end
 	-- Threat Glow -- if enabled
-	if frame.ThreatGlow then
-		frame.ThreatGlow:SetSize(data.glo.w, data.glo.h)
-		frame.ThreatGlow:SetPoint('TOPLEFT', frame.Texture, data.glo.x, data.glo.y)
-		frame.ThreatGlow:SetTexture(data.glo.t)
-		frame.ThreatGlow:SetTexCoord(unpack(data.glo.c))
+	if frame.ThreatIndicator then
+		frame.ThreatIndicator:SetSize(data.glo.w, data.glo.h)
+		frame.ThreatIndicator:SetPoint('TOPLEFT', frame.Texture, data.glo.x, data.glo.y)
+		frame.ThreatIndicator:SetTexture(data.glo.t)
+		frame.ThreatIndicator:SetTexCoord(unpack(data.glo.c))
 	end
 end
 
@@ -494,8 +510,10 @@ local function CreateUnitLayout(self, unit)
 	end
 
 	--[[ 	Threat glow		]]
-	if (config.threatGlow) and (data.glo) then 
-		self.ThreatGlow = self:CreateTexture(nil, 'BACKGROUND', -1)
+	if (config.ThreatIndicator) and (data.glo) then 
+		self.ThreatIndicator = self:CreateTexture(nil, 'BACKGROUND', -1)
+		self.ThreatIndicator.feedbackUnit = 'player'
+		self.ThreatIndicator.PostUpdate = ns.PostUpdateThreat
 	end
 
 	if (self.IsMainFrame) then
@@ -600,16 +618,16 @@ local function CreateUnitLayout(self, unit)
 		self.RaidTargetIndicator:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
 		self.RaidTargetIndicator:SetSize(data.por.w/2.5, data.por.w/2.5)
 
-		self.MasterLooterIndicator = self:CreateTexture(nil, 'OVERLAY', self)
-		self.MasterLooterIndicator:SetSize(16, 16)
-		if (self.cUnit == 'target' or self.cUnit == 'focus') then
-			self.MasterLooterIndicator:SetPoint('TOPLEFT', self.Portrait, 3, 3)
-		elseif (self.IsTargetFrame) then
-			self.MasterLooterIndicator:SetPoint('CENTER', self.Portrait, 'TOPLEFT', 3, -3)
-		elseif (self.IsPartyFrame) then  
-			self.MasterLooterIndicator:SetSize(14, 14)
-			self.MasterLooterIndicator:SetPoint('TOPLEFT', self.Texture, 29, 0)
-		end
+		--self.MasterLooterIndicator = self:CreateTexture(nil, 'OVERLAY', self)
+		--self.MasterLooterIndicator:SetSize(16, 16)
+		--if (self.cUnit == 'target' or self.cUnit == 'focus') then
+		--	self.MasterLooterIndicator:SetPoint('TOPLEFT', self.Portrait, 3, 3)
+		--elseif (self.IsTargetFrame) then
+		--	self.MasterLooterIndicator:SetPoint('CENTER', self.Portrait, 'TOPLEFT', 3, -3)
+		--elseif (self.IsPartyFrame) then  
+		--	self.MasterLooterIndicator:SetSize(14, 14)
+		--	self.MasterLooterIndicator:SetPoint('TOPLEFT', self.Texture, 29, 0)
+		--end
 
 		self.LeaderIndicator = self:CreateTexture(nil, 'OVERLAY', self)
 		self.LeaderIndicator:SetSize(16, 16)
@@ -692,20 +710,9 @@ local function CreateUnitLayout(self, unit)
  		--builderspender (white overlay when gaining/losing power)
  		if ( config.builderSpender ) then
 	 		local FeedbackFrame = CreateFrame('Frame', nil, self.Power, 'BuilderSpenderFrame')
-	 		FeedbackFrame:SetFrameLevel(self.Power:GetFrameLevel())
-	 		FeedbackFrame:SetAllPoints(self.Power)
-			FeedbackFrame:SetPoint('TOPLEFT', self.Power, 'TOPLEFT', 0, -1)
 			FeedbackFrame.BarTexture:SetTexture()
 
 	 		local POWER = CreateFrame('Frame', nil, self.Power, 'FullResourcePulseFrame')
-	 		POWER:SetSize(self.Power:GetSize())
-	 		POWER:SetPoint('BOTTOMLEFT', self.Power, 'BOTTOMLEFT', 4, -4)
-	 		for _,v in pairs({POWER.SpikeFrame.BigSpikeGlow, POWER.SpikeFrame.AlertSpikeStay, POWER.PulseFrame.YellowGlow, POWER.PulseFrame.SoftGlow}) do
-	 			local x,y = v:GetSize()
-	 			local scale = 1.4
-	 			v:SetSize(x*scale,y*scale)
-	 		end
-
 			self.BuilderSpender = {
 				FeedbackFrame = FeedbackFrame,
 				FullPowerFrame = POWER,
@@ -945,7 +952,7 @@ oUF:Factory( function(self)
 
 	if (config.showArena) then 
 		local arena = {}
-		for i = 1, 5 do
+		for i = 1, 5 do --MAX_ARENA_ENEMIES isnt loaded yet
 			arena[i] = self:Spawn('arena'..i, 'oUF_AbuArenaFrame'..i)
 			if (i == 1) then
 				arena[i]:SetPoint('TOPRIGHT', UIParent)

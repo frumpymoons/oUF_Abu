@@ -30,7 +30,7 @@ ns.defaultConfig = {
 	castbarSafezoneColor = {.8, 0.4, 0, 1},
 	portraitTimer = true,
 	combatText = false,
-	threatGlow = true,
+	ThreatIndicator = true,
 	colorPlayerDebuffsOnly = true,
 	largePlayerAuras = true,
 

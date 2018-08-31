@@ -121,7 +121,6 @@ local function SetValueText(element, tag, cur, max, color, notMana)
 	element:SetFormattedText("|cff%02x%02x%02x%s|r", color[1]*255, color[2]*255, color[3]*255, s)
 end
 
-
 ------------------------------------------------------------------
 --							Health Update						--
 ------------------------------------------------------------------
