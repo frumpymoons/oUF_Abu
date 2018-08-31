@@ -2,10 +2,10 @@ local _, ns = ...
 local colors = oUF.colors
 
 local ignorePetSpells = {
-	115746, -- Felbolt  (Green Imp)
-	3110,	-- firebolt (imp)
-	31707,	-- waterbolt (water elemental)
-	85692,  -- Doom Bolt
+	[115746] = true, -- Felbolt  (Green Imp)
+	[3110] = true,	-- firebolt (imp)
+	[31707] = true,	-- waterbolt (water elemental)
+	[85692] = true,  -- Doom Bolt
 }
 
 ------------------------------------------------------------------
@@ -19,57 +19,58 @@ do
 	-- Negative means not modified by haste
 	local BaseTickDuration = { }
 	if class == "WARLOCK" then
-		BaseTickDuration[GetSpellInfo(689) or ""] = 1 -- Drain Life
-		BaseTickDuration[GetSpellInfo(1120) or ""] = 2 -- Drain Soul
-		BaseTickDuration[GetSpellInfo(755) or ""] = 1 -- Health Funnel
-		BaseTickDuration[GetSpellInfo(5740) or ""] = 2 -- Rain of Fire
-		BaseTickDuration[GetSpellInfo(1949) or ""] = 1 -- Hellfire
-		BaseTickDuration[GetSpellInfo(103103) or ""] = 1 -- Malefic Grasp
-		BaseTickDuration[GetSpellInfo(108371) or ""] = 1 -- Harvest Life
+		BaseTickDuration[689] = 1 -- Drain Life
+		BaseTickDuration[1120] = 2 -- Drain Soul
+		BaseTickDuration[755] = 1 -- Health Funnel
+		BaseTickDuration[5740] = 2 -- Rain of Fire
+		BaseTickDuration[1949] = 1 -- Hellfire
+		BaseTickDuration[103103] = 1 -- Malefic Grasp
+		BaseTickDuration[108371] = 1 -- Harvest Life
 	elseif class == "DRUID" then
-		BaseTickDuration[GetSpellInfo(740) or ""] = 2 -- Tranquility
-		BaseTickDuration[GetSpellInfo(16914) or ""] = 1 -- Hurricane
-		BaseTickDuration[GetSpellInfo(106996) or ""] = 1 -- Astral STORM
-		BaseTickDuration[GetSpellInfo(127663) or ""] = -1 -- Astral Communion
+		BaseTickDuration[740] = 2 -- Tranquility
+		BaseTickDuration[16914] = 1 -- Hurricane
+		BaseTickDuration[106996] = 1 -- Astral STORM
+		BaseTickDuration[127663] = -1 -- Astral Communion
 	elseif class == "PRIEST" then
 		local mind_flay_TickTime = 1
 		if IsSpellKnown(157223) then --Enhanced Mind Flay
 			mind_flay_TickTime = 2/3
 		end
-		BaseTickDuration[GetSpellInfo(47540) or ""] = 1 -- Penance
-		BaseTickDuration[GetSpellInfo(15407) or ""] =  mind_flay_TickTime -- Mind Flay
-		BaseTickDuration[GetSpellInfo(129197) or ""] = mind_flay_TickTime -- Mind Flay (Insanity)
-		BaseTickDuration[GetSpellInfo(48045) or ""] = 1 -- Mind Sear
-		BaseTickDuration[GetSpellInfo(179337) or ""] = 1 -- Searing Insanity
-		BaseTickDuration[GetSpellInfo(64843) or ""] = 2 -- Divine Hymn
-		BaseTickDuration[GetSpellInfo(64901) or ""] = 2 -- Hymn of Hope
+		BaseTickDuration[47540] = 1 -- Penance
+		BaseTickDuration[15407] =  mind_flay_TickTime -- Mind Flay
+		BaseTickDuration[129197] = mind_flay_TickTime -- Mind Flay (Insanity)
+		BaseTickDuration[48045] = 1 -- Mind Sear
+		BaseTickDuration[179337] = 1 -- Searing Insanity
+		BaseTickDuration[64843] = 2 -- Divine Hymn
+		BaseTickDuration[64901] = 2 -- Hymn of Hope
 	elseif class == "MAGE" then
-		BaseTickDuration[GetSpellInfo(10) or ""] = 1 -- Blizzard
-		BaseTickDuration[GetSpellInfo(5143) or ""] = 0.4 -- Arcane Missiles
-		BaseTickDuration[GetSpellInfo(12051) or ""] = 2 -- Evocation
+		BaseTickDuration[10] = 1 -- Blizzard
+		BaseTickDuration[5143] = 0.4 -- Arcane Missiles
+		BaseTickDuration[12051] = 2 -- Evocation
 	elseif class == "MONK" then
-		BaseTickDuration[GetSpellInfo(117952) or ""] = 1 -- Crackling Jade Lightning
-		BaseTickDuration[GetSpellInfo(113656) or ""] = 1 -- Fists of Fury
-		BaseTickDuration[GetSpellInfo(115294) or ""] = -1 -- Mana Tea
+		BaseTickDuration[117952] = 1 -- Crackling Jade Lightning
+		BaseTickDuration[113656] = 1 -- Fists of Fury
+		BaseTickDuration[115294] = -1 -- Mana Tea
 	end
 
-	function CastingBarFrameTicksSet(Castbar, unit, name, stop)
+	local function CreateATick(Castbar)
+		local spark = Castbar:CreateTexture(nil, 'OVERLAY', nil, 1)
+		spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
+		spark:SetVertexColor(1, 1, 1, 1)
+		spark:SetBlendMode('ADD')
+		spark:SetWidth(10)
+		table.insert(Castbar.ticks, spark)
+		return spark
+	end
+
+	function CastingBarFrameTicksSet(Castbar, unit, spellID)
 		Castbar.ticks = Castbar.ticks or {}
-		local function CreateATick()
-			local spark = Castbar:CreateTexture(nil, 'OVERLAY', nil, 1)
-			spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
-			spark:SetVertexColor(1, 1, 1, 1)
-			spark:SetBlendMode('ADD')
-			spark:SetWidth(10)
-			table.insert(Castbar.ticks, spark)
-			return spark
-		end
 		for _,tick in ipairs(Castbar.ticks) do
 			tick:Hide()
 		end
-		if (stop) then return end
+		if (not unit) then return end
 		if (Castbar) then
-			local baseTickDuration = BaseTickDuration[name]
+			local baseTickDuration = BaseTickDuration[spellID]
 			local tickDuration
 			if (baseTickDuration) then
 				if (baseTickDuration > 0) then
@@ -87,7 +88,7 @@ do
 				local delta = (tickDuration * width / Castbar.max)
 				local i = 1
 				while (delta * i) < width do
-					if i > #Castbar.ticks then CreateATick() end
+					if i > #Castbar.ticks then CreateATick(Castbar) end
 					local tick = Castbar.ticks[i]
 					tick:SetHeight(Castbar:GetHeight() * 1.5)
 					tick:SetPoint("CENTER", Castbar, "LEFT", delta * i, 0)
@@ -188,13 +189,11 @@ function ns.CreateCastbars(self)
 	self.CCastbar = Castbar
 end
 
-function ns.PostCastStart(Castbar, unit, name, castid)
+function ns.PostCastStart(Castbar, unit, castID, spellID)
 	if (unit == 'pet') then
 		Castbar:SetAlpha(1)
-		for _, spellID in pairs(ignorePetSpells) do
-			if (UnitCastingInfo('pet') == GetSpellInfo(spellID)) then
-				Castbar:SetAlpha(0)
-			end
+		if ignorePetSpells[spellID] then
+			Castbar:SetAlpha(0)
 		end
 	end
 	ns.UpdateCastbarColor(Castbar, unit)
@@ -203,7 +202,7 @@ function ns.PostCastStart(Castbar, unit, name, castid)
 	end
 end
 
-function ns.PostCastFailed(Castbar, unit, spellname, castid)
+function ns.PostCastFailed(Castbar, unit, castID, spellID)
 	if (Castbar.Text) then
 		Castbar.Text:SetText(FAILED) 
 	end
@@ -213,7 +212,7 @@ function ns.PostCastFailed(Castbar, unit, spellname, castid)
 	end
 end
 
-function ns.PostCastInterrupted(Castbar, unit, spellname, castid)
+function ns.PostCastInterrupted(Castbar, unit, castID, spellID)
 	if (Castbar.Text) then
 		Castbar.Text:SetText(INTERRUPTED) 
 	end
@@ -223,14 +222,14 @@ function ns.PostCastInterrupted(Castbar, unit, spellname, castid)
 	end
 end
 
-function ns.PostStop(Castbar, unit, spellname, castid)
+function ns.PostStop(Castbar, unit, castID, spellID)
 	--Castbar:SetValue(Castbar.max)
 	if (Castbar.Ticks) then
-		CastingBarFrameTicksSet(Castbar, unit, name, true)
+		CastingBarFrameTicksSet(Castbar)
 	end
 end
 
-function ns.PostChannelStart(Castbar, unit, name)
+function ns.PostChannelStart(Castbar, unit, castID, spellID)
 	if (unit == 'pet' and Castbar:GetAlpha() == 0) then
 		Castbar:SetAlpha(1)
 	end
@@ -240,7 +239,7 @@ function ns.PostChannelStart(Castbar, unit, name)
 		Castbar.SafeZone:SetDrawLayer("BORDER", 1)
 	end
 	if (Castbar.Ticks) then
-		CastingBarFrameTicksSet(Castbar, unit, name)
+		CastingBarFrameTicksSet(Castbar, unit, spellID)
 	end
 end
 
