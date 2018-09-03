@@ -39,10 +39,10 @@ local colors = oUF.colors
 		CCastbar.CustomTimeText(duration)
 ]]
 
-_G.CASTING_BAR_ALPHA_STEP = 0.05
-_G.CASTING_BAR_FLASH_STEP = 0.05
-_G.CASTING_BAR_FLASH_STEPOUT = 0.05
-_G.CASTING_BAR_HOLD_TIME = 0.7
+local CASTING_BAR_ALPHA_STEP = 0.05
+local CASTING_BAR_FLASH_STEP = 0.05
+local CASTING_BAR_FLASH_STEPOUT = 0.05
+local CASTING_BAR_HOLD_TIME = 0.7
 
 local events = {}
 local serverlag
