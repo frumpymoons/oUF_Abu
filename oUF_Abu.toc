@@ -1,4 +1,4 @@
-## Interface: 70000
+## Interface: 80000
 ## Author: Abu
 ## Title: oUF_|cffffffffAbu|r
 ## RequiredDeps: oUF

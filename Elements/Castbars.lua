@@ -45,8 +45,8 @@ do
 		BaseTickDuration[64901] = 2 -- Hymn of Hope
 	elseif class == "MAGE" then
 		BaseTickDuration[10] = 1 -- Blizzard
-		BaseTickDuration[5143] = 0.4 -- Arcane Missiles
-		BaseTickDuration[12051] = 2 -- Evocation
+		BaseTickDuration[5143] = 0.5 -- Arcane Missiles
+		--BaseTickDuration[12051] = 2 -- Evocation
 	elseif class == "MONK" then
 		BaseTickDuration[117952] = 1 -- Crackling Jade Lightning
 		BaseTickDuration[113656] = 1 -- Fists of Fury
@@ -74,10 +74,10 @@ do
 			local tickDuration
 			if (baseTickDuration) then
 				if (baseTickDuration > 0) then
-					local castTime = select(7, GetSpellInfo(2060))
-					if (not castTime or (castTime == 0)) then
+					local castTime-- = select(7, GetSpellInfo(2060))
+					--if (not castTime or (castTime == 0)) then
 						castTime = 2500 / (1 + (GetCombatRatingBonus(CR_HASTE_SPELL) or 0) / 100)
-					end
+					--end
 					tickDuration = (castTime / 2500) * baseTickDuration
 				else
 					tickDuration = -baseTickDuration
@@ -115,7 +115,7 @@ function ns.CreateCastbars(self)
 	local Castbar = ns.CreateStatusBar(self, 'BORDER', self:GetName()..'Castbar')
 	Castbar:SetSize(uconfig.cbwidth, uconfig.cbheight)
 	Castbar:SetFrameStrata('HIGH')
-	ns.CreateBorder(Castbar, 11, 3)
+	ns.CreateBorder(Castbar, 12, 3)
 
 	if (BasePos[self.cUnit]) then
 		local point, rpoint, x, y = unpack(BasePos[self.cUnit])
@@ -138,7 +138,7 @@ function ns.CreateCastbars(self)
 		local Flash = CreateFrame("Frame", nil, Castbar)
 		Flash:SetAllPoints(Castbar)
 
-		ns.CreateBorder(Flash, 11, 3)
+		ns.CreateBorder(Flash, 12, 3)
 		Flash:SetBorderTexture('white')
 		Flash:SetBorderColor(1, 1, 0.6)
 		if (uconfig.cbicon == 'RIGHT') then
@@ -185,6 +185,7 @@ function ns.CreateCastbars(self)
 	Castbar.PostCastStop = ns.PostStop
 	Castbar.PostChannelStop = ns.PostStop
 	Castbar.PostChannelStart = ns.PostChannelStart
+	Castbar.PostChannelUpdate = ns.PostChannelStart
 
 	self.CCastbar = Castbar
 end

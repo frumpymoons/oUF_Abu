@@ -60,10 +60,12 @@ function oUFAbu:ADDON_LOADED(event, addon)
 			SharedMedia:Register("font", "Expressway Free",         [[Interface\AddOns\oUF_Abu\Media\Font\fontSmall.ttf]])
 			SharedMedia:Register("font", "Expressway RG",           [[Interface\AddOns\oUF_Abu\Media\Font\fontThick.ttf]])
 
-			SharedMedia:Register("statusbar", "Flat", [[Interface\BUTTONS\WHITE8X8]])
-			SharedMedia:Register("statusbar", "Neal", [[Interface\AddOns\oUF_Abu\Media\Texture\statusbarNeal]])
-			SharedMedia:Register("statusbar", "Neal Dark", [[Interface\AddOns\oUF_Abu\Media\Texture\statusbarNealDark]])
-			SharedMedia:Register("statusbar", "Flat Dark", [[Interface\AddOns\oUF_Abu\Media\Texture\Raid-Bar-Hp-Fill]])
+			SharedMedia:Register("statusbar", "Flat", 		[[Interface\BUTTONS\WHITE8X8]])
+			SharedMedia:Register("statusbar", "Neal", 		[[Interface\AddOns\oUF_Abu\Media\Texture\statusbarNeal]])
+			SharedMedia:Register("statusbar", "Neal Dark", 	[[Interface\AddOns\oUF_Abu\Media\Texture\statusbarNealDark]])
+			SharedMedia:Register("statusbar", "Flat Dark", 	[[Interface\AddOns\oUF_Abu\Media\Texture\Raid-Bar-Hp-Fill]])
+			SharedMedia:Register("statusbar", "Hal G", 		[[Interface\AddOns\oUF_Abu\Media\Texture\statusbarHalH.tga]])
+			SharedMedia:Register("statusbar", "Hal M", 		[[Interface\AddOns\oUF_Abu\Media\Texture\statusbarHalM.tga]])
 		end
 		
 		self:SetupSettings()

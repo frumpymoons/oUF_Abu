@@ -57,12 +57,12 @@ ns.defaultConfig = {
 	showArena = true,
 	showBoss = true,
 
-	borderType = 'neal',
+	borderType = 'abu',
 	textureBorder = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\2borderNormal',
 	textureBorderWhite = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\2borderWhite',
 	textureBorderShadow = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\2borderShadow',
 
-	statusbar = 'Interface\\AddOns\\oUF_Abu\\Media\\Texture\\Raid-Bar-Hp-Fill',
+	statusbar = 'Interface\\AddOns\\oUF_AbuRaid\\Media\\HalH',
 	frameColor = {0.5, 0.5, 0.4},
 	playerStyle = 'normal',
 	customPlayerTexture = 'Interface\\AddOns\\oUF_Abu\\Media\\Frames\\CUSTOMPLAYER-FRAME',
@@ -131,7 +131,7 @@ ns.defaultConfig = {
 	absorbspark = 'Interface\\AddOns\\oUF_Abu\\Media\\Texture\\absorbSpark',
 
  	player = {
- 		style = "normal",
+ 		style = "fat",
 		scale = 1.2,
 		HealthTag = "NUMERIC",
 		PowerTag = "PERCENT",
@@ -144,7 +144,7 @@ ns.defaultConfig = {
 	},
 
 	pet = {
- 		style = "normal",
+ 		style = "fat",
 		scale = 1.2,
 		HealthTag = "MINIMAL",
 		PowerTag = "DISABLE",
@@ -152,12 +152,12 @@ ns.defaultConfig = {
 		cbwidth = 200,
 		cbheight = 18,
 		cbicon = 'NONE',
-		position = 'BOTTOM/-220/225',
+		position = "BOTTOM/-217/178",
 		cbposition = 'BOTTOM/0/180',
 	},
 
 	target = {
- 		style = "normal",
+ 		style = "fat",
 		scale = 1.2,
 		HealthTag = "BOTH",
 		PowerTag = "PERCENT",
@@ -173,14 +173,14 @@ ns.defaultConfig = {
 	
 	targettarget = {
 		enable = true,
- 		style = "normal",
+ 		style = "fat",
 		scale = 1.2,
 		enableAura = false,
 		HealthTag = "DISABLE",
    },
 	
 	focus = {
- 		style = "normal",
+ 		style = "fat",
 		scale = 1.2,
 		HealthTag = "BOTH",
 		PowerTag = "PERCENT",
@@ -196,14 +196,14 @@ ns.defaultConfig = {
 	
 	focustarget = {
 		enable = true,
- 		style = "normal",
+ 		style = "fat",
 		scale = 1.2,
 		enableAura = false,
 		HealthTag = "DISABLE",
 	},
 	
 	party = {
- 		style = "normal",
+ 		style = "fat",
 		scale = 1.1,
 		HealthTag = "MINIMAL",
 		PowerTag = "DISABLE",
