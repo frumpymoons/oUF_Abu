@@ -2,7 +2,7 @@
 ## Author: Abu
 ## Title: oUF_|cffffffffAbu|r
 ## RequiredDeps: oUF
-## Version: 7.0-5
+## Version: 8.0-1
 ## SavedVariables: oUFAbuSettings, oUFAbuAuraFilters
 ## SavedVariablesPerCharacter: oUFAbuProfile
 
