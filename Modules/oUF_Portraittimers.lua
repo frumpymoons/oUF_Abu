@@ -73,7 +73,7 @@ local Update = function(self, event, unit)
 	local UnitDebuff, index = UnitDebuff, 0
 	while (true) do
 		index = index + 1
-		local name, _, texture, _, _, duration, expires, _, _, _, spellId = (UnitDebuff or UnitBuff)(unit, index)
+		local name, texture, _, _, duration, expires, _, _, _, spellId = (UnitDebuff or UnitBuff)(unit, index)
 		if name then
 			if PortraitTimerDB[spellId] then
 
