@@ -111,7 +111,14 @@ function ns.classModule.MONK(self, config, uconfig)
 		MonkHarmonyBarFrame:SetScale(uconfig.scale * 0.81)
 		MonkHarmonyBarFrame:ClearAllPoints()
 		MonkHarmonyBarFrame:SetPoint('TOP', self, 'BOTTOM', 31, 18)
-		ns.PaintFrames(select(2, MonkHarmonyBarFrame:GetRegions()), 0.1)
+		local _, bg = MonkHarmonyBarFrame:GetRegions()
+		bg:SetDrawLayer("BACKGROUND")
+		MonkHarmonyBarFrame:SetFrameLevel(2)
+		ns.PaintFrames(bg, 0.1)
+
+		for _,ball in pairs({MonkHarmonyBarFrame:GetChildren()}) do
+			ball:EnableMouse(false)
+		end
 		return MonkHarmonyBarFrame
 	end
 end

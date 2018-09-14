@@ -117,9 +117,9 @@ local DataFat = {
 	player = {
 		siz = { w = 175, h = 42   },
 		tex = { w = 232, h = 100, x = -20,  y = -7,  t = pathFat.."Target", c = {1, 0.09375, 0, 0.78125}},
-		hpb = { w = 118, h = 26,  x = 50,   y = 13,  },
+		hpb = { w = 119, h = 26,  x = 50,   y = 13,  },
 		hpt = {                   x = 0,    y = 1,   j = "CENTER", s = 13 },
-		mpb = { w = 118, h = 14,  x = 0,    y = 0,   },
+		mpb = { w = 119, h = 14,  x = 0,    y = 0,   },
 		mpt = {                   x = 0,    y = 0,   j = "CENTER", s = 13 },
 		nam = { w = 110, h = 10,  x = 50,   y = 19,  j = "CENTER", s = 14 },
 		por = { w = 64,  h = 64,  x = -42,  y = 7,   },
@@ -128,9 +128,9 @@ local DataFat = {
 	target = {
 		siz = { w = 175, h = 42   },
 		tex = { w = 230, h = 100, x = 20,   y = -7,  t = pathFat.."Target", c = {0.09375, 1, 0, 0.78125}},
-		hpb = { w = 118, h = 26,  x = -50,  y = 13,  },
+		hpb = { w = 117, h = 26,  x = -51,  y = 13,  },
 		hpt = {                   x = 0,    y = 1,   j = "CENTER", s = 13 },
-		mpb = { w = 118, h = 14,  x = 0,    y = 0,   },
+		mpb = { w = 117, h = 14,  x = 0,    y = 0,   },
 		mpt = {                   x = 0,    y = 0,   j = "CENTER", s = 13 },
 		nam = { w = 110, h = 10,  x = 0,    y = 18,  j = "CENTER", s = 14 },
 		por = { w = 64,  h = 64,  x = 41,   y = 6,   },
@@ -511,9 +511,8 @@ local function CreateUnitLayout(self, unit)
 
 	--[[ 	Threat glow		]]
 	if (config.ThreatIndicator) and (data.glo) then 
-		self.ThreatIndicator = self:CreateTexture(nil, 'BACKGROUND', -1)
+		self.ThreatIndicator = self.Health:CreateTexture(nil, 'BACKGROUND', nil,-1)
 		self.ThreatIndicator.feedbackUnit = 'player'
-		self.ThreatIndicator.PostUpdate = ns.PostUpdateThreat
 	end
 
 	if (self.IsMainFrame) then
@@ -555,22 +554,48 @@ local function CreateUnitLayout(self, unit)
 			Override = ns.UpdateIncHeals,
 		}
 		if (config.absorbBar) then
-			-- Absorb bar
-			local absorb = CreateFrame('StatusBar', nil, self.Health)
-			absorb:SetStatusBarTexture(config.absorbtexture, "OVERLAY")
+			--local absorb = CreateFrame("Statusbar", nil, self.Health)
+			--absorb:SetStatusBarTexture("Interface\\RaidFrame\\Shield-Fill", "OVERLAY")
+			--absorb:SetFrameLevel(self:GetFrameLevel() - 1)
+			--absorb:SetStatusBarColor(1,1,1,1)
+			--absorb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT')
+			--absorb:SetPoint('BOTTOMRIGHT')
+			--absorb:Hide()
+			local absorb = ns.CreateStatusBar(self.Health, 'OVERLAY')
+			absorb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT')
+			absorb:SetPoint('BOTTOMRIGHT')
 			absorb:SetFrameLevel(self:GetFrameLevel() - 1)
 			absorb:SetStatusBarColor(1,1,1,1)
-			absorb:GetStatusBarTexture():SetBlendMode("ADD")
-			absorb:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMLEFT")
-			absorb:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 5)
+			absorb:Hide()
 
-			local spark = absorb:CreateTexture(nil, 'ARTWORK')
+			absorb.overlay = absorb:CreateTexture(nil, "OVERLAY", "TotalAbsorbBarOverlayTemplate")
+			absorb.overlay:SetAllPoints(absorb:GetStatusBarTexture())
+			absorb.overlay.tileSize = 32
+
+  			absorb.glow = self.Health:CreateTexture(nil, "OVERLAY", "OverAbsorbGlowTemplate")
+  			absorb.glow:ClearAllPoints()
+			absorb.glow:SetPoint("TOPLEFT", self.Health, "TOPRIGHT", -6, 0);
+			absorb.glow:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", -6, 0);
+			absorb.glow:SetWidth(13)
+			absorb.glow:Show()
+			self.HealthPrediction.absorb = absorb
+
+			-- Over absorb bar
+			local overAbsorb = CreateFrame('StatusBar', nil, self.Health)
+			overAbsorb:SetStatusBarTexture(config.absorbtexture, "OVERLAY")
+			overAbsorb:SetFrameLevel(self:GetFrameLevel() - 1)
+			overAbsorb:SetStatusBarColor(1,1,1,1)
+			overAbsorb:GetStatusBarTexture():SetBlendMode("ADD")
+			overAbsorb:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMLEFT")
+			overAbsorb:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 5)
+
+			local spark = overAbsorb:CreateTexture(nil, 'ARTWORK')
 			spark:SetTexture(config.absorbspark)
 			spark:SetBlendMode("ADD")
-			spark:SetPoint('BOTTOMLEFT', absorb:GetStatusBarTexture(),'BOTTOMRIGHT')
+			spark:SetPoint('BOTTOMLEFT', overAbsorb:GetStatusBarTexture(),'BOTTOMRIGHT')
 			spark:SetSize(5,5)
-			absorb.spark = spark
-			self.HealthPrediction.TotalAbsorb = absorb
+			overAbsorb.spark = spark
+			self.HealthPrediction.overAbsorb = overAbsorb
 		end
 		
 		-- Combat CombatFeedbackText 

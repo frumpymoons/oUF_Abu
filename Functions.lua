@@ -187,6 +187,7 @@ function ns.UpdateIncHeals(self, event, unit)
 	if (self.unit ~= unit) then return end
 	local hp = self.HealthPrediction
 	local curHP, maxHP = UnitHealth(unit), UnitHealthMax(unit)
+	local missingHP = maxHP - curHP
 	local incHeal = UnitGetIncomingHeals(unit) or 0
 	local healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
 
@@ -198,7 +199,7 @@ function ns.UpdateIncHeals(self, event, unit)
 		hp.necroHeals:Hide()
 	end
 
-	if ((incHeal - healAbsorb) <= 0) or (curHP == maxHP) then
+	if ((incHeal - healAbsorb) <= 0) or (missingHP == 0) then
 		hp.incHeals:Hide()
 	else
 		hp.incHeals:SetMinMaxValues(0, maxHP - curHP)
@@ -206,16 +207,29 @@ function ns.UpdateIncHeals(self, event, unit)
 		hp.incHeals:Show()
 	end
 
-	if (hp.TotalAbsorb) then
-		local absorb = UnitGetTotalAbsorbs(unit) or 0
-		hp.TotalAbsorb:SetMinMaxValues(0, maxHP)
-		hp.TotalAbsorb:SetValue(math.min(absorb, maxHP))
-		if (absorb < (maxHP * 0.05)) then
-			hp.TotalAbsorb:Hide()
+	if (hp.overAbsorb) then
+		local totalAbsorb_Value = UnitGetTotalAbsorbs(unit) or 0
+		local absorb_Value = math.min(missingHP, totalAbsorb_Value)
+		local overAbsorb_Value = totalAbsorb_Value - missingHP
+
+		if missingHP == 0 or (absorb_Value < maxHP/100) then
+			hp.absorb:Hide()
 		else
-			hp.TotalAbsorb:Show()
-			if not hp.TotalAbsorb.spark:IsShown() then
-				hp.TotalAbsorb.spark:Show()
+			hp.absorb:SetMinMaxValues(0, missingHP)
+			hp.absorb:SetValue(absorb_Value)
+			hp.absorb:Show()
+		end
+
+		if (overAbsorb_Value < (maxHP * 0.05)) then
+			hp.absorb.glow:Hide()
+			hp.overAbsorb:Hide()
+		else
+			hp.absorb.glow:Show()
+			hp.overAbsorb:SetMinMaxValues(0, maxHP)
+			hp.overAbsorb:SetValue(math.min(overAbsorb_Value, maxHP))
+			hp.overAbsorb:Show()
+			if not hp.overAbsorb.spark:IsShown() then
+				hp.overAbsorb.spark:Show()
 			end
 		end
 	end
