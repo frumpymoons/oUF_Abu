@@ -3,6 +3,7 @@
 	<Script file="oUF_Auraorbs.lua"/>
 	<Script file="oUF_BuilderSpender.lua"/>	
 	<Script file="oUF_CCastbar.lua"/>	
+	<Script file="oUF_CombatFade.lua"/>	
 	<Script file="oUF_CombatFeedbackText.lua"/>	
 	<Script file="oUF_Offline.lua"/>
 	<Script file="oUF_Portraittimers.lua"/>	

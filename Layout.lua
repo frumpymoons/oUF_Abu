@@ -50,9 +50,9 @@ local DataNormal = {
 	target = { -- and focus
 		siz = { w = 175, h = 42   },
 		tex = { w = 230, h = 100, x = 20,   y = -7,  t = pathNormal.."Target", c = {0.09375, 1, 0, 0.78125}},
-		hpb = { w = 118, h = 19,  x = -50,  y = 16,  },
+		hpb = { w = 117, h = 19,  x = -51,  y = 16,  },
 		hpt = {                   x = 0,    y = 1,   j = "CENTER", s = 13 },
-		mpb = { w = 118, h = 20,  x = 0,    y = 0,   },
+		mpb = { w = 117, h = 20,  x = 0,    y = 0,   },
 		mpt = {                   x = 0,    y = 0,   j = "CENTER", s = 13 },
 		nam = { w = 110, h = 10,  x = 0,    y = 17,  j = "CENTER", s = 14 },
 		por = { w = 64,  h = 64,  x = 41,   y = 6,   },
@@ -345,6 +345,13 @@ local function UpdateUnitFrameLayout(frame)
 	local cUnit = frame.cUnit
 	local data = GetData(cUnit)
 	local uconfig = ns.config[cUnit]
+
+		--Combat Fade
+	if ns.config.combatFade and not frame:IsElementEnabled('oUF_CombatFade') then
+		frame:EnableElement('oUF_CombatFade')
+	elseif not ns.config.combatFade and frame:IsElementEnabled('oUF_CombatFade') then
+		frame:DisableElement('oUF_CombatFade')
+	end
 
 	 -- Player frame, its special
 	if cUnit == "player" then 
@@ -700,9 +707,6 @@ local function CreateUnitLayout(self, unit)
 			end
 		end
 	end
-
-	-- Update layout
-	UpdateUnitFrameLayout(self)
 		
 	--[[ 	Player Frame		]] --
 	if (self.cUnit == 'player') then	
@@ -895,19 +899,18 @@ local function CreateUnitLayout(self, unit)
 		self.Debuffs:SetPoint('TOPRIGHT', self, 'BOTTOMLEFT', -34, 18)
 		self.Debuffs.CustomFilter   = ns.CustomAuraFilters.boss
 	end
-	
+
 	--[[ 	Range Fader 	]]
-	if (self.cUnit == 'pet' or self.IsPartyFrame) then
+	if (self.IsPartyFrame) then
 		self.Range = {
 			insideAlpha = 1,
 			outsideAlpha = 0.8,
 		}
 	end
-	self.CFade = {
-		FadeInMin = .2,
-		FadeInMax = 1,
-		FadeTime = 0.5,
-	}
+	if (self.cUnit == 'pet' or self.IsMainFrame or self.IsTargetFrame ) then
+		self.CombatFade = true
+	end
+
 	return self
 end
 
@@ -924,10 +927,15 @@ oUF:Factory( function(self)
 
 	self:RegisterStyle('oUF_Abu', CreateUnitLayout)
 	self:SetActiveStyle('oUF_Abu')
+	self:RegisterInitCallback(function(self)
+		if self.style == 'oUF_Abu' and self.cUnit ~= 'arena' then
+			UpdateUnitFrameLayout(self)
+		end 
+	end)
 
 	local player = self:Spawn('player', 'oUF_AbuPlayer')
 	ns.CreateUnitAnchor(player, player, player, nil, 'player')
-	player:RegisterEvent('UNIT_PET', fixPetFrame)
+	--player:RegisterEvent('UNIT_PET', fixPetFrame)
 
 	local pet = self:Spawn('pet', 'oUF_AbuPet')
 	ns.CreateUnitAnchor(pet, pet, pet, nil, 'pet')

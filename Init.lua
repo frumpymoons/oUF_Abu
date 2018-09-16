@@ -74,9 +74,8 @@ function oUFAbu:ADDON_LOADED(event, addon)
 		if (ns.config.focBut ~= 'NONE') then
 			--Blizzard raid frame
 			hooksecurefunc("CompactUnitFrame_SetUpFrame", function(frame, ...)
-				if frame then
-					frame:SetAttribute(ns.config.focMod.."type"..ns.config.focBut, "focus")
-				end
+				if (frame.IsForbidden and frame:IsForbidden()) then return; end
+				frame:SetAttribute(ns.config.focMod.."type"..ns.config.focBut, "focus")
 			end)
 			-- World Models
 			local foc = CreateFrame("CheckButton", "Focuser", UIParent, "SecureActionButtonTemplate")

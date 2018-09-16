@@ -4,8 +4,7 @@ local colors = oUF.colors
 ------------------------------------------------------------------
 --					Custom castbar element 						--
 ------------------------------------------------------------------
---[[	Pretty much my own raped version of the 
-		oUF castbar element with fading
+--[[	oUF castbar element with fading
 		and support for a flash textures.
 		
 	Sub-Widgets

@@ -66,6 +66,8 @@ L.Enable = _G.ENABLE
 	L.General_AbsorbTip = "Display a bar showing total absorb on a unit."
 	L.General_ClassP = "Enable Class Portraits"
 	L.General_ClassPTip = "Display a class icon instead of portrait on players."
+	L.General_FadeFramesInCombat = "Fade out frames when not in combat"
+	L.General_FadeFramesInCombatTip = "Hide the unitframes when not in combat, casting or targetting something."
 
 	L.General_showComboPoints = "Enable Combo Points"
 	L.General_showComboPointsTip = "Enable the Combo Points frame"

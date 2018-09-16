@@ -19,6 +19,7 @@ do
 			obj.old_OnUpdate = obj:GetScript("OnUpdate")
 
 			obj:SetScript("OnUpdate", nil)
+			obj:SetAlpha(1)
 			UnregisterUnitWatch(obj)
 			RegisterUnitWatch(obj, true)
 
@@ -244,7 +245,7 @@ end
 
 function ns.CreateCastbarAnchor(frame)
 	local name = frame:GetName()
-	local key1 = frame:GetParent().cUnit
+	local key1 = frame.__owner.cUnit
 
 	local a = CreateAnchor(frame, name, key1, 'cbposition', name, name)
 	a.objectname = L[key1].." "..L.Castbar

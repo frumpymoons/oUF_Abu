@@ -74,6 +74,7 @@ ns.defaultConfig = {
 	useAuraTimer = true,
 	clickThrough = false,
 	classPortraits = false,
+	combatFade = true,
 
 	classBar = {},
 
