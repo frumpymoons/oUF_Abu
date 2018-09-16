@@ -115,6 +115,7 @@ function ns.CreateCastbars(self)
 	local Castbar = ns.CreateStatusBar(oUF_PetBattleFrameHider, 'BORDER', self:GetName()..'Castbar')
 	Castbar.__owner = self
 	Castbar:SetSize(uconfig.cbwidth, uconfig.cbheight)
+	Castbar:SetScale(uconfig.cbscale or 1)
 	Castbar:SetFrameStrata('HIGH')
 	ns.CreateBorder(Castbar, 12, 3)
 
@@ -177,7 +178,6 @@ function ns.CreateCastbars(self)
 	Castbar.Text:SetPoint('LEFT', Castbar, 4, 0)
 	Castbar.Text:SetPoint('RIGHT', Castbar, 'RIGHT', -40, 0)
 	Castbar.Text:SetWordWrap(false)
-	hooksecurefunc(Castbar.Text, "SetText", print)
 
 	Castbar.PostCastStart = ns.PostCastStart
 	Castbar.PostCastFailed = ns.PostCastFailed
