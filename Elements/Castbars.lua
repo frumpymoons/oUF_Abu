@@ -112,7 +112,7 @@ function ns.CreateCastbars(self)
 	local uconfig = ns.config[self.cUnit]
 	if not uconfig.cbshow then return end
 
-	local Castbar = ns.CreateStatusBar(_G[oUF_PetBattleFrameHider], 'BORDER', self:GetName()..'Castbar')
+	local Castbar = ns.CreateStatusBar(oUF_PetBattleFrameHider, 'BORDER', self:GetName()..'Castbar')
 	Castbar.__owner = self
 	Castbar:SetSize(uconfig.cbwidth, uconfig.cbheight)
 	Castbar:SetFrameStrata('HIGH')
