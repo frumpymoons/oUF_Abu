@@ -540,70 +540,55 @@ local function CreateUnitLayout(self, unit)
 
 		--[[	Special Bars 		]]
 		-- Incoming Heals
-		local incHeals = ns.CreateStatusBar(self.Health)
-		incHeals:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT')
-		incHeals:SetPoint('BOTTOMRIGHT')
-		incHeals:SetFrameLevel(self:GetFrameLevel() - 1)
-		incHeals:SetStatusBarColor(0, 1, 0, 0.5)
-		incHeals:Hide()
+		local incHealBar = ns.CreateStatusBarTexture(self.Health, 'OVERLAY', "IncomingHeals", 2)
+		incHealBar:SetVertexColor(0, 1, 0, 0.4)
+		incHealBar:ClearAllPoints()
+		self.Health.incHealBar = incHealBar
 
 		-- Absorbing Heals
-		local necroHeals = ns.CreateStatusBar(self.Health, 'OVERLAY')
-		necroHeals:SetFrameLevel(self:GetFrameLevel() - 1)
-		necroHeals:SetStatusBarColor(1, 0, 0, 0.3)
-		necroHeals:SetReverseFill(true)
-		necroHeals:SetPoint('TOPLEFT')
-		necroHeals:SetPoint('BOTTOMRIGHT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+		local healAbsorbBar = self.Health:CreateTexture(nil, "OVERLAY", nil, 1)
+		healAbsorbBar:SetTexture("Interface\\RaidFrame\\Absorb-Fill", true, true)
+		healAbsorbBar:SetVertexColor(.9, 0, 0, .9)
+		self.Health.healAbsorbBar = healAbsorbBar
 
-		self.HealthPrediction = {
-			incHeals = incHeals,
-			necroHeals = necroHeals,
-			Override = ns.UpdateIncHeals,
-		}
-		if (config.absorbBar) then
-			--local absorb = CreateFrame("Statusbar", nil, self.Health)
-			--absorb:SetStatusBarTexture("Interface\\RaidFrame\\Shield-Fill", "OVERLAY")
-			--absorb:SetFrameLevel(self:GetFrameLevel() - 1)
-			--absorb:SetStatusBarColor(1,1,1,1)
-			--absorb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT')
-			--absorb:SetPoint('BOTTOMRIGHT')
-			--absorb:Hide()
-			local absorb = ns.CreateStatusBar(self.Health, 'OVERLAY')
-			absorb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT')
-			absorb:SetPoint('BOTTOMRIGHT')
-			absorb:SetFrameLevel(self:GetFrameLevel() - 1)
-			absorb:SetStatusBarColor(1,1,1,1)
-			absorb:Hide()
+		--if (config.absorbBar) then
+		local absorbBar = ns.CreateStatusBarTexture(self.Health, 'OVERLAY', "Absorb")
+		absorbBar:SetVertexColor(1,1,1,1)
 
-			absorb.overlay = absorb:CreateTexture(nil, "OVERLAY", "TotalAbsorbBarOverlayTemplate")
-			absorb.overlay:SetAllPoints(absorb:GetStatusBarTexture())
-			absorb.overlay.tileSize = 32
+		absorbBar.overlay = self.Health:CreateTexture(nil, "OVERLAY", nil, 1)
+		absorbBar.overlay:SetTexture("Interface\\RaidFrame\\Shield-Overlay", true, true)
+		absorbBar.overlay:SetAllPoints(absorbBar)
+		absorbBar.overlay.tileSize = 32
 
-  			absorb.glow = self.Health:CreateTexture(nil, "OVERLAY", "OverAbsorbGlowTemplate")
-  			absorb.glow:ClearAllPoints()
-			absorb.glow:SetPoint("TOPLEFT", self.Health, "TOPRIGHT", -6, 0);
-			absorb.glow:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", -6, 0);
-			absorb.glow:SetWidth(13)
-			absorb.glow:Show()
-			self.HealthPrediction.absorb = absorb
+		absorbBar.glow = self.Health:CreateTexture(nil, "OVERLAY", "OverAbsorbGlowTemplate")
+		absorbBar.glow:ClearAllPoints()
+		absorbBar.glow:SetPoint("TOPLEFT", self.Health, "TOPRIGHT", -6, 0);
+		absorbBar.glow:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", -6, 0);
+		absorbBar.glow:SetWidth(13)
+		absorbBar.glow:Show()
+		self.Health.absorbBar = absorbBar
 
-			-- Over absorb bar
-			local overAbsorb = CreateFrame('StatusBar', nil, self.Health)
-			overAbsorb:SetStatusBarTexture(config.absorbtexture, "OVERLAY")
-			overAbsorb:SetFrameLevel(self:GetFrameLevel() - 1)
-			overAbsorb:SetStatusBarColor(1,1,1,1)
-			overAbsorb:GetStatusBarTexture():SetBlendMode("ADD")
-			overAbsorb:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMLEFT")
-			overAbsorb:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 5)
+		-- Over absorb bar
+		local overAbsorbBar = CreateFrame('StatusBar', nil, self.Health)
+		overAbsorbBar:SetStatusBarTexture(config.absorbtexture, "OVERLAY")
+		overAbsorbBar:SetFrameLevel(self:GetFrameLevel() - 1)
+		overAbsorbBar:SetStatusBarColor(1,1,1,1)
+		overAbsorbBar:GetStatusBarTexture():SetBlendMode("ADD")
+		overAbsorbBar:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMLEFT")
+		overAbsorbBar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 5)
+		self.Health.overAbsorbBar = overAbsorbBar
 
-			local spark = overAbsorb:CreateTexture(nil, 'ARTWORK')
-			spark:SetTexture(config.absorbspark)
-			spark:SetBlendMode("ADD")
-			spark:SetPoint('BOTTOMLEFT', overAbsorb:GetStatusBarTexture(),'BOTTOMRIGHT')
-			spark:SetSize(5,5)
-			overAbsorb.spark = spark
-			self.HealthPrediction.overAbsorb = overAbsorb
-		end
+		local spark = overAbsorbBar:CreateTexture(nil, 'ARTWORK')
+		spark:SetTexture(config.absorbspark)
+		spark:SetBlendMode("ADD")
+		spark:SetPoint('BOTTOMLEFT', overAbsorbBar:GetStatusBarTexture(),'BOTTOMRIGHT')
+		spark:SetSize(5,5)
+		overAbsorbBar.spark = spark
+
+		self:RegisterEvent("UNIT_HEAL_PREDICTION", ns.UpdateHealthOverride)
+		self:RegisterEvent("UNIT_ABSORB_AMOUNT_CHANGED", ns.UpdateHealthOverride)
+		self:RegisterEvent("UNIT_HEAL_ABSORB_AMOUNT_CHANGED", ns.UpdateHealthOverride)
+		self.Health.Override = ns.UpdateHealthOverride
 		
 		-- Combat CombatFeedbackText 
 		if (config.combatText) then
