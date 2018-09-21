@@ -251,7 +251,7 @@ local function updateAbsorbBars(healthbar, unit, curHP, maxHP)
 	appendTexture(healthbar, healthbar:GetStatusBarTexture(), healthbar.absorbBar, shownAbsorb_Value, curHP, 'RIGHT')
 
 	local overAbsorbBar = healthbar.overAbsorbBar
-	if (overAbsorb_Value < (maxHP * 0.05)) then
+	if (overAbsorb_Value < (maxHP * 0.01)) then
 		overAbsorbBar:Hide()
 		healthbar.absorbBar.glow:Hide()
 	else
@@ -281,8 +281,9 @@ function ns.UpdateHealthOverride(self, event, unit)
 	end
 	self.Health.disconnected = disconnected
 	self.Health:UpdateColor(unit, cur, max)
-	ns.PostUpdateHealth(self.Health, unit, cur, max)
 	updateAbsorbBars(self.Health, unit, cur, max)
+
+	ns.PostUpdateHealth(self.Health, unit, cur, max)
 end
 
 ------------------------------------------------------------------
