@@ -276,11 +276,11 @@ local function UpdatePlayerFrame(self, ...)
 	
 	self.PvPIndicator:ClearAllPoints()
 
-	if not( config.showComboPoints ) then
+	if ( config.showComboPoints ) then
+		ComboPointPlayerFrame:Setup()
+	else
 		ComboPointPlayerFrame:UnregisterAllEvents()
 		ComboPointPlayerFrame:Hide()
-	else
-		ComboPointPlayerFrame:Setup()
 	end
 	--ComboFrame_Update(ComboPointPlayerFrame)
 
@@ -345,11 +345,14 @@ local function UpdateUnitFrameLayout(frame)
 	local cUnit = frame.cUnit
 	local data = GetData(cUnit)
 	local uconfig = ns.config[cUnit]
-
+	
+	if (frame.cUnit == 'pet' or frame.IsMainFrame or frame.IsTargetFrame ) then
+		frame.CombatFade = ns.config.combatFade
+	end
 		--Combat Fade
-	if ns.config.combatFade and not frame:IsElementEnabled('oUF_CombatFade') then
+	if frame.CombatFade and not frame:IsElementEnabled('oUF_CombatFade') then
 		frame:EnableElement('oUF_CombatFade')
-	elseif not ns.config.combatFade and frame:IsElementEnabled('oUF_CombatFade') then
+	elseif not frame.CombatFade and frame:IsElementEnabled('oUF_CombatFade') then
 		frame:DisableElement('oUF_CombatFade')
 	end
 
@@ -357,7 +360,7 @@ local function UpdateUnitFrameLayout(frame)
 	if cUnit == "player" then 
 		return UpdatePlayerFrame(frame); 
 	elseif (not data) then 
-		return; 
+		return
 	end
 
 	-- Frame Size
@@ -891,9 +894,6 @@ local function CreateUnitLayout(self, unit)
 			insideAlpha = 1,
 			outsideAlpha = 0.8,
 		}
-	end
-	if (self.cUnit == 'pet' or self.IsMainFrame or self.IsTargetFrame ) then
-		self.CombatFade = true
 	end
 
 	return self

@@ -141,7 +141,7 @@ local eventFrame = CreateFrame('FRAME')
 eventFrame:SetScript("OnEvent", Update)
 
 local function Enable(self)
-	if not self.CombatFade then return; end
+	if (not self.CombatFade) or enabledFrames[self] then return; end
 	enabledFrames[self] = true
 	self.fadeInfo = {mode = "IN"}
 	Update(self, "FORCEUPDATE")
@@ -174,9 +174,9 @@ end
 
 
 local function Disable(self)
-	if not self.CombatFade then return end
+	if not enabledFrames[self] then return; end
 	enabledFrames[self] = nil
-	self:SetAlpha(1)
+	UIFrameFadeIn(self)
 
 	local numframes = 0
 	for k,v in pairs(enabledFrames) do
