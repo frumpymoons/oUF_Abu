@@ -282,7 +282,6 @@ local function UpdatePlayerFrame(self, ...)
 		ComboPointPlayerFrame:UnregisterAllEvents()
 		ComboPointPlayerFrame:Hide()
 	end
-	--ComboFrame_Update(ComboPointPlayerFrame)
 
 	local inVehicle = UnitHasVehicleUI('player')
 
@@ -293,11 +292,9 @@ local function UpdatePlayerFrame(self, ...)
 		self.GroupRoleIndicator:SetAlpha(0)
 		self.PvPIndicator:SetPoint('TOPLEFT', self.Texture, 4, -28)
 		self.LeaderIndicator:SetPoint('TOPLEFT', self.Texture, 23, -14)
-		--self.MasterLooterIndicator:SetPoint('TOPLEFT', self.Texture, 74, -14)
 		self.RaidTargetIndicator:SetPoint('CENTER', self.Portrait, 'TOP', 0, -5)
-		securecall('PlayerFrame_ShowVehicleTexture')
+		PlayerFrameVehicleTexture:Show();
 
-		--ComboPointPlayerFrame:Hide()
 		if ( self.classPowerBar ) then
 			self.classPowerBar:Hide();
 		end
@@ -319,11 +316,9 @@ local function UpdatePlayerFrame(self, ...)
 		self.GroupRoleIndicator:SetAlpha(1)
 		self.PvPIndicator:SetPoint('TOPLEFT', self.Texture, 23, -23)
 		self.LeaderIndicator:SetPoint('TOPLEFT', self.Portrait, 3, 2)
-		--self.MasterLooterIndicator:SetPoint('TOPRIGHT', self.Portrait, -3, 3)
 		self.RaidTargetIndicator:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
-		securecall('PlayerFrame_HideVehicleTexture')
+		PlayerFrameVehicleTexture:Hide();
 
-		--ComboPointPlayerFrame:Show()
 		if ( self.classPowerBar ) then
 			self.classPowerBar:Setup();
 		end
@@ -702,8 +697,9 @@ local function CreateUnitLayout(self, unit)
 		-- Combo Points
 		ComboPointPlayerFrame:ClearAllPoints()
 		ComboPointPlayerFrame:SetParent(self)
-		ComboPointPlayerFrame:SetPoint('TOP', self, 'BOTTOM', 30, 2)
+		ComboPointPlayerFrame:SetPoint('TOP', self, 'BOTTOM', 28, 1)
 		ComboPointPlayerFrame.SetPoint = nop
+		ComboPointPlayerFrame:SetFrameLevel(1)
 		ns.PaintFrames(ComboPointPlayerFrame.Background, 0.1)
 
 		-- Totems
