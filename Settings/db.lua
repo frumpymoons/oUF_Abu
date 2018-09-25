@@ -127,7 +127,6 @@ ns.defaultConfig = {
 
 	showComboPoints = true,
 
-	absorbBar = true,
 	absorbtexture = 'Interface\\AddOns\\oUF_Abu\\Media\\Texture\\absorbTexture',
 	absorbspark = 'Interface\\AddOns\\oUF_Abu\\Media\\Texture\\absorbSpark',
 
