@@ -108,12 +108,14 @@ local function Update(self, event, arg1, ...)
 
 	if event == "OnUpdate" then -- not needed, usually used for targettarget frames
 		return
-	elseif (UnitCastingInfo("player") or UnitChannelInfo("player")) or --casting
+	elseif -- (UnitCastingInfo("player") or UnitChannelInfo("player")) or --casting
 		(UnitHealth("player") ~= UnitHealthMax("player")) or 		--not full health
 		(UnitExists("target") or UnitExists("focus")) or 			--have target or focus
 		UnitAffectingCombat("player") or							--combat
-		mouseOver
+		mouseOver or
+		(UnitPowerType("player") == Enum.PowerType.Mana and UnitPower("player") ~= UnitPowerMax("player"))
 	then
+
 		if not is_showing or force then
 			show = true
 		end
@@ -160,6 +162,8 @@ local function Enable(self)
 		eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_STOP", 'player')
 		eventFrame:RegisterUnitEvent("UNIT_PORTRAIT_UPDATE", 'player')
 		eventFrame:RegisterUnitEvent("UNIT_MODEL_CHANGED", 'player')
+		eventFrame:RegisterUnitEvent('UNIT_POWER_UPDATE', 'player')
+		eventFrame:RegisterUnitEvent('UNIT_MAXPOWER', 'player')
 	end
 
 	if not self.CombatFadehooked then
@@ -196,6 +200,9 @@ local function Disable(self)
 		eventFrame:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
 		eventFrame:UnregisterEvent("UNIT_PORTRAIT_UPDATE")
 		eventFrame:UnregisterEvent("UNIT_MODEL_CHANGED")
+		eventFrame:UnregisterEvent("UNIT_MODEL_CHANGED")
+		eventFrame:UnregisterEvent('UNIT_POWER_UPDATE')
+		eventFrame:UnregisterEvent('UNIT_MAXPOWER')
 	end
 end
 
