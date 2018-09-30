@@ -243,6 +243,14 @@ local function UpdatePlayerFrame(self, ...)
 	self.Health:SetPoint('CENTER', self.Texture, data.hpb.x, data.hpb.y)
 	self.Power:SetSize(data.mpb.w, data.mpb.h)
 	self.Power:SetPoint('TOPLEFT', self.Health, 'BOTTOMLEFT', data.mpb.x, data.mpb.y)
+	if self.PowerPrediction then
+		if self.PowerPrediction.mainBar then
+			self.PowerPrediction.mainBar:SetSize(self.Power:GetSize())
+		end
+		if self.PowerPrediction.altbar then
+			self.PowerPrediction.altbar:SetSize(self.AdditionalPower:GetSize())
+		end
+	end
 
 	self.Health.Value:SetPoint('CENTER', self.Health, data.hpt.x, data.hpt.y)
 	self.Power.Value:SetPoint('CENTER', self.Power, data.mpt.x, data.mpt.y)
@@ -373,6 +381,7 @@ local function UpdateUnitFrameLayout(frame)
 	-- ManaBar
 	frame.Power:SetSize(data.mpb.w, data.mpb.h)
 	frame.Power:SetPoint('TOPLEFT', frame.Health, 'BOTTOMLEFT', data.mpb.x, data.mpb.y)
+
 	-- HealthText
 	frame.Health.Value:SetPoint('CENTER', frame.Health, data.hpt.x, data.hpt.y)
 	-- ManaText - not for tots
@@ -736,15 +745,12 @@ local function CreateUnitLayout(self, unit)
 		-- Power Prediction Bar (Display estimated cost of spells when casting)
 		if ( config.powerPredictionBar ) then
 			local mainBar, altBar
-			mainBar = CreateFrame('StatusBar', nil, self.Power)
+			mainBar = CreateFrame('StatusBar',  self.Power:GetDebugName().."PowerPrediction", self.Power)
 	 		mainBar:SetFrameLevel(self.Power:GetFrameLevel())
 			mainBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar-Glow]], 'BORDER')
 			mainBar:GetStatusBarTexture():SetBlendMode'ADD'
 			mainBar:SetReverseFill(true)
-			mainBar:SetPoint'TOP'
-			mainBar:SetPoint'BOTTOM'
 			mainBar:SetPoint('RIGHT', self.Power:GetStatusBarTexture(), 'RIGHT')
-			mainBar:SetWidth(self.Power:GetWidth())
 			mainBar:SetStatusBarColor(1,1,1,.3)
 
 			if ( self.AdditionalPower ) then
@@ -753,10 +759,7 @@ local function CreateUnitLayout(self, unit)
 				altBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar-Glow]], 'BORDER')
 				altBar:GetStatusBarTexture():SetBlendMode'ADD'
 				altBar:SetReverseFill(true)
-				altBar:SetPoint'TOP'
-				altBar:SetPoint'BOTTOM'
 				altBar:SetPoint('RIGHT', self.AdditionalPower:GetStatusBarTexture(), 'RIGHT')
-				altBar:SetWidth(self.AdditionalPower:GetWidth())
 				altBar:SetStatusBarColor(1,1,1,.3)
 			end
 
