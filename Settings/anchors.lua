@@ -39,6 +39,10 @@ do
 				obj.old_OnUpdate = nil
 			end
 
+			if obj.CCastbar then
+				obj.CCastbar.casting = nil
+				obj.CCastbar:Hide()
+			end
 			obj:UpdateAllElements("OnShow")
 		end
 	end

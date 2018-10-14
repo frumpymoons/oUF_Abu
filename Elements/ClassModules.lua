@@ -165,6 +165,7 @@ end
 
 function ns.classModule.addAuraBar(self, config, uconfig)
 	local Aurabar = ns.CreateOutsideBar(self, true, 1, 0, 0)
+	Aurabar:SetFrameLevel(1)
 
 	Aurabar.Visibility = function(self, event, unit)
 		local bar = self.Aurabar
