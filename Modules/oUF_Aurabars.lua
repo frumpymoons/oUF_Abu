@@ -38,7 +38,7 @@ local function Update(self, event, unit)
 	local timeleft, duration
 
 	for i = 1, 40 do
-		local _, _, _, _, _, dur, expires, _, _, _, spellId = UnitAura(unit, i, bar.filter)
+		local _, _, _, _, dur, expires, _, _, _, spellId = UnitAura(unit, i, bar.filter)
 		if not spellId then
 			break
 		elseif spellId == bar.spellID then
@@ -75,10 +75,7 @@ local Visibility = function(self, event, unit)
 	local bar = self.Aurabar
 	local shouldshow
 
-	if bar.spellID then
-		--if not bar.filter then bar.filter = "HELPFUL" end
-		shouldshow = bar.Visibility and bar.Visibility(self, event, unit) or true
-	end
+	shouldshow = bar.Visibility and bar.Visibility(self, event, unit)
 
 	if UnitHasVehicleUI("player")
 		or ((HasVehicleActionBar() and UnitVehicleSkin("player") and UnitVehicleSkin("player") ~= "")
