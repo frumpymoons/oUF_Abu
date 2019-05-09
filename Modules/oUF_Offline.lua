@@ -33,7 +33,7 @@ local Enable = function(self)
 
         self:RegisterEvent('PARTY_MEMBER_DISABLE', Path)
         self:RegisterEvent('PARTY_MEMBER_ENABLE', Path)
-        self:RegisterEvent('PLAYER_TARGET_CHANGED', Path)
+        self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
         self:RegisterEvent('UNIT_CONNECTION', Path)
 
         if (officon:IsObjectType('Texture') and not officon:GetTexture()) then
@@ -50,7 +50,7 @@ local Disable = function(self)
     if (officon) then
         self:UnregisterEvent('PARTY_MEMBER_DISABLE', Path)
         self:UnregisterEvent('PARTY_MEMBER_ENABLE', Path)
-        self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
+        self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path, true)
     end
 end
 
