@@ -118,9 +118,9 @@ local DataFat = {
 		siz = { w = 175, h = 42   },
 		tex = { w = 232, h = 100, x = -20,  y = -7,  t = pathFat.."Target", c = {1, 0.09375, 0, 0.78125}},
 		hpb = { w = 119, h = 26,  x = 50,   y = 13,  },
-		hpt = {                   x = 0,    y = 1,   j = "CENTER", s = 13 },
+		hpt = {                   x = 0,    y = -1,   j = "CENTER", s = 13 },
 		mpb = { w = 119, h = 14,  x = 0,    y = 0,   },
-		mpt = {                   x = 0,    y = 0,   j = "CENTER", s = 13 },
+		mpt = {                   x = 0,    y = -1,   j = "CENTER", s = 13 },
 		nam = { w = 110, h = 10,  x = 50,   y = 19,  j = "CENTER", s = 14 },
 		por = { w = 64,  h = 64,  x = -42,  y = 7,   },
 		glo = { w = 242, h = 92,  x = 13,   y = -1,  t = pathFat.."Target-Flash", c = {0.945, 0, 0, 0.182}},
@@ -129,9 +129,9 @@ local DataFat = {
 		siz = { w = 175, h = 42   },
 		tex = { w = 230, h = 100, x = 20,   y = -7,  t = pathFat.."Target", c = {0.09375, 1, 0, 0.78125}},
 		hpb = { w = 117, h = 26,  x = -51,  y = 13,  },
-		hpt = {                   x = 0,    y = 1,   j = "CENTER", s = 13 },
+		hpt = {                   x = 0,    y = -1,   j = "CENTER", s = 13 },
 		mpb = { w = 117, h = 14,  x = 0,    y = 0,   },
-		mpt = {                   x = 0,    y = 0,   j = "CENTER", s = 13 },
+		mpt = {                   x = 0,    y = -1,   j = "CENTER", s = 13 },
 		nam = { w = 110, h = 10,  x = 0,    y = 18,  j = "CENTER", s = 14 },
 		por = { w = 64,  h = 64,  x = 41,   y = 6,   },
 		glo = { w = 239, h = 94,  x = -24,  y = 1,   t = pathNormal.."Target-Flash", c = {0, 0.945, 0, 0.182}},
@@ -532,9 +532,9 @@ local function CreateUnitLayout(self, unit)
 	if (self.IsMainFrame) then
 		--[[ 	Level text		]]
 		self.Level = self:CreateFontString(nil, 'ARTWORK')
-		self.Level:SetFont('Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontNumber.ttf', 14, 'THINOUTLINE')
+		self.Level:SetFont(config.fontNormal, 12, 'OUTLINE')
 		self.Level:SetShadowOffset(0, 0)
-		self.Level:SetPoint('CENTER', self.Texture, (self.cUnit == 'player' and -63) or 63, -15.5)
+		self.Level:SetPoint('CENTER', self.Texture, (self.cUnit == 'player' and -63) or 63, -17)
 		self:Tag(self.Level, '[abu:level]')
 
 		--[[ PvPIndicator Icon  ]] --

@@ -172,11 +172,11 @@ function ns.CreateCastbars(self)
 	end
 
 	Castbar.Time = ns.CreateFontString(Castbar, 13, 'RIGHT')
-	Castbar.Time:SetPoint('RIGHT', Castbar, -5, 0)
+	Castbar.Time:SetPoint('RIGHT', Castbar, -5, -1)
 
 	Castbar.Text = ns.CreateFontString(Castbar, 13, 'LEFT')
-	Castbar.Text:SetPoint('LEFT', Castbar, 4, 0)
-	Castbar.Text:SetPoint('RIGHT', Castbar, 'RIGHT', -40, 0)
+	Castbar.Text:SetPoint('LEFT', Castbar, 4, -1)
+	Castbar.Text:SetPoint('RIGHT', Castbar, 'RIGHT', -40, -1)
 	Castbar.Text:SetWordWrap(false)
 
 	Castbar.PostCastStart = ns.PostCastStart
