@@ -118,7 +118,7 @@ local function Enable(self, unit)
 		end
 		bar:Hide()
 
-		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
+		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
 		self:RegisterEvent("UPDATE_OVERRIDE_ACTIONBAR", VisibilityPath, true)
 		self:RegisterEvent("UNIT_ENTERED_VEHICLE", VisibilityPath)
 		self:RegisterEvent("UNIT_EXITED_VEHICLE", VisibilityPath)
@@ -134,7 +134,7 @@ local function Disable(self)
 	if bar then
 		self:UnregisterEvent('UNIT_AURA', Path)
 
-		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
+		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
 		self:UnregisterEvent("UPDATE_OVERRIDE_ACTIONBAR", VisibilityPath, true)
 		self:UnregisterEvent("UNIT_ENTERED_VEHICLE", VisibilityPath)
 		self:UnregisterEvent("UNIT_EXITED_VEHICLE", VisibilityPath)
