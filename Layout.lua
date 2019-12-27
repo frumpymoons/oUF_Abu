@@ -252,8 +252,8 @@ local function UpdatePlayerFrame(self, ...)
 		end
 	end
 
-	self.Health.Value:SetPoint('CENTER', self.Health, data.hpt.x, data.hpt.y)
-	self.Power.Value:SetPoint('CENTER', self.Power, data.mpt.x, data.mpt.y)
+	self.Health.Value:SetPoint('CENTER', self.Health, data.hpt.x, config.fontNormalOffset)
+	self.Power.Value:SetPoint('CENTER', self.Power, data.mpt.x, config.fontPowerOffset)
 
 	self.Name:SetPoint('TOP', self.Health, data.nam.x, data.nam.y)
 	self.Name:SetSize(data.nam.w, data.nam.h)
@@ -383,10 +383,10 @@ local function UpdateUnitFrameLayout(frame)
 	frame.Power:SetPoint('TOPLEFT', frame.Health, 'BOTTOMLEFT', data.mpb.x, data.mpb.y)
 
 	-- HealthText
-	frame.Health.Value:SetPoint('CENTER', frame.Health, data.hpt.x, data.hpt.y)
+	frame.Health.Value:SetPoint('CENTER', frame.Health, data.hpt.x, config.fontNormalOffset)
 	-- ManaText - not for tots
 	if frame.Power.Value then 
-		frame.Power.Value:SetPoint('CENTER', frame.Power, data.mpt.x, data.mpt.y)
+		frame.Power.Value:SetPoint('CENTER', frame.Power, data.mpt.x, config.fontPowerOffset)
 	end
 	-- NameText
 	if frame.Name then

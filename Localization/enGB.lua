@@ -145,10 +145,12 @@ L.Enable = _G.ENABLE
 	L.Font_Number = "Number Font"
 	L.Font_NumberSize = "Numbar Font Size"
 	L.Font_NumberOutline = "Number Outline Type"
+	L.Font_NumberOffset = "Health Y Offset"
+	L.Font_PowerOffset = "Power Y Offset"
 	L.Font_Name = "Name Font"
 	L.Font_NameSize = "Name Font Size"
 	L.Font_NameOutline = "Name Outline Type"
-	
+
 	---- POSITIONS
 	L.Positions = "Positions"
 	L.Positions_Name = "Unit Frame"

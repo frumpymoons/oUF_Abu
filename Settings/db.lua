@@ -21,6 +21,8 @@ ns.defaultConfig = {
 	fontNormal = 'Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontSmall.ttf',
 	fontNormalOutline = "NONE",
 	fontNormalSize = 1, -- relative size
+	fontNormalOffset = 0,
+	fontPowerOffset = 0,
 
 	fontBig = 'Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontThick.ttf',
 	fontBigOutline = "NONE",
