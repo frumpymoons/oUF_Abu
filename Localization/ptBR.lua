@@ -93,7 +93,7 @@ local L = ns.L
 --	L.Texture_Statusbar = "Statusbar Texture"
 --	L.Texture_Frames = "Frames"
 --	L.Texture_Path = "Custom Texture Path"
---L.Texture_Border = "Border Texture"
+--  L.Texture_Border = "Border Texture"
 
 --	L.Texture_Player = "Player Frame Style"
 --	L.Texture_Normal = "Normal"
@@ -136,6 +136,8 @@ local L = ns.L
 --	L.Font_Number = "Number Font"
 --	L.Font_NumberSize = "Numbar Font Size"
 --	L.Font_NumberOutline = "Number Outline Type"
+--  L.Font_NumberOffset = "Health Y Offset"
+--  L.Font_PowerOffset = "Power Y Offset"
 --	L.Font_Name = "Name Font"
 --	L.Font_NameSize = "Name Font Size"
 --	L.Font_NameOutline = "Name Outline Type"

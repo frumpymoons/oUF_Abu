@@ -92,7 +92,7 @@ local L = ns.L
 	L.Texture_Statusbar = "状态条材质"
 	L.Texture_Frames = "框体"
 	L.Texture_Path = "自定义材质路径"
---L.Texture_Border = "Border Texture"
+--  L.Texture_Border = "Border Texture"
 
 	L.Texture_Player = "玩家框体样式"
 	L.Texture_Normal = "正常"
@@ -135,6 +135,8 @@ local L = ns.L
 	L.Font_Number = "数值字体"
 	L.Font_NumberSize = "数值字体大小"
 	L.Font_NumberOutline = "轮廓类型"
+	-- L.Font_NumberOffset = "Health Y Offset"
+	-- L.Font_PowerOffset = "Power Y Offset"
 	L.Font_Name = "姓名字体"
 	L.Font_NameSize = "姓名字体大小"
 	L.Font_NameOutline = "轮廓类型"
