@@ -533,7 +533,7 @@ local function CreateUnitLayout(self, unit)
 	if (self.IsMainFrame) then
 		--[[ 	Level text		]]
 		self.Level = self:CreateFontString(nil, 'ARTWORK')
-		self.Level:SetFont(config.fontNormal, 12, 'OUTLINE')
+		self.Level:SetFont(config.fontNormal, 12, config.fontNormalOutline)
 		self.Level:SetShadowOffset(0, 0)
 		self.Level:SetPoint('CENTER', self.Texture, (self.cUnit == 'player' and -63) or 63, -17)
 		self:Tag(self.Level, '[abu:level]')
