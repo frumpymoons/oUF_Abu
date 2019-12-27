@@ -296,6 +296,7 @@ local function UpdatePlayerFrame(self, ...)
 	if inVehicle then
 		self.Name:Show()
 		self.Level:Hide()
+		self.Health.Value:SetPoint('CENTER', self.Health, data.hpt.x, 2)
 
 		self.GroupRoleIndicator:SetAlpha(0)
 		self.PvPIndicator:SetPoint('TOPLEFT', self.Texture, 4, -28)
