@@ -251,7 +251,7 @@ local function UpdatePlayerFrame(self, ...)
 			self.PowerPrediction.altbar:SetSize(self.AdditionalPower:GetSize())
 		end
 	end
-
+	
 	self.Health.Value:SetPoint('CENTER', self.Health, data.hpt.x, config.fontNormalOffset)
 	self.Power.Value:SetPoint('CENTER', self.Power, data.mpt.x, config.fontPowerOffset)
 
@@ -267,7 +267,7 @@ local function UpdatePlayerFrame(self, ...)
 		self.ThreatIndicator:SetTexCoord(unpack(data.glo.c))
 	end
 
-	 if self.BuilderSpender then
+	if self.BuilderSpender then
  		self.BuilderSpender.FeedbackFrame:SetFrameLevel(self.Power:GetFrameLevel())
  		self.BuilderSpender.FeedbackFrame:SetAllPoints(self.Power)
 		self.BuilderSpender.FeedbackFrame:SetPoint('TOPLEFT', self.Power, 'TOPLEFT', 0, -1)
@@ -1008,7 +1008,7 @@ oUF:Factory( function(self)
 		border:Hide()
 
 		local text = _G['MirrorTimer' .. i .. 'Text']
-		text:SetFont(config.fontNormal, 13, config.fontNormalOutline)
+		text:SetFont(config.fontBig, 13, config.fontBigOutline)
 		table.insert(ns.fontstrings, text)
 		text:ClearAllPoints()
 		text:SetPoint('CENTER', bar)
