@@ -45,6 +45,7 @@ L.General = "基本"
 
 L.General_Party = "啓用小隊框架"
 L.General_PartyInRaid = "团隊中顯示小隊框架"
+-- L.General_SelfInParty = "Display yourself in Party"
 L.General_Arena = "啓用競技場框架"
 L.General_Boss = "啓用首領框架"
 L.General_Castbars = "啓用施法條"

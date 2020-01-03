@@ -65,6 +65,7 @@ ns.defaultConfig = {
 
 	showParty = true,
 	showPartyInRaid = true,
+	showSelfInParty = true,
 	showArena = true,
 	showBoss = true,
 

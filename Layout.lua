@@ -946,6 +946,7 @@ oUF:Factory( function(self)
 				self:SetHeight(30)
 			]],
 			'showParty', true,
+			'showPlayer', config.showSelfInParty, 
 			'yOffset', -30
 		)
 
