@@ -527,9 +527,9 @@ function oUFAbu:SetAllBackdrops()
 end
 
 -- [[ Font Functions ]] --
-function ns.CreateFontString(parent, size, justify, outline)
+function ns.CreateFontStringNumber(parent, size, justify, outline)
 	local fs = parent:CreateFontString(nil, "OVERLAY")
-	fs:SetFont(ns.config.fontNormal, (size * ns.config.fontNormalSize), outline or ns.config.fontNormalOutline)
+	fs:SetFont(ns.config.fontNumber, (size * ns.config.fontNumberSize), outline or ns.config.fontNumberOutline)
 	fs:SetJustifyH(justify or "CENTER")
 	fs:SetShadowOffset(1, -1)
 	fs.basesize = size 
@@ -541,9 +541,9 @@ function ns.CreateFontString(parent, size, justify, outline)
 	return fs
 end
 
-function ns.CreateFontStringBig(parent, size, justify, outline)
+function ns.CreateFontStringName(parent, size, justify, outline)
 	local fs = parent:CreateFontString(nil, "OVERLAY")
-	fs:SetFont(ns.config.fontBig, (size * ns.config.fontBigSize), outline or ns.config.fontBigOutline)
+	fs:SetFont(ns.config.fontName, (size * ns.config.fontNameSize), outline or ns.config.fontNameOutline)
 	fs:SetJustifyH(justify or "CENTER")
 	fs:SetShadowOffset(1, -1)
 	fs.basesize = size 
@@ -555,10 +555,38 @@ function ns.CreateFontStringBig(parent, size, justify, outline)
 	return fs
 end
 
+function ns.CreateFontStringBar(parent, size, justify, outline)
+	local fs = parent:CreateFontString(nil, "OVERLAY")
+	fs:SetFont(ns.config.fontBar, (size * ns.config.fontBarSize), outline or ns.config.fontBarOutline)
+	fs:SetJustifyH(justify or "CENTER")
+	fs:SetShadowOffset(1, -1)
+	fs.basesize = size 
+	if outline and type(outline) == 'string' then
+		fs.ignoreOutline = true
+	end
+
+	tinsert(ns.fontstringsC, fs)
+	return fs
+end
+
+function ns.CreateFontStringLevel(parent, size, justify, outline)
+	local fs = parent:CreateFontString(nil, "OVERLAY")
+	fs:SetFont(ns.config.fontLevel, (size * ns.config.fontLevelSize), outline or ns.config.fontLevelOutline)
+	fs:SetJustifyH(justify or "CENTER")
+	fs:SetShadowOffset(1, -1)
+	fs.basesize = size 
+	if outline and type(outline) == 'string' then
+		fs.ignoreOutline = true
+	end
+
+	tinsert(ns.fontstringsD, fs)
+	return fs
+end
+
 function oUFAbu:SetAllFonts()
 	do
-		local file = ns.config.fontNormal
-		local mult = ns.config.fontNormalSize
+		local file = ns.config.fontNumber
+		local mult = ns.config.fontNumberSize
 
 		for _, fs in ipairs(ns.fontstrings) do
 			local flag
@@ -566,7 +594,7 @@ function oUFAbu:SetAllFonts()
 			if fs.ignoreOutline then
 				flag = oflag
 			else
-				flag = ns.config.fontNormalOutline
+				flag = ns.config.fontNumberOutline
 			end
 
 			if (fs.basesize) then
@@ -578,19 +606,55 @@ function oUFAbu:SetAllFonts()
 				fs:SetFont(file, size or 13, flag)
 			end
 		end
-		for i = 1, 3 do
-			local bar = _G["MirrorTimer" .. i]
-			local _, size = bar.text:GetFont()
-			bar.text:SetFont(file, size, ns.config.fontNormalOutline)
+	end
+
+	do
+		local file = ns.config.fontName
+		local mult = ns.config.fontNameSize
+
+		for _, fs in ipairs(ns.fontstringsB) do
+			local flag = ns.config.fontNameOutline
+			local _, size, oflag = fs:GetFont()
+			if fs.ignoreOutline then
+				flag = oflag
+			end
+			if (fs.basesize) then
+				fs:SetFont(file, fs.basesize * mult, flag)
+			else
+				fs:SetFont(file, size or 14, flag)
+			end
 		end
 	end
 
 	do
-		local file = ns.config.fontBig
-		local mult = ns.config.fontBigSize
+		local file = ns.config.fontBar
+		local mult = ns.config.fontBarSize
 
-		for _, fs in ipairs(ns.fontstringsB) do
-			local flag = ns.config.fontBigOutline
+		for _, fs in ipairs(ns.fontstringsC) do
+			local flag = ns.config.fontBarOutline
+			local _, size, oflag = fs:GetFont()
+			if fs.ignoreOutline then
+				flag = oflag
+			end
+			if (fs.basesize) then
+				fs:SetFont(file, fs.basesize * mult, flag)
+			else
+				fs:SetFont(file, size or 14, flag)
+			end
+		end
+		for i = 1, 3 do
+			local bar = _G["MirrorTimer" .. i]
+			local _, size = bar.text:GetFont()
+			bar.text:SetFont(file, size, ns.config.fontBarOutline)
+		end
+	end
+
+	do
+		local file = ns.config.fontLevel
+		local mult = ns.config.fontLevelSize
+
+		for _, fs in ipairs(ns.fontstringsD) do
+			local flag = ns.config.fontLevelOutline
 			local _, size, oflag = fs:GetFont()
 			if fs.ignoreOutline then
 				flag = oflag

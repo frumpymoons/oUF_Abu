@@ -252,7 +252,7 @@ local function UpdatePlayerFrame(self, ...)
 		end
 	end
 	
-	self.Health.Value:SetPoint('CENTER', self.Health, data.hpt.x, config.fontNormalOffset)
+	self.Health.Value:SetPoint('CENTER', self.Health, data.hpt.x, config.fontHealthOffset)
 	self.Power.Value:SetPoint('CENTER', self.Power, data.mpt.x, config.fontPowerOffset)
 
 	self.Name:SetPoint('TOP', self.Health, data.nam.x, data.nam.y)
@@ -384,7 +384,7 @@ local function UpdateUnitFrameLayout(frame)
 	frame.Power:SetPoint('TOPLEFT', frame.Health, 'BOTTOMLEFT', data.mpb.x, data.mpb.y)
 
 	-- HealthText
-	frame.Health.Value:SetPoint('CENTER', frame.Health, data.hpt.x, config.fontNormalOffset)
+	frame.Health.Value:SetPoint('CENTER', frame.Health, data.hpt.x, config.fontHealthOffset)
 	-- ManaText - not for tots
 	if frame.Power.Value then 
 		frame.Power.Value:SetPoint('CENTER', frame.Power, data.mpt.x, config.fontPowerOffset)
@@ -481,7 +481,7 @@ local function CreateUnitLayout(self, unit)
 	self.Health.colorSmooth = config.healthcolormode == 'NORMAL'
 
 	--[[	Health text 		]]
-	self.Health.Value = ns.CreateFontString(self, data.hpt.s, data.hpt.j)
+	self.Health.Value = ns.CreateFontStringNumber(self, data.hpt.s, data.hpt.j)
 		
 	--[[	Power bar 			]]
 	self.Power = ns.CreateStatusBar(self, nil, nil, true)
@@ -498,12 +498,12 @@ local function CreateUnitLayout(self, unit)
 
 	--[[	Power Text 		]]
 	if (data.mpt) then
-		self.Power.Value = ns.CreateFontString(self, data.mpt.s, data.mpt.j)
+		self.Power.Value = ns.CreateFontStringNumber(self, data.mpt.s, data.mpt.j)
 	end
 
 	--[[ 	Name Text		]]
 	if data.nam then
-		self.Name = ns.CreateFontStringBig(self, data.nam.s, data.nam.j)
+		self.Name = ns.CreateFontStringName(self, data.nam.s, data.nam.j)
 		self:Tag(self.Name, '[abu:name]')
 	end
 
@@ -532,9 +532,7 @@ local function CreateUnitLayout(self, unit)
 
 	if (self.IsMainFrame) then
 		--[[ 	Level text		]]
-		self.Level = self:CreateFontString(nil, 'ARTWORK')
-		self.Level:SetFont(config.fontNormal, 12, config.fontNormalOutline)
-		self.Level:SetShadowOffset(0, 0)
+		self.Level = ns.CreateFontStringNumber(self, 13, 'CENTER')
 		self.Level:SetPoint('CENTER', self.Texture, (self.cUnit == 'player' and -63) or 63, -17)
 		self:Tag(self.Level, '[abu:level]')
 
@@ -600,7 +598,7 @@ local function CreateUnitLayout(self, unit)
 		
 		-- Combat CombatFeedbackText 
 		if (config.combatText) then
-			self.CombatFeedbackText = ns.CreateFontString(self, 18, 'CENTER', 'OUTLINE')
+			self.CombatFeedbackText = ns.CreateFontStringNumber(self, 18, 'CENTER', 'OUTLINE')
 			self.CombatFeedbackText:SetPoint('CENTER', self.Portrait)
 		end
 	end
@@ -612,8 +610,8 @@ local function CreateUnitLayout(self, unit)
 		self.PortraitTimer.Icon = self.PortraitTimer:CreateTexture(nil, 'BACKGROUND')
 		self.PortraitTimer.Icon:SetAllPoints(self.Portrait)
 
-		self.PortraitTimer.Remaining = ns.CreateFontString(self.PortraitTimer, data.por.w/3.5, 'CENTER', 'OUTLINE')
-		self.PortraitTimer.Remaining:SetPoint('CENTER', self.PortraitTimer.Icon)
+		self.PortraitTimer.Remaining = ns.CreateFontStringNumber(self.PortraitTimer, data.por.w/3.5, 'CENTER', 'OUTLINE')
+		self.PortraitTimer.Remaining:SetPoint('CENTER', self.PortraitTimer.Icon, 'CENTER', 0, -2)
 		self.PortraitTimer.Remaining:SetTextColor(1, 1, 1)
 	end
 
@@ -771,7 +769,7 @@ local function CreateUnitLayout(self, unit)
 		end
 
 		-- PvPIndicator Timer
-		self.PvPIndicatorTimer = ns.CreateFontString(self, 13, 'CENTER')
+		self.PvPIndicatorTimer = ns.CreateFontStringNumber(self, 13, 'CENTER')
 		self.PvPIndicatorTimer:SetPoint('BOTTOM', self.PvPIndicator, 'TOP', 2, -24  )
 		self.PvPIndicatorTimer.frequentUpdates = 0.5
 		self:Tag(self.PvPIndicatorTimer, '[abu:pvptimer]')
@@ -1008,7 +1006,7 @@ oUF:Factory( function(self)
 		border:Hide()
 
 		local text = _G['MirrorTimer' .. i .. 'Text']
-		text:SetFont(config.fontBig, 13, config.fontBigOutline)
+		text:SetFont(config.fontBar, 13, config.fontBarOutline)
 		table.insert(ns.fontstrings, text)
 		text:ClearAllPoints()
 		text:SetPoint('CENTER', bar)

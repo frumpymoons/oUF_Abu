@@ -18,15 +18,24 @@ end
 
 -- [[	Default Settings	]] --
 ns.defaultConfig = {
-	fontNormal = 'Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontSmall.ttf',
-	fontNormalOutline = "NONE",
-	fontNormalSize = 1, -- relative size
-	fontNormalOffset = 0,
-	fontPowerOffset = 0,
+	fontNumber = 'Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontSmall.ttf',
+	fontNumberOutline = "NONE",
+	fontNumberSize = 1, -- relative size
 
-	fontBig = 'Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontThick.ttf',
-	fontBigOutline = "NONE",
-	fontBigSize = 1, -- relative size
+	fontName = 'Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontThick.ttf',
+	fontNameOutline = "NONE",
+	fontNameSize = 1, -- relative size
+
+	fontBar = 'Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontThick.ttf',
+	fontBarOutline = "NONE",
+	fontBarSize = 1, -- relative size
+
+	fontLevel = 'Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontThick.ttf',
+	fontLevelOutline = "NONE",
+	fontLevelSize = 1, -- relative size
+
+	fontHealthOffset = 0,
+	fontPowerOffset = 0,
 
 	castbars = true,
 	castbarSafezoneColor = {.8, 0.4, 0, 1},
