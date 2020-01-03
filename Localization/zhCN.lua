@@ -45,6 +45,7 @@ L.General = "基本"
 
 L.General_Party = "启用小队框体"
 L.General_PartyInRaid = "团队中显示小队框体"
+-- L.General_SelfInParty = "Display yourself in Party"
 L.General_Arena = "启用竞技场框体"
 L.General_Boss = "启用首领框体"
 L.General_Castbars = "启用施法条"

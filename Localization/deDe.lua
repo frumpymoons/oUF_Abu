@@ -46,6 +46,7 @@ L.General = "Allgemein"
 
 L.General_Party = "Gruppenfenster aktivieren"
 L.General_PartyInRaid = "Gruppenfenster im Schlachtzug anzeigen"
+L.General_SelfInParty = "Eigenen Charakter im Gruppenfenster anzeigen"
 L.General_Arena = "Arenafenster aktivieren"
 L.General_Boss = "Bossfenster aktivieren"
 L.General_Castbars = "Zauberleisten aktivieren"
