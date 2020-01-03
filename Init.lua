@@ -2,8 +2,10 @@
 local OUF_ABU, ns = ...
 local OUF_ABUOPTIONS = "oUF_AbuOptions"
 
-ns.fontstrings = {} -- For fonstrings
-ns.fontstringsB = {}-- For big fonstrings
+ns.fontstrings = {} -- For number fonstrings
+ns.fontstringsB = {}-- For name fonstrings
+ns.fontstringsC = {} -- For bar fonstrings
+ns.fontstringsD = {}-- For level fonstrings
 ns.statusbars = {}  -- For statusbars
 ns.paintframes = {} -- For coloring frames
 
@@ -173,7 +175,7 @@ function oUFAbu:START_TIMER(event)
 		for i = 1, select('#', bar:GetRegions()) do
 			local region = select(i, bar:GetRegions())
 			if (region and region:GetObjectType() == 'FontString') then
-				region:SetFont(ns.config.fontNormal, 13*ns.config.fontNormalSize, ns.config.fontNormalOutline)
+				region:SetFont(ns.config.fontNumber, 13*ns.config.fontNumberSize, ns.config.fontNumberOutline)
 			end
 		end
 	end

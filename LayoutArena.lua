@@ -86,10 +86,10 @@ function ns.createArenaLayout(self, unit)
 	self.Portrait.Override = updatePortrait
 	self:RegisterEvent('ARENA_OPPONENT_UPDATE', updatePortrait)
 
-	self.Health.Value = ns.CreateFontString(self.Health, 13)
+	self.Health.Value = ns.CreateFontStringNumber(self.Health, 13)
 	self.Health.Value:SetPoint('CENTER', self.Health)
 
-	self.Power.Value = ns.CreateFontString(self.Health, 13)
+	self.Power.Value = ns.CreateFontStringNumber(self.Health, 13)
 	self.Power.Value:SetPoint('CENTER', self.Power)
 
 	self:SetSize(167, 46)
@@ -114,7 +114,7 @@ function ns.createArenaLayout(self, unit)
 	table.insert(self.mouseovers, self.Power)
 
 	-- name
-	self.Name = ns.CreateFontStringBig(self.Health, 14, 'CENTER')
+	self.Name = ns.CreateFontStringName(self.Health, 14, 'CENTER')
 	self.Name:SetSize(110, 10)
 	self.Name:SetPoint('BOTTOM', self.Health, 'TOP', 0, 6)
 	self:Tag(self.Name, '[abu:name]')
@@ -129,7 +129,7 @@ function ns.createArenaLayout(self, unit)
 	self.PortraitTimer.Icon = self.PortraitTimer:CreateTexture(nil, 'BACKGROUND')
 	self.PortraitTimer.Icon:SetAllPoints(self.Portrait)
 
-	self.PortraitTimer.Remaining = ns.CreateFontString(self.PortraitTimer, self.Portrait:GetWidth()/3.5, 'CENTER', 'OUTLINE')
+	self.PortraitTimer.Remaining = ns.CreateFontStringNumber(self.PortraitTimer, self.Portrait:GetWidth()/3.5, 'CENTER', 'OUTLINE')
 	self.PortraitTimer.Remaining:SetPoint('CENTER', self.PortraitTimer.Icon)
 	self.PortraitTimer.Remaining:SetTextColor(1, 1, 1)
 

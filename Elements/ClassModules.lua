@@ -48,7 +48,7 @@ function ns.classModule.Totems(self, config, uconfig)
 		_G['TotemFrameTotem'..i.. 'Duration']:SetDrawLayer('OVERLAY')
 		_G['TotemFrameTotem'..i.. 'Duration']:ClearAllPoints()
 		_G['TotemFrameTotem'..i.. 'Duration']:SetPoint('BOTTOM', _G['TotemFrameTotem'..i], 0, 3)
-		_G['TotemFrameTotem'..i.. 'Duration']:SetFont(config.fontNormal, 10, 'OUTLINE')
+		_G['TotemFrameTotem'..i.. 'Duration']:SetFont(config.fontNumber, 10, 'OUTLINE')
 		_G['TotemFrameTotem'..i.. 'Duration']:SetShadowOffset(0, 0)
 	end
 
@@ -63,7 +63,7 @@ function ns.classModule.additionalPowerBar(self, config, uconfig)
 	self.AdditionalPower = ns.CreateOutsideBar(self, false, 0, 0, 1)
 	self.AdditionalPower.colorPower = true
 
-	self.AdditionalPower.Value = ns.CreateFontString(self.AdditionalPower, 13, 'CENTER')
+	self.AdditionalPower.Value = ns.CreateFontStringNumber(self.AdditionalPower, 13, 'CENTER')
 	self.AdditionalPower.Value:SetPoint('CENTER', self.AdditionalPower, 0, 0.5)
 	self.AdditionalPower.Value:Hide()
 	self:Tag(self.AdditionalPower.Value, '[abu:additionalpower]')

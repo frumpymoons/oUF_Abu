@@ -78,7 +78,7 @@ do
 		end
 		button.cd = cd
 
-		local count = ns.CreateFontString(button, 11, 'RIGHT', 'THINOUTLINE')
+		local count = ns.CreateFontStringNumber(button, 11, 'RIGHT', 'THINOUTLINE')
 		count:SetPoint('BOTTOMRIGHT', 2, 0)
 		button.count = count
 
@@ -96,7 +96,7 @@ do
 			if button.cd.SetHideCountdownNumbers then
 				button.cd:SetHideCountdownNumbers(true)
 			end
-			button.timer = ns.CreateFontString(button.cd, 12, 'CENTER', 'THINOUTLINE')
+			button.timer = ns.CreateFontStringNumber(button.cd, 12, 'CENTER', 'THINOUTLINE')
 			button.timer:SetPoint("CENTER", button, "TOP", 0, 0)
 		end
 
