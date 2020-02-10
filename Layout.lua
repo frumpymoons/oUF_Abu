@@ -302,21 +302,21 @@ local function UpdatePlayerFrame(self, ...)
 		self.PvPIndicator:SetPoint('TOPLEFT', self.Texture, 4, -28)
 		self.LeaderIndicator:SetPoint('TOPLEFT', self.Texture, 23, -14)
 		self.RaidTargetIndicator:SetPoint('CENTER', self.Portrait, 'TOP', 0, -5)
-		PlayerFrameVehicleTexture:Show();
+		PlayerFrameVehicleTexture:Show()
 
 		if ( self.classPowerBar ) then
-			self.classPowerBar:Hide();
+			self.classPowerBar:Hide()
 		end
 
 		TotemFrame:Hide();
 
 		if ( playerClass == "SHAMAN" ) then
 		elseif ( playerClass == "DRUID" ) then
-			--EclipseBarFrame:Hide();
+			-- EclipseBarFrame:Hide()
 		elseif ( playerClass == "DEATHKNIGHT" ) then
-			RuneFrame:Hide();
+			RuneFrame:Hide()
 		elseif ( playerClass == "PRIEST" ) then
-			PriestBarFrame:Hide();
+			PriestBarFrame:Hide()
 		end
 	else
 		self.Name:Hide()
@@ -641,17 +641,6 @@ local function CreateUnitLayout(self, unit)
 		self.RaidTargetIndicator:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
 		self.RaidTargetIndicator:SetSize(data.por.w/2.5, data.por.w/2.5)
 
-		--self.MasterLooterIndicator = self:CreateTexture(nil, 'OVERLAY', self)
-		--self.MasterLooterIndicator:SetSize(16, 16)
-		--if (self.cUnit == 'target' or self.cUnit == 'focus') then
-		--	self.MasterLooterIndicator:SetPoint('TOPLEFT', self.Portrait, 3, 3)
-		--elseif (self.IsTargetFrame) then
-		--	self.MasterLooterIndicator:SetPoint('CENTER', self.Portrait, 'TOPLEFT', 3, -3)
-		--elseif (self.IsPartyFrame) then  
-		--	self.MasterLooterIndicator:SetSize(14, 14)
-		--	self.MasterLooterIndicator:SetPoint('TOPLEFT', self.Texture, 29, 0)
-		--end
-
 		self.LeaderIndicator = self:CreateTexture(nil, 'OVERLAY', self)
 		self.LeaderIndicator:SetSize(16, 16)
 		if (self.cUnit == 'target' or self.cUnit == 'focus') then
@@ -949,8 +938,7 @@ oUF:Factory( function(self)
 			'showPlayer', config.showSelfInParty, 
 			'yOffset', -30
 		)
-
-		ns.CreateUnitAnchor(party, "oUF_AbuPartyUnitButton1", "oUF_AbuPartyUnitButton4", nil, 'party')
+		ns.CreateUnitAnchor(party, "oUF_AbuPartyUnitButton1", config.showSelfInParty and "oUF_AbuPartyUnitButton5" or "oUF_AbuPartyUnitButton4", nil, 'party')
 	end
 
 	if (config.showBoss) then
