@@ -66,7 +66,7 @@ do
 				SecureStateDriverManager:SetAttribute("setframe", self.object)
 				self.oldstate_driver = SecureStateDriverManager:GetAttribute("setstate"):gsub("state%-visibility%s", "") -- i suck at string formatting
 				local numMembers = math.max(GetNumSubgroupMembers(LE_PARTY_CATEGORY_HOME) or 0, GetNumSubgroupMembers(LE_PARTY_CATEGORY_INSTANCE) or 0)
-				self.object:SetAttribute("startingIndex", (numMembers - 3))
+				self.object:SetAttribute("startingIndex", (numMembers - (ns.config.showSelfInParty and 4 or 3)))
 				RegisterAttributeDriver(self.object, 'state-visibility', 'show')
 
 				for i = 1, self.object:GetNumChildren() do
