@@ -24,8 +24,8 @@ do
 			RegisterUnitWatch(obj, true)
 
 			obj:Show()
-			if obj.CCastbar then
-				obj.CCastbar:DummyCastbar()
+			if obj.Castbar then
+				obj.Castbar:DummyCastbar()
 			end
 		elseif (obj.old_unit) then
 			obj.unit = obj.old_unit or obj.unit
@@ -39,9 +39,9 @@ do
 				obj.old_OnUpdate = nil
 			end
 
-			if obj.CCastbar then
-				obj.CCastbar.casting = nil
-				obj.CCastbar:Hide()
+			if obj.Castbar then
+				obj.Castbar.casting = nil
+				obj.Castbar:Hide()
 			end
 			obj:UpdateAllElements("OnShow")
 		end
