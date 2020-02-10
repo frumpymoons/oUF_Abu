@@ -107,8 +107,29 @@ local BasePos = {
 	boss =		{'TOPRIGHT', 'TOPLEFT', -10, 0},
 	arena = 	{'TOPRIGHT', 'TOPLEFT', -30, -10},
 }
-function ns.CreateCastbars(self)
+local function UnrealCastbar(castbar)
+	castbar.duration = 0
+	castbar.max = 300
+	castbar:SetMinMaxValues(0, castbar.max)
+	castbar:SetValue(castbar.duration)
 
+	castbar.casting = 1
+	castbar.delay = 0
+	castbar.holdTime = 0
+	castbar.fadeOut = nil
+	castbar.channeling = nil
+
+	if(castbar.Text) then castbar.Text:SetText"Fake Cast" end
+	if(castbar.Icon) then castbar.Icon:SetTexture[[Interface\Icons\INV_Misc_Rune_01]] end
+	if(castbar.Time) then castbar.Time:SetText() end
+	if(castbar.Spark)then castbar.Spark:Show() end
+	castbar:SetAlpha(1.0)
+	castbar:Show()
+	if(castbar.PostCastStart) then
+		castbar:PostCastStart("player", "Fake Cast", 0)
+	end
+end
+function ns.CreateCastbars(self)
 	local uconfig = ns.config[self.cUnit]
 	if not uconfig.cbshow then return end
 
@@ -118,6 +139,7 @@ function ns.CreateCastbars(self)
 	Castbar:SetScale(uconfig.cbscale or 1)
 	Castbar:SetFrameStrata('HIGH')
 	ns.CreateBorder(Castbar, 12, 3)
+	Castbar:SetBorderPadding(3, 2, 3, 3)
 
 	if (BasePos[self.cUnit]) then
 		local point, rpoint, x, y = unpack(BasePos[self.cUnit])
@@ -136,25 +158,12 @@ function ns.CreateCastbars(self)
 		SafeZone:SetVertexColor(unpack(ns.config.castbarSafezoneColor))
 		table.insert(ns.statusbars, SafeZone)
 		Castbar.SafeZone = SafeZone
-
-		local Flash = CreateFrame("Frame", nil, Castbar)
-		Flash:SetAllPoints(Castbar)
-
-		ns.CreateBorder(Flash, 12, 3)
-		Flash:SetBorderTexture('white')
-		Flash:SetBorderColor(1, 1, 0.6)
-		if (uconfig.cbicon == 'RIGHT') then
-			Flash:SetBorderPadding(3, 3, 3, 4 + uconfig.cbheight)
-		elseif (uconfig.cbicon == 'LEFT') then
-			Flash:SetBorderPadding(3, 3, 4 + uconfig.cbheight, 3)
-		end
-		Castbar.Flash = Flash
 		Castbar.Ticks = ns.config.castbarticks
 	end
 	
 	local Spark = Castbar:CreateTexture(nil, "ARTWORK", nil, 1)
 	Spark:SetSize(15, (uconfig.cbheight * 2))
-	Spark:SetBlendMode("ADD")	
+	Spark:SetBlendMode("ADD")
 	Castbar.Spark = Spark
 
 	if (uconfig.cbicon ~= 'NONE') then
@@ -163,21 +172,21 @@ function ns.CreateCastbars(self)
 		Icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
 		if (uconfig.cbicon == 'RIGHT') then
 			Icon:SetPoint('LEFT', Castbar, 'RIGHT', 0, 0)
-			Castbar:SetBorderPadding(3, 3, 3, 4 + uconfig.cbheight)
+			Castbar:SetBorderPadding(3, 2, 3, 4 + uconfig.cbheight)
 		elseif (uconfig.cbicon == 'LEFT') then
 			Icon:SetPoint('RIGHT', Castbar, 'LEFT', 0, 0)
-			Castbar:SetBorderPadding(3, 3, 4 + uconfig.cbheight, 3)
+			Castbar:SetBorderPadding(3, 2, 4 + uconfig.cbheight, 3)
 		end
 		Castbar.Icon = Icon
 	end
 
 	Castbar.Time = ns.CreateFontStringBar(Castbar, 13, 'RIGHT')
-	Castbar.Time:SetPoint('RIGHT', Castbar, -5, -1)
+	Castbar.Time:SetPoint('RIGHT', Castbar, -5, 0)
 	Castbar.Time:SetFont(ns.config.fontBar, 12, ns.config.fontBarOutline)
 
 	Castbar.Text = ns.CreateFontStringBar(Castbar, 13, 'LEFT')
-	Castbar.Text:SetPoint('LEFT', Castbar, 4, -1)
-	Castbar.Text:SetPoint('RIGHT', Castbar, 'RIGHT', -40, -1)
+	Castbar.Text:SetPoint('LEFT', Castbar, 4, 0)
+	Castbar.Text:SetPoint('RIGHT', Castbar, 'RIGHT', -40, 0)
 	Castbar.Text:SetFont(ns.config.fontBar, 12, ns.config.fontBarOutline)
 	Castbar.Text:SetWordWrap(false)
 
@@ -191,7 +200,9 @@ function ns.CreateCastbars(self)
 	Castbar.PostChannelStart = ns.PostChannelStart
 	Castbar.PostChannelUpdate = ns.PostChannelStart
 
-	self.CCastbar = Castbar
+	Castbar.DummyCastbar = UnrealCastbar
+
+	self.Castbar = Castbar
 end
 
 function ns.PostCastStart(Castbar, unit, castID, spellID)
@@ -255,7 +266,7 @@ function ns.UpdateCastbarColor(Castbar, unit)
 
 	if UnitIsUnit(unit, "player") then
 		color = colors.class[select(2,UnitClass("player"))]
-	elseif Castbar.interrupt then
+	elseif Castbar.notInterruptible then
 		color = colors.uninterruptible
 		text = 'white'
 		bR, bG, bB = 0.8, 0.7, 0.2
