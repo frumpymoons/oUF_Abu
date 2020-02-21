@@ -54,10 +54,10 @@ do
 	end
 
 	local function CreateATick(Castbar)
-		local spark = Castbar:CreateTexture(nil, 'OVERLAY', nil, 1)
+		local spark = Castbar:CreateTexture(nil, "OVERLAY", nil, 1)
 		spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
 		spark:SetVertexColor(1, 1, 1, 1)
-		spark:SetBlendMode('ADD')
+		spark:SetBlendMode("ADD")
 		spark:SetWidth(10)
 		table.insert(Castbar.ticks, spark)
 		return spark
@@ -104,8 +104,8 @@ end
 --						Setup Castbars 							--
 ------------------------------------------------------------------
 local BasePos = {
-	boss =		{'TOPRIGHT', 'TOPLEFT', -10, 0},
-	arena = 	{'TOPRIGHT', 'TOPLEFT', -30, -10},
+	boss =		{"TOPRIGHT", "TOPLEFT", -10, 0},
+	arena = 	{"TOPRIGHT", "TOPLEFT", -30, -10},
 }
 local function UnrealCastbar(castbar)
 	castbar.duration = 0
@@ -133,11 +133,11 @@ function ns.CreateCastbars(self)
 	local uconfig = ns.config[self.cUnit]
 	if not uconfig.cbshow then return end
 
-	local Castbar = ns.CreateStatusBar(oUF_PetBattleFrameHider, 'BORDER', self:GetName()..'Castbar')
+	local Castbar = ns.CreateStatusBar(oUF_PetBattleFrameHider, "BORDER", self:GetName().."Castbar")
 	Castbar.__owner = self
 	Castbar:SetSize(uconfig.cbwidth, uconfig.cbheight)
 	Castbar:SetScale(uconfig.cbscale or 1)
-	Castbar:SetFrameStrata('HIGH')
+	Castbar:SetFrameStrata("HIGH")
 	ns.CreateBorder(Castbar, 12, 3)
 	Castbar:SetBorderPadding(3, 2, 3, 3)
 
@@ -148,12 +148,12 @@ function ns.CreateCastbars(self)
 		ns.CreateCastbarAnchor(Castbar)
 	end
 
-	Castbar.Background = Castbar:CreateTexture(nil, 'BACKGROUND')
-	Castbar.Background:SetTexture('Interface\\Buttons\\WHITE8x8')
+	Castbar.Background = Castbar:CreateTexture(nil, "BACKGROUND")
+	Castbar.Background:SetTexture("Interface\\Buttons\\WHITE8x8")
 	Castbar.Background:SetAllPoints(Castbar)
 
-	if (self.cUnit == 'player') then
-		local SafeZone = Castbar:CreateTexture(nil, 'BORDER') 
+	if (self.cUnit == "player") then
+		local SafeZone = Castbar:CreateTexture(nil, "BORDER") 
 		SafeZone:SetTexture(ns.config.statusbar)
 		SafeZone:SetVertexColor(unpack(ns.config.castbarSafezoneColor))
 		table.insert(ns.statusbars, SafeZone)
@@ -166,27 +166,27 @@ function ns.CreateCastbars(self)
 	Spark:SetBlendMode("ADD")
 	Castbar.Spark = Spark
 
-	if (uconfig.cbicon ~= 'NONE') then
-		local Icon = Castbar:CreateTexture(nil, 'ARTWORK')
+	if (uconfig.cbicon ~= "NONE") then
+		local Icon = Castbar:CreateTexture(nil, "ARTWORK")
 		Icon:SetSize(uconfig.cbheight + 2, uconfig.cbheight + 2)
 		Icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
-		if (uconfig.cbicon == 'RIGHT') then
-			Icon:SetPoint('LEFT', Castbar, 'RIGHT', 0, 0)
+		if (uconfig.cbicon == "RIGHT") then
+			Icon:SetPoint("LEFT", Castbar, "RIGHT", 0, 0)
 			Castbar:SetBorderPadding(3, 2, 3, 4 + uconfig.cbheight)
-		elseif (uconfig.cbicon == 'LEFT') then
-			Icon:SetPoint('RIGHT', Castbar, 'LEFT', 0, 0)
+		elseif (uconfig.cbicon == "LEFT") then
+			Icon:SetPoint("RIGHT", Castbar, "LEFT", 0, 0)
 			Castbar:SetBorderPadding(3, 2, 4 + uconfig.cbheight, 3)
 		end
 		Castbar.Icon = Icon
 	end
 
-	Castbar.Time = ns.CreateFontStringBar(Castbar, 13, 'RIGHT')
-	Castbar.Time:SetPoint('RIGHT', Castbar, -5, 0)
+	Castbar.Time = ns.CreateFontStringBar(Castbar, 13, "RIGHT")
+	Castbar.Time:SetPoint("RIGHT", Castbar, -5, 0)
 	Castbar.Time:SetFont(ns.config.fontBar, 12, ns.config.fontBarOutline)
 
-	Castbar.Text = ns.CreateFontStringBar(Castbar, 13, 'LEFT')
-	Castbar.Text:SetPoint('LEFT', Castbar, 4, 0)
-	Castbar.Text:SetPoint('RIGHT', Castbar, 'RIGHT', -40, 0)
+	Castbar.Text = ns.CreateFontStringBar(Castbar, 13, "LEFT")
+	Castbar.Text:SetPoint("LEFT", Castbar, 4, 0)
+	Castbar.Text:SetPoint("RIGHT", Castbar, "RIGHT", -40, 0)
 	Castbar.Text:SetFont(ns.config.fontBar, 12, ns.config.fontBarOutline)
 	Castbar.Text:SetWordWrap(false)
 
@@ -206,7 +206,7 @@ function ns.CreateCastbars(self)
 end
 
 function ns.PostCastStart(Castbar, unit, castID, spellID)
-	if (unit == 'pet') then
+	if (unit == "pet") then
 		Castbar:SetAlpha(1)
 		if ignorePetSpells[spellID] then
 			Castbar:SetAlpha(0)
@@ -246,7 +246,7 @@ function ns.PostStop(Castbar, unit, castID, spellID)
 end
 
 function ns.PostChannelStart(Castbar, unit, castID, spellID)
-	if (unit == 'pet' and Castbar:GetAlpha() == 0) then
+	if (unit == "pet" and Castbar:GetAlpha() == 0) then
 		Castbar:SetAlpha(1)
 	end
 
@@ -262,13 +262,13 @@ end
 function ns.UpdateCastbarColor(Castbar, unit)
 	local color
 	local bR, bG, bB = ns.GetPaintColor(0.2)
-	local text = 'default'
+	local text = "default"
 
 	if UnitIsUnit(unit, "player") then
 		color = colors.class[select(2,UnitClass("player"))]
 	elseif Castbar.notInterruptible then
 		color = colors.uninterruptible
-		text = 'white'
+		text = "white"
 		bR, bG, bB = 0.8, 0.7, 0.2
 	elseif UnitIsFriend(unit, "player") then
 		color = colors.reaction[5]

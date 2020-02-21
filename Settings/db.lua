@@ -2,9 +2,9 @@ local _, ns = ...
 
 -- [[ Default Aura Filter ]] --
 ns.defaultAuras = {
-	['general'] = { },
-	['boss'] = { },
-	['arena'] = { },
+	["general"] = { },
+	["boss"] = { },
+	["arena"] = { },
 }
 
 do
@@ -18,19 +18,19 @@ end
 
 -- [[	Default Settings	]] --
 ns.defaultConfig = {
-	fontNumber = 'Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontSmall.ttf',
+	fontNumber = "Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontSmall.ttf",
 	fontNumberOutline = "NONE",
 	fontNumberSize = 1, -- relative size
 
-	fontName = 'Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontThick.ttf',
+	fontName = "Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontThick.ttf",
 	fontNameOutline = "NONE",
 	fontNameSize = 1, -- relative size
 
-	fontBar = 'Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontThick.ttf',
+	fontBar = "Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontThick.ttf",
 	fontBarOutline = "NONE",
 	fontBarSize = 1, -- relative size
 
-	fontLevel = 'Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontThick.ttf',
+	fontLevel = "Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontThick.ttf",
 	fontLevelOutline = "NONE",
 	fontLevelSize = 1, -- relative size
 
@@ -45,10 +45,10 @@ ns.defaultConfig = {
 	colorPlayerDebuffsOnly = true,
 	largePlayerAuras = true,
 
-	healthcolormode = 'CLASS',
+	healthcolormode = "CLASS",
 	healthcolor = { 0.0, 0.1, 0.0 },
 
-	powercolormode = 'TYPE',
+	powercolormode = "TYPE",
 	powerUseAtlas = true, --todo
 	powerPredictionBar = true, --todoo
 	builderSpender = true, --todo
@@ -69,19 +69,19 @@ ns.defaultConfig = {
 	showArena = true,
 	showBoss = true,
 
-	borderType = 'abu',
-	textureBorder = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\2borderNormal',
-	textureBorderWhite = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\2borderWhite',
-	textureBorderShadow = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\2borderShadow',
+	borderType = "abu",
+	textureBorder = "Interface\\AddOns\\oUF_Abu\\Media\\Border\\2borderNormal",
+	textureBorderWhite = "Interface\\AddOns\\oUF_Abu\\Media\\Border\\2borderWhite",
+	textureBorderShadow = "Interface\\AddOns\\oUF_Abu\\Media\\Border\\2borderShadow",
 
-	statusbar = 'Interface\\AddOns\\oUF_AbuRaid\\Media\\HalH',
+	statusbar = "Interface\\AddOns\\oUF_AbuRaid\\Media\\HalH",
 	frameColor = {0.5, 0.5, 0.4},
-	playerStyle = 'normal',
-	customPlayerTexture = 'Interface\\AddOns\\oUF_Abu\\Media\\Frames\\CUSTOMPLAYER-FRAME',
-	frameStyle = 'normal',
+	playerStyle = "normal",
+	customPlayerTexture = "Interface\\AddOns\\oUF_Abu\\Media\\Frames\\CUSTOMPLAYER-FRAME",
+	frameStyle = "normal",
 
-	focMod = 'shift-',
-	focBut = '1',
+	focMod = "shift-",
+	focBut = "1",
 	castbarticks = true,
 	useAuraTimer = true,
 	clickThrough = false,
@@ -139,8 +139,8 @@ ns.defaultConfig = {
 
 	showComboPoints = true,
 
-	absorbtexture = 'Interface\\AddOns\\oUF_Abu\\Media\\Texture\\absorbTexture',
-	absorbspark = 'Interface\\AddOns\\oUF_Abu\\Media\\Texture\\absorbSpark',
+	absorbtexture = "Interface\\AddOns\\oUF_Abu\\Media\\Texture\\absorbTexture",
+	absorbspark = "Interface\\AddOns\\oUF_Abu\\Media\\Texture\\absorbSpark",
 
  	player = {
  		style = "fat",
@@ -150,9 +150,9 @@ ns.defaultConfig = {
 		cbshow = true, 
 		cbwidth = 200,
 		cbheight = 18,
-		cbicon = 'NONE',
-		position = 'CENTER/-205/-160',
-		cbposition = 'BOTTOM/0/150',
+		cbicon = "NONE",
+		position = "CENTER/-205/-160",
+		cbposition = "BOTTOM/0/150",
 		cbscale = 1.2,
 	},
 
@@ -164,9 +164,9 @@ ns.defaultConfig = {
 		cbshow = true, 
 		cbwidth = 200,
 		cbheight = 18,
-		cbicon = 'NONE',
+		cbicon = "NONE",
 		position = "BOTTOM/-217/178",
-		cbposition = 'BOTTOM/0/180',
+		cbposition = "BOTTOM/0/180",
 		cbscale = 1.2,
 	},
 
@@ -180,9 +180,9 @@ ns.defaultConfig = {
 		cbshow = true, 
 		cbwidth = 200,
 		cbheight = 18,
-		cbicon = 'NONE',
-		position = 'CENTER/205/-160',
-		cbposition = 'BOTTOM/0/350',
+		cbicon = "NONE",
+		position = "CENTER/205/-160",
+		cbposition = "BOTTOM/0/350",
 		cbscale = 1.2,
 	},
 	
@@ -201,12 +201,12 @@ ns.defaultConfig = {
 		PowerTag = "PERCENT",
 		buffPos = "NONE",
 		debuffPos = "BOTTOM",
-		position = 'LEFT/300/80',
+		position = "LEFT/300/80",
 		cbshow = true, 
 		cbwidth = 180,
 		cbheight = 20,
-		cbicon = 'NONE',
-		cbposition = 'LEFT/300/125',
+		cbicon = "NONE",
+		cbposition = "LEFT/300/125",
 		cbscale = 1.2,
 	},
 	
@@ -223,7 +223,7 @@ ns.defaultConfig = {
 		scale = 1.1,
 		HealthTag = "MINIMAL",
 		PowerTag = "DISABLE",
-		position = 'LEFT/80/290'
+		position = "LEFT/80/290"
 	},
 
 	boss = {
@@ -234,11 +234,12 @@ ns.defaultConfig = {
 		cboffset = {0, 0},
 		cbwidth = 150,
 		cbheight = 18,
-		cbicon = 'NONE',
-		position = 'RIGHT/-188/255'
+		cbicon = "NONE",
+		position = "RIGHT/-188/255"
 	},
 
 	arena = {
+		style = "fat",
 		scale = 1.1,
 		HealthTag = "BOTH",
 		PowerTag = "PERCENT",
@@ -246,12 +247,12 @@ ns.defaultConfig = {
 		cbshow = true, 
 		cbwidth = 150,
 		cbheight = 22,
-		cbicon = 'NONE',
-		position = 'RIGHT/-175/225'
+		cbicon = "NONE",
+		position = "RIGHT/-175/225"
 	},
 }
 -----------------------------------------------------------------------
 ns.defaultProfiles = {
-	auraprofile = 'Default',
-	profile = 'Default',
+	auraprofile = "Default",
+	profile = "Default",
 }

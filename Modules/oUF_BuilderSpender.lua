@@ -1,13 +1,13 @@
 --[[ Element: Builder Spender
-local FeedBackFrame = CreateFrame('Frame', nil, self.Power, 'BuilderSpenderFrame')
+local FeedBackFrame = CreateFrame("Frame", nil, self.Power, "BuilderSpenderFrame")
 FeedbackFrame:SetFrameLevel(self.Power:GetFrameLevel())
 FeedbackFrame:SetAllPoints(self.Power)
-FeedbackFrame:SetPoint('TOPLEFT', self.Power, 'TOPLEFT', 0, -1)
+FeedbackFrame:SetPoint("TOPLEFT", self.Power, "TOPLEFT", 0, -1)
 self.Power.FeedBackFrame = FeedBackFrame
 
-local FullPowerFrame = CreateFrame('Frame', nil, self.Power, 'FullResourcePulseFrame')
+local FullPowerFrame = CreateFrame("Frame", nil, self.Power, "FullResourcePulseFrame")
 FullPowerFrame:SetAllPoints(self.Power)
-FullPowerFrame:SetPoint('TOPRIGHT')
+FullPowerFrame:SetPoint("TOPRIGHT")
 self.Power.FullPowerFrame = FullPowerFrame
 ]]
 
@@ -69,7 +69,7 @@ local Update = function(self, event, unit)
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
 	local currValue = UnitPower(self.unit, element.powerType)
-	if ( currValue ~= element.currValue or event == 'ForceUpdate' ) then
+	if ( currValue ~= element.currValue or event == "ForceUpdate" ) then
 		if ( element.FeedbackFrame ) then
 			-- Only show anim if change is more than 10%
 			local oldValue = element.currValue or 0;
@@ -133,7 +133,7 @@ end
 
 local Enable = function(self, unit)
 	local element = self.BuilderSpender
-	if(unit == 'player' and element) then 
+	if(unit == "player" and element) then 
 
 		local feedback = element.FeedbackFrame
 		local fullpower = element.FullPowerFrame
@@ -143,14 +143,14 @@ local Enable = function(self, unit)
 			element.ForceUpdate = ForceUpdate
 
 			--Update
-			self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+			self:RegisterEvent("UNIT_POWER_FREQUENT", Path)
 
 			--Initialize
-			self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-			self:RegisterEvent('PLAYER_ALIVE', VisibilityPath, true)
-			self:RegisterEvent('PLAYER_DEAD', VisibilityPath, true)
-			self:RegisterEvent('PLAYER_UNGHOST', VisibilityPath, true)
-			self:RegisterEvent('UNIT_MAXPOWER', VisibilityPath)
+			self:RegisterEvent("UNIT_DISPLAYPOWER", VisibilityPath)
+			self:RegisterEvent("PLAYER_ALIVE", VisibilityPath, true)
+			self:RegisterEvent("PLAYER_DEAD", VisibilityPath, true)
+			self:RegisterEvent("PLAYER_UNGHOST", VisibilityPath, true)
+			self:RegisterEvent("UNIT_MAXPOWER", VisibilityPath)
 
 			return true
 		end
@@ -161,15 +161,15 @@ local Disable = function(self)
 	local element = self.BuilderSpender
 	if(element) then
 		--Update
-		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
+		self:UnregisterEvent("UNIT_POWER_FREQUENT", Path)
 
 		--Initialize
-		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-		self:UnregisterEvent('PLAYER_ALIVE', VisibilityPath)
-		self:UnregisterEvent('PLAYER_DEAD', VisibilityPath)
-		self:UnregisterEvent('PLAYER_UNGHOST', VisibilityPath)
-		self:UnregisterEvent('UNIT_MAXPOWER', VisibilityPath)
+		self:UnregisterEvent("UNIT_DISPLAYPOWER", VisibilityPath)
+		self:UnregisterEvent("PLAYER_ALIVE", VisibilityPath)
+		self:UnregisterEvent("PLAYER_DEAD", VisibilityPath)
+		self:UnregisterEvent("PLAYER_UNGHOST", VisibilityPath)
+		self:UnregisterEvent("UNIT_MAXPOWER", VisibilityPath)
 	end
 end
 
-oUF:AddElement('BuilderSpender', VisibilityPath, Enable, Disable)
+oUF:AddElement("BuilderSpender", VisibilityPath, Enable, Disable)

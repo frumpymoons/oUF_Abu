@@ -67,7 +67,7 @@ do
 				self.oldstate_driver = SecureStateDriverManager:GetAttribute("setstate"):gsub("state%-visibility%s", "") -- i suck at string formatting
 				local numMembers = math.max(GetNumSubgroupMembers(LE_PARTY_CATEGORY_HOME) or 0, GetNumSubgroupMembers(LE_PARTY_CATEGORY_INSTANCE) or 0)
 				self.object:SetAttribute("startingIndex", (numMembers - (ns.config.showSelfInParty and 4 or 3)))
-				RegisterAttributeDriver(self.object, 'state-visibility', 'show')
+				RegisterAttributeDriver(self.object, "state-visibility", "show")
 
 				for i = 1, self.object:GetNumChildren() do
 					local obj = select(i, self.object:GetChildren())
@@ -108,15 +108,15 @@ local function anchor_GetCurrent(anchor)
 	-- GetPoint doesnt give from the point "TOP" so lets figure it out
 	local width, height = anchor:GetSize()
 
-	if point:find('LEFT') then
+	if point:find("LEFT") then
 		x = x + (width / 2 )
-	elseif  point:find('RIGHT') then
+	elseif  point:find("RIGHT") then
 		x = x - (width / 2)
 	end
 
-	if point:find('BOTTOM') then
+	if point:find("BOTTOM") then
 		y = y + height
-	elseif (not point:find('TOP')) then
+	elseif (not point:find("TOP")) then
 		y = y + height/2
 	end
 
@@ -136,7 +136,7 @@ local function anchor_GetSaved(anchor, default)
 		data = ns.defaultConfig[anchor.key1][anchor.key2]
 	end
 
-	local rp, x, y = string.split('/', data)
+	local rp, x, y = string.split("/", data)
 	return POINT, PARENT, rp, tonumber(x), tonumber(y)
 end
 
@@ -147,7 +147,7 @@ local function anchor_Save(anchor, reset)
 	else
 		_, _, rp, x, y = anchor_GetCurrent(anchor)
 	end
-	ns.config[anchor.key1][anchor.key2] = string.format('%s/%d/%d', rp, x, y)
+	ns.config[anchor.key1][anchor.key2] = string.format("%s/%d/%d", rp, x, y)
 end
 
 -------------------------------------------------------------------------
@@ -155,9 +155,9 @@ end
 
 local AnchorFrames = {}
 local function CreateAnchor(frame, name, key1, key2, tlP, brP, strata)
-	local anchor = CreateFrame('Button', name..'Anchor', UIParent)
+	local anchor = CreateFrame("Button", name.."Anchor", UIParent)
 	anchor:EnableMouse(true)
-	anchor:SetFrameStrata(strata or 'HIGH')
+	anchor:SetFrameStrata(strata or "HIGH")
 	anchor:SetMovable(true)
 	anchor:RegisterForDrag("LeftButton")
 	anchor:RegisterForClicks("AnyUp")
@@ -169,14 +169,14 @@ local function CreateAnchor(frame, name, key1, key2, tlP, brP, strata)
 	anchor.key1 = key1
 	anchor.key2 = key2
 
-	anchor:SetScript('OnMouseUp', function(self, button)
+	anchor:SetScript("OnMouseUp", function(self, button)
 		if (IsAltKeyDown()) and (button == "LeftButton") then
 			anchor_Save(self, true)
 		end
 		self:Update()
 	end)
 
-	anchor:SetScript('OnDragStart', function(self)
+	anchor:SetScript("OnDragStart", function(self)
 		if IsShiftKeyDown() then
 			self.isMoving = true
 			self:StartMoving()
@@ -184,7 +184,7 @@ local function CreateAnchor(frame, name, key1, key2, tlP, brP, strata)
 		end
 	end)
 
-	anchor:SetScript('OnDragStop', function(self)
+	anchor:SetScript("OnDragStop", function(self)
 		if self.isMoving then
 			self:StopMovingOrSizing()
 			anchor_Save(self)
@@ -201,8 +201,8 @@ local function CreateAnchor(frame, name, key1, key2, tlP, brP, strata)
 		obj:SetPoint(anchor_GetSaved(self))
 		
 		self:ClearAllPoints()
-		self:SetPoint('TOPLEFT', self.topleftPoint)
-		self:SetPoint('BOTTOMRIGHT', self.botrightPoint)
+		self:SetPoint("TOPLEFT", self.topleftPoint)
+		self:SetPoint("BOTTOMRIGHT", self.botrightPoint)
 	end
 
 	anchor.Release = function(self)
@@ -229,16 +229,16 @@ end
 
 function ns.CreateUnitAnchor(frame, tlP, brP, strata, ...) -- ... = unit(s)
 	local key1 = frame.cUnit or ...
-	local anchor = CreateAnchor(frame, frame:GetName():gsub("%d", ""), key1, 'position', tlP, brP, strata)
+	local anchor = CreateAnchor(frame, frame:GetName():gsub("%d", ""), key1, "position", tlP, brP, strata)
 
 	anchor.units = {...}
-	anchor.isHeader = frame:GetAttribute('oUF-headerType') and true or false
+	anchor.isHeader = frame:GetAttribute("oUF-headerType") and true or false
 	anchor.objectname = L[key1]
 
 	enableDummies(anchor)
 	-- Forces the creation of header children, so we get the full size
 	if anchor.isHeader then
-		anchor:GetScript('OnShow')(anchor)
+		anchor:GetScript("OnShow")(anchor)
 	end
 
 	anchor:Update()
@@ -251,7 +251,7 @@ function ns.CreateCastbarAnchor(frame)
 	local name = frame:GetName()
 	local key1 = frame.__owner.cUnit
 
-	local a = CreateAnchor(frame, name, key1, 'cbposition', name, name)
+	local a = CreateAnchor(frame, name, key1, "cbposition", name, name)
 	a.objectname = L[key1].." "..L.Castbar
 
 	a:Update()

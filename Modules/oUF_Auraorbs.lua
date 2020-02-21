@@ -18,7 +18,7 @@ Example
 		maxStacks = 4,
 	}
 	for i = 1, 4 do
-		local orb = self:CreateTexture(nil, 'BACKGROUND')
+		local orb = self:CreateTexture(nil, "BACKGROUND")
 		-- pos/size/texture stuff
 
 		AuraOrbs[i] = orb

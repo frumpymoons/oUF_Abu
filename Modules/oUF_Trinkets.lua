@@ -1,9 +1,9 @@
 local _, ns = ...
 local oUF = ns.oUF or oUF
-assert(oUF, 'oUF not loaded')
+assert(oUF, "oUF not loaded")
 
 local trinketSpells = {
-	[208683] = 120, --Gladiator's Medallion	
+	[208683] = 120, --Gladiator"s Medallion	
 	[195710] = 180, --honorable-medallion
 	--[7744] = 30, --will of the forsaken
 	[59752] = 90, -- Every man for himself
@@ -19,7 +19,7 @@ end
 
 local function Update(self, event, ...)
 	local _, instanceType = IsInInstance();
-	if instanceType ~= 'arena' then
+	if instanceType ~= "arena" then
 		self.Trinket:Hide();
 		return;
 	else
@@ -40,7 +40,7 @@ local function Update(self, event, ...)
 				self.Trinket.Icon:SetTexture(GetTrinketIcon(unit))
 			end
 		end
-	elseif event == 'PLAYER_ENTERING_WORLD' then
+	elseif event == "PLAYER_ENTERING_WORLD" then
 		CooldownFrame_Set(self.Trinket.cooldownFrame, 1, 1, 1)
 	end
 	
@@ -62,7 +62,7 @@ local Enable = function(self)
 			self.Trinket.Icon = self.Trinket:CreateTexture(nil, "BORDER")
 			self.Trinket.Icon:SetAllPoints(self.Trinket)
 			self.Trinket.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
-			self.Trinket.Icon:SetTexture(GetTrinketIcon('player'))
+			self.Trinket.Icon:SetTexture(GetTrinketIcon("player"))
 		end
 
 		return true
@@ -78,4 +78,4 @@ local Disable = function(self)
 	end
 end
  
-oUF:AddElement('Trinket', Update, Enable, Disable)
+oUF:AddElement("Trinket", Update, Enable, Disable)
