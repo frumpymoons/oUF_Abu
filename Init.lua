@@ -48,7 +48,7 @@ ALT_MANA_BAR_PAIR_DISPLAY_INFO.DRUID[3] = true
 
 ------------------------------------------------------------------------
 --  Event handler
-local oUFAbu = CreateFrame("Frame", 'oUFAbu')
+local oUFAbu = CreateFrame("Frame", "oUFAbu")
 oUFAbu:RegisterEvent("ADDON_LOADED")
 oUFAbu:SetScript("OnEvent", function(self, event, ...)
 	return self[event] and self[event](self, event, ...)
@@ -73,7 +73,7 @@ function oUFAbu:ADDON_LOADED(event, addon)
 		self:SetupSettings()
 
 		-- Focus Key
-		if (ns.config.focBut ~= 'NONE') then
+		if (ns.config.focBut ~= "NONE") then
 			--Blizzard raid frame
 			hooksecurefunc("CompactUnitFrame_SetUpFrame", function(frame, ...)
 				if ((UnitAffectingCombat("player") or UnitAffectingCombat("pet"))) then return; end
@@ -86,22 +86,22 @@ function oUFAbu:ADDON_LOADED(event, addon)
 			SetOverrideBindingClick(Focuser, true, ns.config.focMod.."BUTTON"..ns.config.focBut, "Focuser")
 		end
 
-		--Border Texture
-		local prefix = ''
-		if (ns.config.borderType == 'neal') then
-			prefix = ''
-		elseif(ns.config.borderType == 'abu') then
-			prefix = '2'
+		-- Border Texture
+		local prefix = ""
+		if (ns.config.borderType == "neal") then
+			prefix = ""
+		elseif(ns.config.borderType == "abu") then
+			prefix = "2"
 		end	
-		ns.config.textureBorder = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\'..prefix..'borderNormal' 
-		ns.config.textureBorderWhite = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\'..prefix..'borderWhite'
-		ns.config.textureBorderShadow = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\'..prefix..'borderShadow'
+		ns.config.textureBorder = "Interface\\AddOns\\oUF_Abu\\Media\\Border\\"..prefix.."borderNormal" 
+		ns.config.textureBorderWhite = "Interface\\AddOns\\oUF_Abu\\Media\\Border\\"..prefix.."borderWhite"
+		ns.config.textureBorderShadow = "Interface\\AddOns\\oUF_Abu\\Media\\Border\\"..prefix.."borderShadow"
 
 		self:UnregisterEvent(event)
 		self:RegisterEvent("PLAYER_LOGOUT") -- For cleaning DB on logout
 
 		self:RegisterEvent("MODIFIER_STATE_CHANGED") -- Showing auras
-		self:RegisterEvent("PLAYER_TARGET_CHANGED") --  Target sounds
+		self:RegisterEvent("PLAYER_TARGET_CHANGED") -- Target sounds
 		self:RegisterEvent("PLAYER_FOCUS_CHANGED") -- Focus Sounds
 
 		-- Setup Options
@@ -134,47 +134,47 @@ end
 
 function oUFAbu:PLAYER_TARGET_CHANGED(self, event, ...)
 	CloseDropDownMenus()
-	PlayTargetSounds('target')
+	PlayTargetSounds("target")
 end
 
 function oUFAbu:PLAYER_FOCUS_CHANGED(self, event, ...)
-	PlayTargetSounds('focus')
+	PlayTargetSounds("focus")
 end
 
 ----------------------------------------------------------------------
 --	Skin the blizzard Countdown Timers
 function oUFAbu:START_TIMER(event)
 	for _, b in pairs(TimerTracker.timerList) do
-		local bar = b['bar']
+		local bar = b["bar"]
 		if (not bar.borderTextures) then
 			bar:SetScale(1.132)
 			bar:SetSize(220, 18)
 
-			for i = 1, select('#', bar:GetRegions()) do
+			for i = 1, select("#", bar:GetRegions()) do
 				local region = select(i, bar:GetRegions())
 
-				if (region and region:GetObjectType() == 'Texture') then
+				if (region and region:GetObjectType() == "Texture") then
 					region:SetTexture(nil)
 				end
 
-				if (region and region:GetObjectType() == 'FontString') then
+				if (region and region:GetObjectType() == "FontString") then
 					region:ClearAllPoints()
-					region:SetPoint('CENTER', bar)
+					region:SetPoint("CENTER", bar)
 				end
 			end
 
 			ns.CreateBorder(bar, 11, 3)
 
 			local backdrop = select(1, bar:GetRegions())
-			backdrop:SetTexture('Interface\\Buttons\\WHITE8x8')
+			backdrop:SetTexture("Interface\\Buttons\\WHITE8x8")
 			backdrop:SetVertexColor(0, 0, 0, 0.5)
 			backdrop:SetAllPoints(bar)
 		end
 
 		bar:SetStatusBarTexture(ns.config.statusbar)
-		for i = 1, select('#', bar:GetRegions()) do
+		for i = 1, select("#", bar:GetRegions()) do
 			local region = select(i, bar:GetRegions())
-			if (region and region:GetObjectType() == 'FontString') then
+			if (region and region:GetObjectType() == "FontString") then
 				region:SetFont(ns.config.fontNumber, 13*ns.config.fontNumberSize, ns.config.fontNumberOutline)
 			end
 		end
@@ -183,8 +183,8 @@ end
 ----------------------[[	View Auras      ]]-------------------------
 function oUFAbu:MODIFIER_STATE_CHANGED(event, key, state)
 	if 	
-		( IsControlKeyDown() and (key == 'LALT' or key == 'RALT')) or
-		( IsAltKeyDown() and (key == 'LCTRL' or key == 'RCTRL')) 
+		( IsControlKeyDown() and (key == "LALT" or key == "RALT")) or
+		( IsAltKeyDown() and (key == "LCTRL" or key == "RCTRL")) 
 	then
 		local a, b
 		if state == 1 then
@@ -214,11 +214,11 @@ end
 
 ----------------------[[	Setup Options   ]]-------------------------
 function oUFAbu:SetupOptions()
-	local options = CreateFrame('Frame', OUF_ABUOPTIONS)
+	local options = CreateFrame("Frame", OUF_ABUOPTIONS)
 	options:Hide()
-	options.name = 'oUF Abu'
+	options.name = "oUF Abu"
 
-	local auras = CreateFrame("Frame", 'oUF_AbuAuraFilters', options)
+	local auras = CreateFrame("Frame", "oUF_AbuAuraFilters", options)
 	auras.name = ns.L.AuraFilters
 	auras.parent = options.name
 
@@ -237,15 +237,9 @@ function oUFAbu:SetupOptions()
 		InterfaceOptionsFrameOkay:Click()
 	end)
 
-	--InterfaceOptionsUnitFramePanelPartyPets:Disable()
-	--InterfaceOptionsUnitFramePanelArenaEnemyFrames:Disable()
-	--InterfaceOptionsUnitFramePanelArenaEnemyCastBar:Disable()
-	--InterfaceOptionsUnitFramePanelArenaEnemyPets:Disable()
-	--InterfaceOptionsUnitFramePanelFullSizeFocusFrame:Disable()
-
 	_G.SLASH_OUFABU1 = "/ouf"
 	_G.SLASH_OUFABU2 = "/oufabu"
-	SlashCmdList['OUFABU'] = function(...)
+	SlashCmdList["OUFABU"] = function(...)
 		self:OnSlashCommand(...)
 	end
 end
@@ -254,7 +248,7 @@ function oUFAbu:LoadOptions()
 	if IsAddOnLoaded(OUF_ABUOPTIONS) then return true; end
 
 	if InCombatLockdown() then
-		ns.Print(ns.L['OptionsLoadAfterCombat'])
+		ns.Print(ns.L["OptionsLoadAfterCombat"])
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		return false
 	end
@@ -269,19 +263,19 @@ function oUFAbu:PLAYER_REGEN_ENABLED(event)
 	self.localization = ns.L -- locale for options
 	local loaded, reason = LoadAddOn(OUF_ABUOPTIONS)
 	if not loaded then
-		ns.Print(string.format(ADDON_LOAD_FAILED, OUF_ABUOPTIONS, _G['ADDON_'..reason]))
+		ns.Print(string.format(ADDON_LOAD_FAILED, OUF_ABUOPTIONS, _G["ADDON_"..reason]))
 		return;
 	end
-	InterfaceOptionsFrame_OpenToCategory('oUF Abu')
-	InterfaceOptionsFrame_OpenToCategory('oUF Abu')
+	InterfaceOptionsFrame_OpenToCategory("oUF Abu")
+	InterfaceOptionsFrame_OpenToCategory("oUF Abu")
 end
 
 function oUFAbu:OnSlashCommand(command)
 	if (command == "lock" or command == "unlock") then
 		self:ToggleAllAnchors()
 	elseif self:LoadOptions() then
-		InterfaceOptionsFrame_OpenToCategory('oUF Abu')
-		InterfaceOptionsFrame_OpenToCategory('oUF Abu')
+		InterfaceOptionsFrame_OpenToCategory("oUF Abu")
+		InterfaceOptionsFrame_OpenToCategory("oUF Abu")
 	end
 end
 
@@ -290,7 +284,8 @@ function ns.Print(...)
 		return print("|cffffcf00oUF_Abu: |r"..select(1, ...), select(2, ...))
 	end
 end
---i hate you effort
+
+-- i hate you effort
 function oUFAbu:Print(...)
 	return ns.Print(...)
 end

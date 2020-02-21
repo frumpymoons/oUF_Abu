@@ -16,15 +16,15 @@ do
 		end
 	end
 	local l = ns.AuraList
-	add(l.Immunity, 'HELPFUL')
-	add(l.Stun, 'HARMFUL')
-	add(l.CC, 'HARMFUL')
-	add(l.CCImmunity, 'HELPFUL')
-	add(l.Defensive, 'HELPFUL')
-	add(l.Offensive, 'HELPFUL')
-	add(l.Helpful, 'HELPFUL')
-	add(l.Silence, 'HARMFUL')
-	add(l.Misc, 'HELPFUL')
+	add(l.Immunity, "HELPFUL")
+	add(l.Stun, "HARMFUL")
+	add(l.CC, "HARMFUL")
+	add(l.CCImmunity, "HELPFUL")
+	add(l.Defensive, "HELPFUL")
+	add(l.Offensive, "HELPFUL")
+	add(l.Helpful, "HELPFUL")
+	add(l.Silence, "HARMFUL")
+	add(l.Misc, "HELPFUL")
 end
 
 local function ExactTime(time)
@@ -33,14 +33,14 @@ end
 
 local function FormatTime(s)
 	if (s >= day) then
-		return format('%dd', floor(s/day + 0.5))
+		return format("%dd", floor(s/day + 0.5))
 	elseif (s >= hour) then
-		return format('%dh', floor(s/hour + 0.5))
+		return format("%dh", floor(s/hour + 0.5))
 	elseif (s >= minute) then
-		return format('%dm', floor(s/minute + 0.5))
+		return format("%dm", floor(s/minute + 0.5))
 	end
 
-	return format('%d', fmod(s, minute))
+	return format("%d", fmod(s, minute))
 end
 
 local function AuraTimer(self, elapsed)
@@ -57,7 +57,7 @@ local function AuraTimer(self, elapsed)
 		self.Remaining:SetText(nil)
 	else
 		if (timeLeft <= 5) then
-			self.Remaining:SetText('|cffff0000'..ExactTime(timeLeft)..'|r')
+			self.Remaining:SetText("|cffff0000"..ExactTime(timeLeft).."|r")
 		else
 			self.Remaining:SetText(FormatTime(timeLeft))
 		end
@@ -85,7 +85,7 @@ local Update = function(self, event, unit)
 				if (pt.expires ~= expires) or (pt.duration ~= duration) then
 					pt.expires = expires
 					pt.duration = duration
-					pt:SetScript('OnUpdate', AuraTimer)
+					pt:SetScript("OnUpdate", AuraTimer)
 				end
 
 				pt:Show()
@@ -117,7 +117,7 @@ end
 local Enable = function(self)
 	local pt = self.PortraitTimer
 	if (pt) then
-		self:RegisterEvent('UNIT_AURA', Update)
+		self:RegisterEvent("UNIT_AURA", Update)
 		return true
 	end
 end
@@ -125,8 +125,8 @@ end
 local Disable = function(self)
 	local pt = self.PortraitTimer
 	if (pt) then
-		self:UnregisterEvent('UNIT_AURA', Update)
+		self:UnregisterEvent("UNIT_AURA", Update)
 	end
 end
 
-oUF:AddElement('PortraitTimer', Update, Enable, Disable)
+oUF:AddElement("PortraitTimer", Update, Enable, Disable)

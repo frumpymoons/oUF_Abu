@@ -9,12 +9,12 @@ do
 		if not ( IsControlKeyDown() and IsAltKeyDown() ) then return end
 		local id = self.spellID
 		if id then
-			local db = 'general' -- fix this someday
+			local db = "general" -- fix this someday
 			local name = GetSpellInfo(id)
 			if oUFAbu:GetAuraSettings()[db][id] then
-				ns.Print(format(L['AuraExists'], name, id))
+				ns.Print(format(L["AuraExists"], name, id))
 			else
-				ns.Print(format(L['AuraAdded'], name, id ))
+				ns.Print(format(L["AuraAdded"], name, id ))
 				oUFAbu:GetAuraSettings()[db][id] = 0
 			end
 		end 
@@ -46,7 +46,7 @@ do
 	function createAuraIcon( element, index )
 		--element.createdIcons = element.createdIcons + 1
 
-		local button = CreateFrame("Button", element:GetDebugName() .. 'Button' .. index, element)
+		local button = CreateFrame("Button", element:GetDebugName() .. "Button" .. index, element)
 
 		local icon = button:CreateTexture(nil, "BACKGROUND")
 		icon:SetAllPoints(button)
@@ -56,13 +56,13 @@ do
 		local overlay = button:CreateTexture(nil, "OVERLAY")
 		overlay:SetTexture(ns.config.textureBorderWhite)
 		local X = 1.35
-		overlay:SetPoint('TOPRIGHT', button.icon, X, X)
-		overlay:SetPoint('BOTTOMLEFT', button.icon, -X, -X)
+		overlay:SetPoint("TOPRIGHT", button.icon, X, X)
+		overlay:SetPoint("BOTTOMLEFT", button.icon, -X, -X)
 		button.overlay = overlay
 
-		local shadow = button:CreateTexture(nil, 'BACKGROUND')
-		shadow:SetPoint('TOPLEFT', button.icon, 'TOPLEFT', -4, 4)
-		shadow:SetPoint('BOTTOMRIGHT', button.icon, 'BOTTOMRIGHT', 4, -4)
+		local shadow = button:CreateTexture(nil, "BACKGROUND")
+		shadow:SetPoint("TOPLEFT", button.icon, "TOPLEFT", -4, 4)
+		shadow:SetPoint("BOTTOMRIGHT", button.icon, "BOTTOMRIGHT", 4, -4)
 		shadow:SetTexture(ns.config.textureBorderShadow)
 		shadow:SetVertexColor(0, 0, 0, 1)
 		button.shadow = shadow
@@ -78,13 +78,13 @@ do
 		end
 		button.cd = cd
 
-		local count = ns.CreateFontStringNumber(button, 11, 'RIGHT', 'THINOUTLINE')
-		count:SetPoint('BOTTOMRIGHT', 2, 0)
+		local count = ns.CreateFontStringNumber(button, 11, "RIGHT", "THINOUTLINE")
+		count:SetPoint("BOTTOMRIGHT", 2, 0)
 		button.count = count
 
 		local stealable = button:CreateTexture(nil, "OVERLAY")
-		stealable:SetPoint('TOPLEFT', button.icon, 'TOPLEFT', -4, 4)
-		stealable:SetPoint('BOTTOMRIGHT', button.icon, 'BOTTOMRIGHT', 4, -4)
+		stealable:SetPoint("TOPLEFT", button.icon, "TOPLEFT", -4, 4)
+		stealable:SetPoint("BOTTOMRIGHT", button.icon, "BOTTOMRIGHT", 4, -4)
 		stealable:SetTexture(ns.config.textureBorderShadow)
 		stealable:SetVertexColor(1, 190/255, 82/255)
 		stealable:SetDrawLayer("OVERLAY", 1)
@@ -96,7 +96,7 @@ do
 			if button.cd.SetHideCountdownNumbers then
 				button.cd:SetHideCountdownNumbers(true)
 			end
-			button.timer = ns.CreateFontStringNumber(button.cd, 12, 'CENTER', 'THINOUTLINE')
+			button.timer = ns.CreateFontStringNumber(button.cd, 12, "CENTER", "THINOUTLINE")
 			button.timer:SetPoint("CENTER", button, "TOP", 0, 0)
 		end
 
@@ -123,7 +123,7 @@ do
 	local function GetTimes(remaining)
 		if remaining < MINUTE then
 			if remaining < 3 then -- this 2.5 usually
-				return format('%.1f', remaining), 0.051
+				return format("%.1f", remaining), 0.051
 			end
 			local mSecLeft = remaining % 1
 			return floor(remaining + .5), mSecLeft > .5 and mSecLeft - .49 or mSecLeft + 0.51
@@ -131,12 +131,12 @@ do
 		elseif remaining < 10*MINUTE then
 			local secLeft = remaining % MINUTE
 			if remaining < 90 then
-				return format('%dm', floor(remaining/MINUTE + 0.5)), secLeft + .51
+				return format("%dm", floor(remaining/MINUTE + 0.5)), secLeft + .51
 			end
-			return format('%dm', floor(remaining/MINUTE + 0.5)), secLeft > 30 and secLeft - 29 or secLeft + 31
+			return format("%dm", floor(remaining/MINUTE + 0.5)), secLeft > 30 and secLeft - 29 or secLeft + 31
 
 		else -- Hide timers longer than 10 minutes
-			return '', (remaining % MINUTE) + 31
+			return "", (remaining % MINUTE) + 31
 		end
 	end
 
@@ -150,7 +150,7 @@ do
 		end
 
 		if (button.timeLeft <= 0) then
-			button.timer:SetText('')
+			button.timer:SetText("")
 			button:SetScript("OnUpdate", nil)
 			return;
 		end
@@ -173,7 +173,7 @@ do
 		button.shadow:Show()
 
 		if (button.isDebuff) then
-			local color = DebuffTypeColor[dtype] or DebuffTypeColor['none']
+			local color = DebuffTypeColor[dtype] or DebuffTypeColor["none"]
 			button.overlay:SetVertexColor(color.r, color.g, color.b)
 		else
 			local color = ns.config.frameColor
@@ -182,7 +182,7 @@ do
 
 		button.spellID = spellID
 
-		if ns.config.colorPlayerDebuffsOnly and unit == 'target' and button.isDebuff and not button.isPlayer then
+		if ns.config.colorPlayerDebuffsOnly and unit == "target" and button.isDebuff and not button.isPlayer then
 			button.icon:SetDesaturated(true)
 		else
 			button.icon:SetDesaturated(false)
@@ -197,13 +197,13 @@ do
 				button.timeLeft = expirationTime - GetTime()
 				text, button.nextupdate = GetTimes(button.timeLeft)
 				button.timer:SetText(text)
-				button:SetScript('OnUpdate', UpdateAura)
+				button:SetScript("OnUpdate", UpdateAura)
 			else
 				if (button.timer:IsShown()) then
 					button.timer:Hide()
 				end
 				button.timeLeft = 0
-				button:SetScript('OnUpdate', nil)
+				button:SetScript("OnUpdate", nil)
 			end
 		end
 
@@ -297,18 +297,18 @@ end
 ]]--
 
 local GrowthTable = {
-	TOPLEFT = {'RIGHT', 'DOWN'},
-	TOPRIGHT = {'LEFT', 'DOWN'},
-	BOTTOMLEFT = {'RIGHT', 'UP'},
-	BOTTOMRIGHT = {'LEFT', 'UP'},
+	TOPLEFT = {"RIGHT", "DOWN"},
+	TOPRIGHT = {"LEFT", "DOWN"},
+	BOTTOMLEFT = {"RIGHT", "UP"},
+	BOTTOMRIGHT = {"LEFT", "UP"},
 }
 
 local function createElement(self, type, initialAnchor, size, gap, columns, rows)
 	local element = CreateFrame("Frame", self:GetName()..type, self)
 	element.showStealableBuffs = true
 	element.initialAnchor = initialAnchor
-	element['growth-x'] = GrowthTable[initialAnchor][1]
-	element['growth-y'] = GrowthTable[initialAnchor][2]
+	element["growth-x"] = GrowthTable[initialAnchor][1]
+	element["growth-y"] = GrowthTable[initialAnchor][2]
 	element.size = size
 	element.spacing = gap
 	element:SetWidth((size+gap)*columns)
@@ -323,21 +323,21 @@ local function createElement(self, type, initialAnchor, size, gap, columns, rows
 end
 
 function ns.AddBuffs(self, initialAnchor, size, gap, columns, rows)
-	local Buffs = createElement(self, 'Buffs', initialAnchor, size, gap, columns, rows)
+	local Buffs = createElement(self, "Buffs", initialAnchor, size, gap, columns, rows)
 	Buffs.num = columns * rows
 
 	return Buffs
 end
 
 function ns.AddDebuffs(self, initialAnchor, size, gap, columns, rows)
-	local Debuffs = createElement(self, 'Debuffs', initialAnchor, size, gap, columns, rows)
+	local Debuffs = createElement(self, "Debuffs", initialAnchor, size, gap, columns, rows)
 	Debuffs.num = columns * rows
 
 	return Debuffs
 end
 
 function ns.AddAuras(self, initialAnchor, size, gap, columns, rows)
-	local Auras = createElement(self, 'Auras', initialAnchor, size, gap, columns, rows)
+	local Auras = createElement(self, "Auras", initialAnchor, size, gap, columns, rows)
 	Auras.numDebuffs = math.floor(rows*columns/2)
 	Auras.numBuffs = math.floor(rows*columns/2)
 

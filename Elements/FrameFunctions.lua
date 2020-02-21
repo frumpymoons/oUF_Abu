@@ -30,9 +30,9 @@ end
 local function SetBorderTexture(self, texture)
 	local b = self.borderTextures
 	if b then
-		if texture == 'white' then 
+		if texture == "white" then 
 			texture = ns.config.textureBorderWhite
-		elseif texture == 'default' then 
+		elseif texture == "default" then 
 			texture = ns.config.textureBorder 
 		end
 		for _, tex in pairs(b) do
@@ -102,14 +102,14 @@ local function SetBorderPadding(self, T, B, L, R)
 end
 -----------------
 function ns.CreateBorder(self, size, padding, layer)
-	if type(self) ~= 'table' or self.borderTextures then return end
+	if type(self) ~= "table" or self.borderTextures then return end
 
 	if not (self.borderTextures) then
 		local b = {}
 		local s = {}
 
 		for i = 1, 8 do 
-			local t = self:CreateTexture(nil, layer or 'OVERLAY')
+			local t = self:CreateTexture(nil, layer or "OVERLAY")
 			t:SetParent(self)
 			t:SetTexture(ns.config.textureBorder)
 			t:SetVertexColor(1, 1, 1, 1)
@@ -117,7 +117,7 @@ function ns.CreateBorder(self, size, padding, layer)
 		end
 
 		for i = 1, 8 do 
-			local t = self:CreateTexture(nil, layer or 'BORDER')
+			local t = self:CreateTexture(nil, layer or "BORDER")
 			t:SetParent(self)
 			t:SetTexture(ns.config.textureBorderShadow)
 			t:SetVertexColor(0, 0, 0, 1)
@@ -159,7 +159,7 @@ end
 
 -- Small bar ontop/below of frames
 function ns.CreateOutsideBar(parent, onTop, r, g, b)
-	local textPath = 'Interface\\AddOns\\oUF_Abu\\Media\\Frames\\'
+	local textPath = "Interface\\AddOns\\oUF_Abu\\Media\\Frames\\"
 	local bar = ns.CreateStatusBar(parent, "BORDER", nil, true)
 	bar:SetSize(98, 9)
 	bar:SetStatusBarColor(r or 1, g or 0, b or 0)
@@ -167,22 +167,22 @@ function ns.CreateOutsideBar(parent, onTop, r, g, b)
 
 	local point, anchor, point2, x, y, step
 	if onTop then
-		point, anchor, point2, x, y = 'BOTTOM', parent.Health, 'TOP', 0, 3
+		point, anchor, point2, x, y = "BOTTOM", parent.Health, "TOP", 0, 3
 		step = 2
 	else
-		point, anchor, point2, x, y = 'TOP', parent.Power, 'BOTTOM', 0, -2
+		point, anchor, point2, x, y = "TOP", parent.Power, "BOTTOM", 0, -2
 		step = -2
 	end
 	bar:SetPoint(point, anchor, point2, x, y)
 	
-	local tex = bar:CreateTexture(nil, 'ARTWORK')
+	local tex = bar:CreateTexture(nil, "ARTWORK")
 	tex:SetSize(104, 28)
 	if onTop then
-		tex:SetTexture(textPath.. 'FrameBarTop')
-		tex:SetPoint('TOP', 0, 12)
+		tex:SetTexture(textPath.. "FrameBarTop")
+		tex:SetPoint("TOP", 0, 12)
 	else
-		tex:SetTexture(textPath.. 'FrameBarBot')
-		tex:SetPoint('BOTTOM', 0, -10)
+		tex:SetTexture(textPath.. "FrameBarBot")
+		tex:SetPoint("BOTTOM", 0, -10)
 	end
 	--[=[
 	-- [[ ANIMATION IN ]]

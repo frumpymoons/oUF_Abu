@@ -11,15 +11,15 @@ local function FormatValue(value)
 	local absvalue = abs(value)
 
 	if absvalue >= 1e9 then
-		return tonumber(format('%.2f', value/1e9))..'b'
+		return tonumber(format("%.2f", value/1e9)).."b"
 	elseif absvalue >= 1e7 then
-		return tonumber(format('%.1f', value/1e6))..'m'
+		return tonumber(format("%.1f", value/1e6)).."m"
 	elseif absvalue >= 1e6 then
-		return tonumber(format('%.2f', value/1e6))..'m'
+		return tonumber(format("%.2f", value/1e6)).."m"
 	elseif absvalue >= 1e5 then
-		return tonumber(format('%.0f', value/1e3))..'k'
+		return tonumber(format("%.0f", value/1e3)).."k"
 	elseif absvalue >= 1e3 then
-		return tonumber(format('%.1f', value/1e3))..'k'
+		return tonumber(format("%.1f", value/1e3)).."k"
 	else
 		return value
 	end
@@ -27,23 +27,23 @@ end
 
 ns.FormatValue = FormatValue
 function ns.cUnit(unit)
-	if (unit:match('vehicle')) then
-		return 'player'
-	elseif (unit:match('party%d')) then
-		return 'party'
-	elseif (unit:match('arena%d')) then
-		return 'arena'
-	elseif (unit:match('boss%d')) then
-		return 'boss'
-	elseif (unit:match('partypet%d')) then
-		return 'pet'
+	if (unit:match("vehicle")) then
+		return "player"
+	elseif (unit:match("party%d")) then
+		return "party"
+	elseif (unit:match("arena%d")) then
+		return "arena"
+	elseif (unit:match("boss%d")) then
+		return "boss"
+	elseif (unit:match("partypet%d")) then
+		return "pet"
 	else
 		return unit
 	end
 end
 
 function ns.MultiCheck(what, ...)
-	for i = 1, select('#', ...) do
+	for i = 1, select("#", ...) do
 		if (what == select(i, ...)) then 
 			return true 
 		end
@@ -55,8 +55,6 @@ end
 -------------------------------------------------------------------------------
 local UnitIsGhost, GetSpellInfo, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsPlayer, UnitReaction, UnitIsEnemy, UnitSelectionColor =
 	  UnitIsGhost, GetSpellInfo, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsPlayer, UnitReaction, UnitIsEnemy, UnitSelectionColor
---local UnitGetTotalHealAbsorbs, UnitGetIncomingHeals, UnitGetTotalAbsorbs, math, UnitHealth, UnitHealthMax = 
---	  UnitGetTotalHealAbsorbs, UnitGetIncomingHeals, UnitGetTotalAbsorbs, math, UnitHealth, UnitHealthMax
 local UnitPowerType, UnitPower, UnitPowerMax, UnitHasVehicleUI, UnitClass, UnitIsTapDenied, format = 
 	  UnitPowerType, UnitPower, UnitPowerMax, UnitHasVehicleUI, UnitClass, UnitIsTapDenied, format
 
@@ -83,7 +81,7 @@ local function UpdatePortraitColor(self, unit, cur, max)
 		self.Portrait:SetVertexColor(0.3, 0.3, 0.9, 0.7)
 	elseif (cur/max * 100 < 25) then
 		if (UnitIsPlayer(unit)) then
-			if (unit ~= 'player') then
+			if (unit ~= "player") then
 				self.Portrait:SetVertexColor(1, 0, 0, 0.7)
 			end
 		end
@@ -105,19 +103,19 @@ local function SetValueText(element, tag, cur, max, color, notMana)
 	local s
 
 	if tag == TEXT_SHORT then
-		s = format('%s', cur > 0 and FormatValue(cur) or '')
+		s = format("%s", cur > 0 and FormatValue(cur) or "")
 	elseif tag == TEXT_LONG then
-		s = format('%s - %.1f%%', FormatValue(cur), cur / max * 100)
+		s = format("%s - %.1f%%", FormatValue(cur), cur / max * 100)
 	elseif tag == TEXT_MINMAX then
-		s = format('%s/%s', FormatValue(cur), FormatValue(max))
+		s = format("%s/%s", FormatValue(cur), FormatValue(max))
 	elseif tag == TEXT_MAX then
-		s = format('%s', FormatValue(max))
+		s = format("%s", FormatValue(max))
 	elseif tag == TEXT_DEF then
-		s = format('%s', (cur == max and '' or '-'..FormatValue(max-cur)))
+		s = format("%s", (cur == max and "" or "-"..FormatValue(max-cur)))
 	elseif tag == TEXT_PERCENT then
-		s = format('%d%%', cur / max * 100)
+		s = format("%d%%", cur / max * 100)
 	else
-		s = ''
+		s = ""
 	end
 
 	element:SetFormattedText("|cff%02x%02x%02x%s|r", color[1]*255, color[2]*255, color[3]*255, s)
@@ -238,7 +236,7 @@ local function updateAbsorbBars(healthbar, unit, curHP, maxHP)
 	if healAbsorb > curHP then
 		healAbsorb = curHP
 	end
-	local texture, endAmount, nextPoint = appendTexture(healthbar, healthbar:GetStatusBarTexture(), healthbar.healAbsorbBar, -healAbsorb, curHP, 'RIGHT')
+	local texture, endAmount, nextPoint = appendTexture(healthbar, healthbar:GetStatusBarTexture(), healthbar.healAbsorbBar, -healAbsorb, curHP, "RIGHT")
 
 	local missingHP = maxHP - curHP
 	if (curHP - healAbsorb + incHealing) > maxHP then
@@ -248,7 +246,7 @@ local function updateAbsorbBars(healthbar, unit, curHP, maxHP)
 
 	local shownAbsorb_Value = math.min(missingHP, totalAbsorb_Value)
 	local overAbsorb_Value = totalAbsorb_Value - missingHP
-	appendTexture(healthbar, healthbar:GetStatusBarTexture(), healthbar.absorbBar, shownAbsorb_Value, curHP, 'RIGHT')
+	appendTexture(healthbar, healthbar:GetStatusBarTexture(), healthbar.absorbBar, shownAbsorb_Value, curHP, "RIGHT")
 
 	local overAbsorbBar = healthbar.overAbsorbBar
 	if (overAbsorb_Value < (maxHP * 0.01)) then
@@ -268,7 +266,7 @@ end
 function ns.UpdateHealthOverride(self, event, unit)
 	if not unit or self.unit ~= unit then return; end
 	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
-	if (event == 'UNIT_HEAL_PREDICTION' or event == 'UNIT_ABSORB_AMOUNT_CHANGED' or event == 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED') then
+	if (event == "UNIT_HEAL_PREDICTION" or event == "UNIT_ABSORB_AMOUNT_CHANGED" or event == "UNIT_HEAL_ABSORB_AMOUNT_CHANGED") then
 		updateAbsorbBars(self.Health, unit, cur, max)
 		return;
 	end
@@ -303,7 +301,7 @@ do
 		if (UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit)) or (max == 0) then
 			Power:SetValue(0)
 			if Power.Value then
-				Power.Value:SetText('')
+				Power.Value:SetText("")
 			end
 			return
 		end
@@ -473,13 +471,13 @@ end
 ----------------------------------------------------------------------
 -- [[ Statusbar Functions ]] --
 function ns.CreateStatusBar(parent, layer, name, AddBackdrop)
-	if type(layer) ~= 'string' then layer = 'BORDER' end
-	local bar = CreateFrame('StatusBar', name, parent)
+	if type(layer) ~= "string" then layer = "BORDER" end
+	local bar = CreateFrame("StatusBar", name, parent)
 	bar:SetStatusBarTexture(ns.config.statusbar, layer)
 	bar.texture = ns.config.statusbar
 	
 	if AddBackdrop then
-		bar:SetBackdrop({bgFile = 'Interface\\Buttons\\WHITE8x8'})
+		bar:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
 		local r,g,b,a = unpack(ns.config.backdropColor)
 		bar:SetBackdropColor(r,g,b,a)
 	end
@@ -492,7 +490,7 @@ function ns.CreateStatusBarTexture(parent, layer, name, sublevel)
 	if name then
 		name = (parent:GetName() or parent:GetDebugName()) .. name
 	end
-	local texture = parent:CreateTexture(name, layer or 'OVERLAY', nil, sublevel)
+	local texture = parent:CreateTexture(name, layer or "OVERLAY", nil, sublevel)
 	texture:SetTexture(ns.config.statusbar)
 	texture.texture = ns.config.statusbar
 	table.insert(ns.statusbars, texture)
@@ -533,7 +531,7 @@ function ns.CreateFontStringNumber(parent, size, justify, outline)
 	fs:SetJustifyH(justify or "CENTER")
 	fs:SetShadowOffset(1, -1)
 	fs.basesize = size 
-	if outline and type(outline) == 'string' then
+	if outline and type(outline) == "string" then
 		fs.ignoreOutline = true
 	end
 
@@ -547,7 +545,7 @@ function ns.CreateFontStringName(parent, size, justify, outline)
 	fs:SetJustifyH(justify or "CENTER")
 	fs:SetShadowOffset(1, -1)
 	fs.basesize = size 
-	if outline and type(outline) == 'string' then
+	if outline and type(outline) == "string" then
 		fs.ignoreOutline = true
 	end
 
@@ -561,7 +559,7 @@ function ns.CreateFontStringBar(parent, size, justify, outline)
 	fs:SetJustifyH(justify or "CENTER")
 	fs:SetShadowOffset(1, -1)
 	fs.basesize = size 
-	if outline and type(outline) == 'string' then
+	if outline and type(outline) == "string" then
 		fs.ignoreOutline = true
 	end
 
@@ -575,7 +573,7 @@ function ns.CreateFontStringLevel(parent, size, justify, outline)
 	fs:SetJustifyH(justify or "CENTER")
 	fs:SetShadowOffset(1, -1)
 	fs.basesize = size 
-	if outline and type(outline) == 'string' then
+	if outline and type(outline) == "string" then
 		fs.ignoreOutline = true
 	end
 

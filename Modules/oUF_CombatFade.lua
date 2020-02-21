@@ -123,7 +123,7 @@ local function Update(self, event, arg1, ...)
 		show = false
 	end
 
-	if type(show) == 'boolean' then
+	if type(show) == "boolean" then
 		for frame in pairs(enabledFrames) do
 			if UnitExists(frame.unit) then
 				if show then
@@ -139,7 +139,7 @@ local function Update(self, event, arg1, ...)
 	end
 end
 
-local eventFrame = CreateFrame('FRAME')
+local eventFrame = CreateFrame("FRAME")
 eventFrame:SetScript("OnEvent", Update)
 
 local function Enable(self)
@@ -155,15 +155,15 @@ local function Enable(self)
 		eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 		eventFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
 		eventFrame:RegisterEvent("PLAYER_FOCUS_CHANGED")
-		eventFrame:RegisterUnitEvent("UNIT_HEALTH", 'player')
-		eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_START", 'player')
-		eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", 'player')
-		eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_START", 'player')
-		eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_STOP", 'player')
-		eventFrame:RegisterUnitEvent("UNIT_PORTRAIT_UPDATE", 'player')
-		eventFrame:RegisterUnitEvent("UNIT_MODEL_CHANGED", 'player')
-		eventFrame:RegisterUnitEvent('UNIT_POWER_UPDATE', 'player')
-		eventFrame:RegisterUnitEvent('UNIT_MAXPOWER', 'player')
+		eventFrame:RegisterUnitEvent("UNIT_HEALTH", "player")
+		eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_START", "player")
+		eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", "player")
+		eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_START", "player")
+		eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_STOP", "player")
+		eventFrame:RegisterUnitEvent("UNIT_PORTRAIT_UPDATE", "player")
+		eventFrame:RegisterUnitEvent("UNIT_MODEL_CHANGED", "player")
+		eventFrame:RegisterUnitEvent("UNIT_POWER_UPDATE", "player")
+		eventFrame:RegisterUnitEvent("UNIT_MAXPOWER", "player")
 	end
 
 	if not self.CombatFadehooked then
@@ -201,9 +201,9 @@ local function Disable(self)
 		eventFrame:UnregisterEvent("UNIT_PORTRAIT_UPDATE")
 		eventFrame:UnregisterEvent("UNIT_MODEL_CHANGED")
 		eventFrame:UnregisterEvent("UNIT_MODEL_CHANGED")
-		eventFrame:UnregisterEvent('UNIT_POWER_UPDATE')
-		eventFrame:UnregisterEvent('UNIT_MAXPOWER')
+		eventFrame:UnregisterEvent("UNIT_POWER_UPDATE")
+		eventFrame:UnregisterEvent("UNIT_MAXPOWER")
 	end
 end
 
-oUF:AddElement('oUF_CombatFade', Update, Enable, Disable)
+oUF:AddElement("oUF_CombatFade", Update, Enable, Disable)

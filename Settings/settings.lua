@@ -76,7 +76,7 @@ function oUFAbu:GetAllProfiles()
 end
 
 function oUFAbu:GetProfileID()
-	return oUFAbuProfile['profile']
+	return oUFAbuProfile["profile"]
 end
 
 function oUFAbu:SetProfile(id)
@@ -86,7 +86,7 @@ function oUFAbu:SetProfile(id)
 			oUFAbuSettings[oldID] = cleanDB(oUFAbuSettings[oldID], ns.defaultConfig)
 		end
 
-		oUFAbuProfile['profile'] = id
+		oUFAbuProfile["profile"] = id
 		
 		oUFAbuSettings[id] = initDB(oUFAbuSettings[id], ns.defaultConfig)
 		ns.config = oUFAbuSettings[id]
@@ -135,7 +135,7 @@ function oUFAbu:GetAuraSettings()
 end
 
 function oUFAbu:GetAuraProfileID()
-	return oUFAbuProfile['auraprofile'] or self.DEFAULT
+	return oUFAbuProfile["auraprofile"] or self.DEFAULT
 end
 
 function oUFAbu:GetAllAuraProfiles()
@@ -149,7 +149,7 @@ end
 
 function oUFAbu:SetAuraProfile(id)
 	if oUFAbuAuraFilters[id] then
-		oUFAbuProfile['auraprofile'] = id
+		oUFAbuProfile["auraprofile"] = id
 		self:UpdateAuraLists()
 		return true
 	end

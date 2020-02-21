@@ -21,7 +21,7 @@ local Path = function(self, ...)
 end
 
 local ForceUpdate = function(element)
-    return Path(element.__owner, 'ForceUpdate')
+    return Path(element.__owner, "ForceUpdate")
 end
 
 local Enable = function(self)
@@ -31,13 +31,13 @@ local Enable = function(self)
         officon.__owner = self
         officon.ForceUpdate = ForceUpdate
 
-        self:RegisterEvent('PARTY_MEMBER_DISABLE', Path)
-        self:RegisterEvent('PARTY_MEMBER_ENABLE', Path)
-        self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
-        self:RegisterEvent('UNIT_CONNECTION', Path)
+        self:RegisterEvent("PARTY_MEMBER_DISABLE", Path)
+        self:RegisterEvent("PARTY_MEMBER_ENABLE", Path)
+        self:RegisterEvent("PLAYER_TARGET_CHANGED", Path, true)
+        self:RegisterEvent("UNIT_CONNECTION", Path)
 
-        if (officon:IsObjectType('Texture') and not officon:GetTexture()) then
-            officon:SetTexture('Interface\\CharacterFrame\\Disconnect-Icon')
+        if (officon:IsObjectType("Texture") and not officon:GetTexture()) then
+            officon:SetTexture("Interface\\CharacterFrame\\Disconnect-Icon")
         end
 
         return true
@@ -48,10 +48,10 @@ local Disable = function(self)
     local officon = self.OfflineIcon
 
     if (officon) then
-        self:UnregisterEvent('PARTY_MEMBER_DISABLE', Path)
-        self:UnregisterEvent('PARTY_MEMBER_ENABLE', Path)
-        self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path, true)
+        self:UnregisterEvent("PARTY_MEMBER_DISABLE", Path)
+        self:UnregisterEvent("PARTY_MEMBER_ENABLE", Path)
+        self:UnregisterEvent("PLAYER_TARGET_CHANGED", Path, true)
     end
 end
 
-oUF:AddElement('OfflineIcon', Path, Enable, Disable)
+oUF:AddElement("OfflineIcon", Path, Enable, Disable)
