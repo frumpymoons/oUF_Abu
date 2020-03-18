@@ -2,41 +2,14 @@ local _, ns = ...
 
 local textPath = 'Interface\\AddOns\\oUF_Abu\\Media\\Frames\\'
 
------- Waiting for oUF:
-local function onEvent(self, e)
-	if (e == 'ARENA_OPPONENT_UPDATE') and (not UnitWatchRegistered(self)) then
-		self:Enable()
-		self:UpdateAllElements(e)
-		self:UnregisterEvent(e, onEvent)
-
-	elseif (e == 'ARENA_PREP_OPPONENT_SPECIALIZATIONS') or ((e == 'PLAYER_ENTERING_WORLD') and (not UnitExists(self.unit))) then
-		local id = self.id
-		if (not UnitWatchRegistered(self)) and GetNumArenaOpponentSpecs() < tonumber(id) then
-			return self:Hide()
-		end
-
-		if GetArenaOpponentSpec(id) then
-			if (UnitWatchRegistered(self)) then
-				UnregisterUnitWatch(self)
-				self:RegisterEvent('ARENA_OPPONENT_UPDATE', onEvent)
-			end
-			self:PostUpdate("ArenaPreparation")
-			self:Show()
-		end
-	end
-end
-
-local function postUpdateArenaPreparation(self, event, ...)
-	if event ~= "ArenaPreparation" then return; end
-	
-	local specID, gender = GetArenaOpponentSpec(tonumber(self.id))
-	if specID > 0 then
-		local _, spec, _, icon, _, class = GetSpecializationInfoByID(specID, gender)
+local function postUpdateArenaPreparation(self, event)
+	local specID = GetArenaOpponentSpec(tonumber(self.id))
+	if specID and specID > 0 then
+		local _, spec, _, icon, _, class = GetSpecializationInfoByID(specID)
+		self.Portrait:Show()
 		SetPortraitToTexture(self.Portrait, icon)
-		self.Portrait:SetVertexColor(1,1,1,1)
-
-		self.Name:SetText(ARENA .. ' ' .. tostring(self.id))
-
+		self.Portrait:SetVertexColor(1, 1, 1, 1)
+		self.Name:SetText(ARENA .. " " .. tostring(self.id))
 		self.Health.Value:SetText(spec)
 		self.Health:SetMinMaxValues(0, 1)
 		self.Health:SetValue(1)
