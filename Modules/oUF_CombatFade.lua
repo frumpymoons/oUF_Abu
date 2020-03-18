@@ -108,7 +108,7 @@ local function Update(self, event, arg1, ...)
 
 	if event == "OnUpdate" then -- not needed, usually used for targettarget frames
 		return
-	elseif -- (UnitCastingInfo("player") or UnitChannelInfo("player")) or --casting
+	elseif (UnitCastingInfo("player") or UnitChannelInfo("player")) or --casting
 		(UnitHealth("player") ~= UnitHealthMax("player")) or 		--not full health
 		(UnitExists("target") or UnitExists("focus")) or 			--have target or focus
 		UnitAffectingCombat("player") or							--combat
