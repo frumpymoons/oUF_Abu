@@ -124,7 +124,7 @@ local DataFat = {
 		nam = { w = 110, h = 10,  x = 50,   y = 19,  j = "CENTER", s = 14 },
 		por = { w = 64,  h = 64,  x = -42,  y = 7,   },
 		glo = { w = 242, h = 92,  x = 13,   y = -1,  t = pathFat.."Target-Flash", c = {0.945, 0, 0, 0.182}},
-    },
+	},
 	target = {
 		siz = { w = 175, h = 42   },
 		tex = { w = 230, h = 100, x = 20,   y = -7,  t = pathFat.."Target", c = {0.09375, 1, 0, 0.78125}},
@@ -691,6 +691,11 @@ local function CreateUnitLayout(self, unit)
 			else
 				self.GroupRoleIndicator:SetPoint("BOTTOMLEFT", self.Portrait, -5, -5)
 			end
+
+			local SummonIndicator = self:CreateTexture(nil, "OVERLAY")
+			SummonIndicator:SetSize(26, 26)
+			SummonIndicator:SetPoint("CENTER", self.Portrait)
+			self.SummonIndicator = SummonIndicator
 		end
 	end
 		
