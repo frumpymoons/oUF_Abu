@@ -31,9 +31,6 @@ function ns.createArenaLayout(self, unit)
 	local config = ns.config
 	local uconfig = config[self.cUnit]
 
-	self:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", onEvent, true)
-	self:HookScript('OnEvent', onEvent)
-
 	self.Texture = self:CreateTexture(nil, 'BORDER')
 	self.Texture:SetTexture(textPath.. 'Arena')
 	self.Texture:SetSize(230, 100)
@@ -57,7 +54,6 @@ function ns.createArenaLayout(self, unit)
 	self.Portrait:SetSize(64, 64)
 	self.Portrait:SetPoint('TOPLEFT', self.Health, -64, 13)
 	self.Portrait.Override = updatePortrait
-	self:RegisterEvent('ARENA_OPPONENT_UPDATE', updatePortrait)
 
 	self.Health.Value = ns.CreateFontStringNumber(self.Health, 13)
 	self.Health.Value:SetPoint('CENTER', self.Health)
