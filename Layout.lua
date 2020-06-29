@@ -978,8 +978,7 @@ oUF:Factory( function(self)
 	for i = 1, MIRRORTIMER_NUMTIMERS do
 		local bar = _G["MirrorTimer" .. i]
 		bar:SetParent(UIParent)
-		bar:SetScale(1.132)
-		bar:SetSize(220, 18)
+		bar:SetSize(220, 20)
 
 		ns.CreateBorder(bar, 11, 3)
 
