@@ -24,11 +24,12 @@ local function updateTotemPosition()
 		TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", -18, -12)
 	elseif ( class == "SHAMAN" ) then
 		local form  = GetShapeshiftFormID();
-		if ( ( GetSpecialization() == SPEC_SHAMAN_RESTORATION ) or ( form == 16 ) ) then -- wolf form 
-			TotemFrame:SetPoint("TOP", oUF_AbuPlayer, "BOTTOM", 27, 2)
-		else
-			TotemFrame:SetPoint("TOP", oUF_AbuPlayer, "BOTTOM", 27, -10)
-		end		
+		TotemFrame:SetPoint("TOP", oUF_AbuPlayer, "BOTTOM", 27, -10)
+		if not ns.Classic then
+			if ( ( GetSpecialization() == SPEC_SHAMAN_RESTORATION ) or ( form == 16 ) ) then -- wolf form 
+				TotemFrame:SetPoint("TOP", oUF_AbuPlayer, "BOTTOM", 27, 2)
+			end
+		end
 	elseif ( class == "WARLOCK" ) then
 		TotemFrame:SetPoint("TOPLEFT", oUF_AbuPlayer, "BOTTOMLEFT", -18, -12)
 	end
@@ -169,6 +170,7 @@ function ns.classModule.addAuraBar(self, config, uconfig)
 
 	Aurabar.Visibility = function(self, event, unit)
 		local bar = self.Aurabar
+		if ns.Classic then return false end
 		local index = GetSpecialization()
 		if not index then return false end
 

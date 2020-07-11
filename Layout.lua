@@ -168,6 +168,7 @@ local function GetDBUnit(cUnit)
 	elseif cUnit == "focustarget" then
 		return "targettarget"
 	elseif cUnit == "player" then -- can player be vehicle? no it cant
+		if ns.Classic then return "player" end
 		if UnitHasVehicleUI("player") then
 			if (UnitVehicleSkin("player") == "Natural") then
 				return "vehicleorganic"
@@ -284,14 +285,19 @@ local function UpdatePlayerFrame(self, ...)
 	
 	self.PvPIndicator:ClearAllPoints()
 
-	if ( config.showComboPoints ) then
-		ComboPointPlayerFrame:Setup()
-	else
-		ComboPointPlayerFrame:UnregisterAllEvents()
-		ComboPointPlayerFrame:Hide()
+	if not ns.Classic then
+		if ( config.showComboPoints ) then
+			ComboPointPlayerFrame:Setup()
+		else
+			ComboPointPlayerFrame:UnregisterAllEvents()
+			ComboPointPlayerFrame:Hide()
+		end
 	end
 
-	local inVehicle = UnitHasVehicleUI("player")
+	local inVehicle
+	if not ns.Classic then
+		inVehicle = UnitHasVehicleUI("player")
+	end
 
 	if inVehicle then
 		self.Name:Show()
@@ -332,7 +338,9 @@ local function UpdatePlayerFrame(self, ...)
 			self.classPowerBar:Setup();
 		end
 
-		TotemFrame_Update();
+		if not ns.Classic then
+			TotemFrame_Update();
+		end
 
 		if ( playerClass == "SHAMAN" ) then
 		elseif ( playerClass == "DRUID" ) then
@@ -405,12 +413,14 @@ local function UpdateUnitFrameLayout(frame)
 		frame.Portrait:SetSize(data.por.w, data.por.h)
 		frame.Portrait:SetPoint("CENTER", frame.Texture, data.por.x, data.por.y)
 	end
-	-- Threat Glow -- if enabled
-	if frame.ThreatIndicator then
-		frame.ThreatIndicator:SetSize(data.glo.w, data.glo.h)
-		frame.ThreatIndicator:SetPoint("TOPLEFT", frame.Texture, data.glo.x, data.glo.y)
-		frame.ThreatIndicator:SetTexture(data.glo.t)
-		frame.ThreatIndicator:SetTexCoord(unpack(data.glo.c))
+	if not ns.Classic then
+		-- Threat Glow -- if enabled
+		if frame.ThreatIndicator then
+			frame.ThreatIndicator:SetSize(data.glo.w, data.glo.h)
+			frame.ThreatIndicator:SetPoint("TOPLEFT", frame.Texture, data.glo.x, data.glo.y)
+			frame.ThreatIndicator:SetTexture(data.glo.t)
+			frame.ThreatIndicator:SetTexCoord(unpack(data.glo.c))
+		end
 	end
 end
 
@@ -530,10 +540,12 @@ local function CreateUnitLayout(self, unit)
 		end
 	end
 
-	--[[ 	Threat glow		]]
-	if (config.ThreatIndicator) and (data.glo) then 
-		self.ThreatIndicator = self.Health:CreateTexture(nil, "BACKGROUND", nil,-1)
-		self.ThreatIndicator.feedbackUnit = "player"
+	if not ns.Classic then
+		--[[ 	Threat glow		]]
+		if (config.ThreatIndicator) and (data.glo) then 
+			self.ThreatIndicator = self.Health:CreateTexture(nil, "BACKGROUND", nil,-1)
+			self.ThreatIndicator.feedbackUnit = "player"
+		end
 	end
 
 	if (self.IsMainFrame) then
@@ -597,9 +609,11 @@ local function CreateUnitLayout(self, unit)
 		spark:SetSize(5,5)
 		overAbsorbBar.spark = spark
 
-		self:RegisterEvent("UNIT_HEAL_PREDICTION", ns.UpdateHealthOverride)
-		self:RegisterEvent("UNIT_ABSORB_AMOUNT_CHANGED", ns.UpdateHealthOverride)
-		self:RegisterEvent("UNIT_HEAL_ABSORB_AMOUNT_CHANGED", ns.UpdateHealthOverride)
+		if not ns.Classic then
+			self:RegisterEvent("UNIT_HEAL_PREDICTION", ns.UpdateHealthOverride)
+			self:RegisterEvent("UNIT_ABSORB_AMOUNT_CHANGED", ns.UpdateHealthOverride)
+			self:RegisterEvent("UNIT_HEAL_ABSORB_AMOUNT_CHANGED", ns.UpdateHealthOverride)
+		end
 		self.Health.Override = ns.UpdateHealthOverride
 
 		-- Combat CombatFeedbackText
@@ -635,12 +649,14 @@ local function CreateUnitLayout(self, unit)
 		self.Name.Bg:SetPoint("BOTTOMLEFT", self.Health, "TOPLEFT") 
 		self.Name.Bg:SetTexture(textPath.. "nameBackground")
 
-		-- alt power bar
-		local altbar = _G["Boss"..unit:match("%d").."TargetFramePowerBarAlt"]
-		UnitPowerBarAlt_Initialize(altbar, unit, (uconfig.scale or 1) * 0.5, "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
-		altbar:SetParent(self)
-		altbar:ClearAllPoints()
-		altbar:SetPoint("TOPRIGHT", self, "TOPLEFT", 0, 5)
+		if not ns.Classic then
+			-- alt power bar
+			local altbar = _G["Boss"..unit:match("%d").."TargetFramePowerBarAlt"]
+			UnitPowerBarAlt_Initialize(altbar, unit, (uconfig.scale or 1) * 0.5, "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+			altbar:SetParent(self)
+			altbar:ClearAllPoints()
+			altbar:SetPoint("TOPRIGHT", self, "TOPLEFT", 0, 5)
+		end
 
 	else
 		--[[ 	Icons		]]
@@ -658,13 +674,15 @@ local function CreateUnitLayout(self, unit)
 			self.LeaderIndicator:SetPoint("CENTER", self.Portrait, "TOPLEFT", 1, -1)
 		end
 		
-		if (not self.IsTargetFrame) then
-			self.PhaseIndicator = self:CreateTexture(nil, "OVERLAY")
-			self.PhaseIndicator:SetPoint("CENTER", self.Portrait, "BOTTOM")
-			if (self.IsMainFrame) then
-				self.PhaseIndicator:SetSize(26, 26)
-			else
-				self.PhaseIndicator:SetSize(18, 18)
+		if not ns.Classic then
+			if (not self.IsTargetFrame) then
+				self.PhaseIndicator = self:CreateTexture(nil, "OVERLAY")
+				self.PhaseIndicator:SetPoint("CENTER", self.Portrait, "BOTTOM")
+				if (self.IsMainFrame) then
+					self.PhaseIndicator:SetSize(26, 26)
+				else
+					self.PhaseIndicator:SetSize(18, 18)
+				end
 			end
 		end
 
@@ -702,13 +720,15 @@ local function CreateUnitLayout(self, unit)
 	--[[ 	Player Frame		]] --
 	if (self.cUnit == "player") then
 	
-		-- Combo Points
-		ComboPointPlayerFrame:ClearAllPoints()
-		ComboPointPlayerFrame:SetParent(self)
-		ComboPointPlayerFrame:SetPoint("TOP", self, "BOTTOM", 28, 1)
-		ComboPointPlayerFrame.SetPoint = nop
-		ComboPointPlayerFrame:SetFrameLevel(1)
-		ns.PaintFrames(ComboPointPlayerFrame.Background, 0.1)
+		if not ns.Classic then
+			-- Combo Points
+			ComboPointPlayerFrame:ClearAllPoints()
+			ComboPointPlayerFrame:SetParent(self)
+			ComboPointPlayerFrame:SetPoint("TOP", self, "BOTTOM", 28, 1)
+			ComboPointPlayerFrame.SetPoint = nop
+			ComboPointPlayerFrame:SetFrameLevel(1)
+			ns.PaintFrames(ComboPointPlayerFrame.Background, 0.1)
+		end
 
 		-- Totems
 		if ( config[playerClass].showTotems ) then
@@ -786,11 +806,13 @@ local function CreateUnitLayout(self, unit)
 		self.RestingIndicator:SetSize(31, 34)
 		self.RestingIndicator.PostUpdate = updatePlayerStatus
 
-		-- player frame vehicle/normal update
-		self:RegisterEvent("UNIT_ENTERED_VEHICLE", UpdatePlayerFrame)
-		self:RegisterEvent("UNIT_ENTERING_VEHICLE", UpdatePlayerFrame)
-		self:RegisterEvent("UNIT_EXITING_VEHICLE", UpdatePlayerFrame)
-		self:RegisterEvent("UNIT_EXITED_VEHICLE", UpdatePlayerFrame)
+		if not ns.Classic then
+			-- player frame vehicle/normal update
+			self:RegisterEvent("UNIT_ENTERED_VEHICLE", UpdatePlayerFrame)
+			self:RegisterEvent("UNIT_ENTERING_VEHICLE", UpdatePlayerFrame)
+			self:RegisterEvent("UNIT_EXITING_VEHICLE", UpdatePlayerFrame)
+			self:RegisterEvent("UNIT_EXITED_VEHICLE", UpdatePlayerFrame)
+		end
 	end
 	
 	--[[ 	Focus & Target Frame		]]
@@ -940,9 +962,10 @@ oUF:Factory( function(self)
 				self:SetWidth(105)
 				self:SetHeight(30)
 			]],
-			'showParty', true,
-			'showPlayer', config.showSelfInParty, 
-			'yOffset', -30
+			"showParty", true,
+			"showRaid", false,
+			"showPlayer", config.showSelfInParty,
+			"yOffset", -30
 		)
 		ns.CreateUnitAnchor(party, "oUF_AbuPartyUnitButton1", config.showSelfInParty and "oUF_AbuPartyUnitButton5" or "oUF_AbuPartyUnitButton4", nil, "party")
 	end

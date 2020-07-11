@@ -35,8 +35,10 @@ end
 oUF.Tags.Events["abu:level"] = "UNIT_LEVEL PLAYER_LEVEL_UP"
 oUF.Tags.Methods["abu:level"] = function(unit)
 	local level = UnitLevel(unit)
-	if(UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit)) then
-		level = UnitBattlePetLevel(unit)
+	if not ns.Classic then
+		if(UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit)) then
+			level = UnitBattlePetLevel(unit)
+		end
 	end
 
 	if (level <= 0 or UnitIsCorpse(unit)) and (unit == "player" or unit == "target" or unit == "focus") then
