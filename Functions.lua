@@ -234,9 +234,9 @@ local function updateAbsorbBars(healthbar, unit, curHP, maxHP)
 	local totalAbsorb_Value = 0
 
 	if not ns.Classic then
-		healAbsorb = UnitGetTotalHealAbsorbs(unit)
-		incHealing = UnitGetIncomingHeals(unit)
-		totalAbsorb_Value = UnitGetTotalAbsorbs(unit)
+		healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
+		incHealing = UnitGetIncomingHeals(unit) or 0
+		totalAbsorb_Value = UnitGetTotalAbsorbs(unit) or 0
 	end
 
 	if healAbsorb > curHP then
