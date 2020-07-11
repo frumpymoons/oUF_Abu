@@ -229,9 +229,15 @@ local function updateAbsorbBars(healthbar, unit, curHP, maxHP)
 	local _, maxValue = healthbar:GetMinMaxValues()
 	healthbar.maxValue = maxValue
 
-	local healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
-	local incHealing = UnitGetIncomingHeals(unit) or 0
-	local totalAbsorb_Value = UnitGetTotalAbsorbs(unit) or 0
+	local healAbsorb = 0
+	local incHealing = 0
+	local totalAbsorb_Value = 0
+
+	if not ns.Classic then
+		healAbsorb = UnitGetTotalHealAbsorbs(unit)
+		incHealing = UnitGetIncomingHeals(unit)
+		totalAbsorb_Value = UnitGetTotalAbsorbs(unit)
+	end
 
 	if healAbsorb > curHP then
 		healAbsorb = curHP

@@ -12,6 +12,8 @@ ns.paintframes = {} -- For coloring frames
 ns.L = {}
 ns.locale = GetLocale()
 
+ns.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+
 ------------------------------------------------------------------------
 --  Colors
 oUF.colors.uninterruptible = { 1, 0.7, 0 }
@@ -42,9 +44,11 @@ oUF.colors.power["MANA"] = { 0.00, 0.5, 1.00 }
 --oUF.colors.power["AMMOSLOT"] = { 0.80, 0.60, 0.00 }
 --oUF.colors.power["FUEL"] = { 0.0, 0.55, 0.5 }
 
--- To change class colors use a custom class color addon like Class Colors
-ALT_MANA_BAR_PAIR_DISPLAY_INFO.DRUID[1] = true
-ALT_MANA_BAR_PAIR_DISPLAY_INFO.DRUID[3] = true
+if not ns.Classic then
+	-- To change class colors use a custom class color addon like Class Colors
+	ALT_MANA_BAR_PAIR_DISPLAY_INFO.DRUID[1] = true
+	ALT_MANA_BAR_PAIR_DISPLAY_INFO.DRUID[3] = true
+end
 
 ------------------------------------------------------------------------
 --  Event handler
@@ -102,7 +106,9 @@ function oUFAbu:ADDON_LOADED(event, addon)
 
 		self:RegisterEvent("MODIFIER_STATE_CHANGED") -- Showing auras
 		self:RegisterEvent("PLAYER_TARGET_CHANGED") -- Target sounds
-		self:RegisterEvent("PLAYER_FOCUS_CHANGED") -- Focus Sounds
+		if not ns.Classic then
+			self:RegisterEvent("PLAYER_FOCUS_CHANGED") -- Focus Sounds
+		end
 
 		-- Setup Options
 		self:SetupOptions()
