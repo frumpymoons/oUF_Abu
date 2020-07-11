@@ -153,7 +153,7 @@ ns.defaultConfig = {
 		cbicon = "NONE",
 		position = "CENTER/-205/-160",
 		cbposition = "BOTTOM/0/150",
-		cbscale = 1.2,
+		cbscale = 1,
 	},
 
 	pet = {
@@ -167,7 +167,7 @@ ns.defaultConfig = {
 		cbicon = "NONE",
 		position = "BOTTOM/-217/178",
 		cbposition = "BOTTOM/0/180",
-		cbscale = 1.2,
+		cbscale = 1,
 	},
 
 	target = {
@@ -183,7 +183,7 @@ ns.defaultConfig = {
 		cbicon = "NONE",
 		position = "CENTER/205/-160",
 		cbposition = "BOTTOM/0/350",
-		cbscale = 1.2,
+		cbscale = 1,
 	},
 	
 	targettarget = {
@@ -207,7 +207,7 @@ ns.defaultConfig = {
 		cbheight = 20,
 		cbicon = "NONE",
 		cbposition = "LEFT/300/125",
-		cbscale = 1.2,
+		cbscale = 1,
 	},
 	
 	focustarget = {
