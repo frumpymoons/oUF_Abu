@@ -932,6 +932,8 @@ local function CreateUnitLayout(self, unit)
 		}
 	end
 
+	oUFAbu:SetAllFonts()
+
 	return self
 end
 

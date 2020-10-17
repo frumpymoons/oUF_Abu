@@ -642,8 +642,10 @@ function oUFAbu:SetAllFonts()
 		end
 		for i = 1, 3 do
 			local bar = _G["MirrorTimer" .. i]
-			local _, size = bar.text:GetFont()
-			bar.text:SetFont(file, size, ns.config.fontBarOutline)
+			if bar.text then
+				local _, size = bar.text:GetFont()
+				bar.text:SetFont(file, size, ns.config.fontBarOutline)
+			end
 		end
 	end
 
