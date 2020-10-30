@@ -551,7 +551,7 @@ local function CreateUnitLayout(self, unit)
 	if (self.IsMainFrame) then
 		--[[ 	Level text		]]
 		self.Level = ns.CreateFontStringNumber(self, 13, "CENTER")
-		self.Level:SetPoint("CENTER", self.Texture, (self.cUnit == "player" and -63) or 63, -17)
+		self.Level:SetPoint("CENTER", self.Texture, (self.cUnit == "player" and -62) or 64, -16.5)
 		self:Tag(self.Level, "[abu:level]")
 
 		--[[ PvPIndicator Icon  ]] --
