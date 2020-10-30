@@ -211,15 +211,24 @@ local function GetTargetTexture(cUnit, type)
 	end
 end
 
-local function updatePlayerStatus(element)
+local function PostUpdateCombatIndicator(element, inCombat)
 	local self = element.__owner
-	if UnitAffectingCombat("player") then
+	if inCombat then
 		self.RestingIndicator:Hide()
 		self.Level:Hide()
-	elseif IsResting() then
+	else
+		self.Level:Show()
+		self.Level:UpdateTag()
+	end
+end
+
+local function PostUpdateRestingIndicator(element, isResting)
+	local self = element.__owner
+	if isResting then
 		self.RestingIndicator:Show()
 		self.Level:Hide()
-	elseif not self.Level:IsVisible() then
+	else
+		self.RestingIndicator:Hide()
 		self.Level:Show()
 		self.Level:UpdateTag()
 	end
@@ -329,7 +338,7 @@ local function UpdatePlayerFrame(self)
 		self.Level:Show()
 
 		self.GroupRoleIndicator:SetAlpha(1)
-		self.PvPIndicator:SetPoint("TOPLEFT", self.Texture, 23, -23)
+		self.PvPIndicator:SetPoint("TOPLEFT", self.Texture, 24, -23)
 		self.LeaderIndicator:SetPoint("TOPLEFT", self.Portrait, 3, 2)
 		self.RaidTargetIndicator:SetPoint("CENTER", self.Portrait, "TOP", 0, -1)
 		PlayerFrameVehicleTexture:Hide()
@@ -543,7 +552,7 @@ local function CreateUnitLayout(self, unit)
 	if not ns.Classic then
 		--[[ 	Threat glow		]]
 		if (config.ThreatIndicator) and (data.glo) then
-			self.ThreatIndicator = self.Health:CreateTexture(nil, "BACKGROUND", nil,-1)
+			self.ThreatIndicator = self.Health:CreateTexture(nil, "BACKGROUND", nil, -1)
 			self.ThreatIndicator.feedbackUnit = "player"
 		end
 	end
@@ -557,10 +566,10 @@ local function CreateUnitLayout(self, unit)
 		--[[ PvPIndicator Icon  ]] --
 		self.PvPIndicator = self:CreateTexture(nil, "OVERLAY")
 		self.PvPIndicator:SetSize(30, 30)
-		self.PvPIndicator:SetPoint("TOPRIGHT", self.Texture, -23, -23)
-		self.PvPIndicator.Prestige = self:CreateTexture(nil, "ARTWORK")
-		self.PvPIndicator.Prestige:SetSize(50, 52)
-		self.PvPIndicator.Prestige:SetPoint("CENTER", self.PvPIndicator, "CENTER")
+		self.PvPIndicator:SetPoint("TOPRIGHT", self.Texture, (self.cUnit == "player" and -22) or -23, -23)
+		self.PvPIndicator.Badge = self:CreateTexture(nil, "ARTWORK")
+		self.PvPIndicator.Badge:SetSize(50, 52)
+		self.PvPIndicator.Badge:SetPoint("CENTER", self.PvPIndicator, "CENTER")
 
 		--[[	Special Bars 		]]
 		-- Incoming Heals
@@ -795,16 +804,16 @@ local function CreateUnitLayout(self, unit)
 		self:Tag(self.PvPIndicatorTimer, "[abu:pvptimer]")
 
 		-- Combat icon
-		self.CombatIndicator = self:CreateTexture(nil, "OVERLAY")
+		self.CombatIndicator = self:CreateTexture(nil, "OVERLAY", nil, 1)
 		self.CombatIndicator:SetPoint("CENTER", self.Level, 1, 0)
 		self.CombatIndicator:SetSize(31, 33)
-		self.CombatIndicator.PostUpdate = updatePlayerStatus
+		self.CombatIndicator.PostUpdate = PostUpdateCombatIndicator
 
 		-- RestingIndicator icon
-		self.RestingIndicator = self:CreateTexture(nil, "OVERLAY")
-		self.RestingIndicator:SetPoint("CENTER", self.Level, -0.5, 0)
+		self.RestingIndicator = self:CreateTexture(nil, "OVERLAY", nil, 1)
+		self.RestingIndicator:SetPoint("CENTER", self.Level, -2, 0)
 		self.RestingIndicator:SetSize(31, 34)
-		self.RestingIndicator.PostUpdate = updatePlayerStatus
+		self.RestingIndicator.PostUpdate = PostUpdateRestingIndicator
 
 		if not ns.Classic then
 			-- player frame vehicle/normal update
