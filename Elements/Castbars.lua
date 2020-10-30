@@ -139,7 +139,7 @@ function ns.CreateCastbars(self)
 	Castbar:SetScale(uconfig.cbscale or 1)
 	Castbar:SetFrameStrata("HIGH")
 	ns.CreateBorder(Castbar, 12, 3)
-	Castbar:SetBorderPadding(3, 2, 3, 3)
+	Castbar:SetBorderPadding(2, 2, 3, 3)
 
 	if (BasePos[self.cUnit]) then
 		local point, rpoint, x, y = unpack(BasePos[self.cUnit])
@@ -150,7 +150,8 @@ function ns.CreateCastbars(self)
 
 	Castbar.Background = Castbar:CreateTexture(nil, "BACKGROUND")
 	Castbar.Background:SetTexture("Interface\\Buttons\\WHITE8x8")
-	Castbar.Background:SetAllPoints(Castbar)
+	Castbar.Background:SetPoint("TOPLEFT", Castbar)
+	Castbar.Background:SetPoint("BOTTOMRIGHT", Castbar)
 
 	if (self.cUnit == "player") then
 		local SafeZone = Castbar:CreateTexture(nil, "BORDER")
