@@ -139,7 +139,7 @@ function ns.CreateCastbars(self)
 	Castbar:SetScale(uconfig.cbscale or 1)
 	Castbar:SetFrameStrata("HIGH")
 	ns.CreateBorder(Castbar, 12, 3)
-	Castbar:SetBorderPadding(2, 2, 3, 3)
+	Castbar:SetBorderPadding(3, 3, 3, 3)
 
 	if (BasePos[self.cUnit]) then
 		local point, rpoint, x, y = unpack(BasePos[self.cUnit])
@@ -150,8 +150,8 @@ function ns.CreateCastbars(self)
 
 	Castbar.Background = Castbar:CreateTexture(nil, "BACKGROUND")
 	Castbar.Background:SetTexture("Interface\\Buttons\\WHITE8x8")
-	Castbar.Background:SetPoint("TOPLEFT", Castbar)
-	Castbar.Background:SetPoint("BOTTOMRIGHT", Castbar)
+	Castbar.Background:SetPoint("TOPLEFT", Castbar, 0, 1)
+	Castbar.Background:SetPoint("BOTTOMRIGHT", Castbar, 0, -1)
 
 	if (self.cUnit == "player") then
 		local SafeZone = Castbar:CreateTexture(nil, "BORDER")
@@ -162,7 +162,7 @@ function ns.CreateCastbars(self)
 		Castbar.Ticks = ns.config.castbarticks
 	end
 
-	local Spark = Castbar:CreateTexture(nil, "ARTWORK", nil, 1)
+	local Spark = Castbar:CreateTexture(nil, "OVERLAY", nil, 1)
 	Spark:SetSize(15, (uconfig.cbheight * 2))
 	Spark:SetBlendMode("ADD")
 	Spark:SetPoint("CENTER", Castbar:GetStatusBarTexture(), "RIGHT", 0, 0)
@@ -174,10 +174,10 @@ function ns.CreateCastbars(self)
 		Icon:SetTexCoord(0.05, 0.95, 0.05, 0.95)
 		if (uconfig.cbicon == "RIGHT") then
 			Icon:SetPoint("LEFT", Castbar, "RIGHT", 0, 0)
-			Castbar:SetBorderPadding(3, 2, 3, 4 + uconfig.cbheight)
+			Castbar:SetBorderPadding(3, 3, 3, 4 + uconfig.cbheight)
 		elseif (uconfig.cbicon == "LEFT") then
 			Icon:SetPoint("RIGHT", Castbar, "LEFT", 0, 0)
-			Castbar:SetBorderPadding(3, 2, 4 + uconfig.cbheight, 3)
+			Castbar:SetBorderPadding(3, 3, 4 + uconfig.cbheight, 3)
 		end
 		Castbar.Icon = Icon
 	end
@@ -263,14 +263,13 @@ end
 
 function ns.UpdateCastbarColor(Castbar, unit)
 	local color
-	local bR, bG, bB = ns.GetPaintColor(0.2)
-	local text = "default"
+	local bR, bG, bB = ns.GetPaintColor(-0.2)
+	local text = "white"
 
 	if UnitIsUnit(unit, "player") then
 		color = colors.class[select(2,UnitClass("player"))]
 	elseif Castbar.notInterruptible then
 		color = ns.config.castbarUnInterruptibleColor
-		text = "white"
 		bR, bG, bB = color[1] * 0.8, color[2] * 0.8, color[3] * 0.8
 	elseif UnitIsFriend(unit, "player") then
 		color = colors.reaction[5]
