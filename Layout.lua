@@ -216,6 +216,8 @@ local function PostUpdateCombatIndicator(element, inCombat)
 	if inCombat then
 		self.RestingIndicator:Hide()
 		self.Level:Hide()
+	elseif self.RestingIndicator:IsVisible() then
+		self.Level:Hide()
 	else
 		self.Level:Show()
 		self.Level:UpdateTag()
