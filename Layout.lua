@@ -986,8 +986,7 @@ oUF:Factory(function(self)
 	end
 
 	if (config.showParty) then
-		local party = oUF:SpawnHeader("oUF_AbuParty", nil, (config.showPartyInRaid and "custom [@raid4,exists] hide; show")
-															or "custom [group:party,nogroup:raid] show; hide",
+		local party = oUF:SpawnHeader("oUF_AbuParty", nil, config.showPartyInRaid and "custom [group:party] show; [@raid4,exists] hide; [@raid3,exists] show; hide" or "party",
 			"oUF-initialConfigFunction", [[
 				self:SetWidth(105)
 				self:SetHeight(30)
