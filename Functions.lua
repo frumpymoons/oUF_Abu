@@ -532,7 +532,7 @@ function ns.CreateFontStringNumber(parent, size, justify, outline)
 	fs:SetShadowOffset(1, -1)
 	fs.basesize = size
 	if outline and type(outline) == "string" then
-		fs.ignoreOutline = true
+		fs.ignoreOutline = false
 	end
 
 	tinsert(ns.fontstrings, fs)
@@ -587,12 +587,10 @@ function oUFAbu:SetAllFonts()
 		local mult = ns.config.fontNumberSize
 
 		for _, fs in ipairs(ns.fontstrings) do
-			local flag
+			local flag = ns.config.fontNumberOutline
 			local _, size, oflag = fs:GetFont()
 			if fs.ignoreOutline then
 				flag = oflag
-			else
-				flag = ns.config.fontNumberOutline
 			end
 
 			if (fs.basesize) then
