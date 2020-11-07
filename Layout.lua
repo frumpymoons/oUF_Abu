@@ -805,7 +805,7 @@ local function CreateUnitLayout(self, unit)
 
 		-- Combat icon
 		self.CombatIndicator = self:CreateTexture(nil, "OVERLAY", nil, 1)
-		self.CombatIndicator:SetPoint("CENTER", self.Level, 1, 0)
+		self.CombatIndicator:SetPoint("CENTER", self.Level, 0, 0)
 		self.CombatIndicator:SetSize(31, 33)
 		self.CombatIndicator.PostUpdate = PostUpdateCombatIndicator
 
