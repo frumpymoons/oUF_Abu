@@ -66,7 +66,7 @@ ns.defaultConfig = {
 	TextNameColorMode = "CUSTOM",
 
 	showParty = true,
-	showPartyInRaid = true,
+	showPartyInArena = true,
 	showSelfInParty = true,
 	showArena = true,
 	showBoss = true,

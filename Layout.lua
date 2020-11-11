@@ -1,6 +1,6 @@
 
 local _, ns = ...
-local config, playerClass
+local config, playerClass, playerRole
 local textPath = "Interface\\AddOns\\oUF_Abu\\Media\\Frames\\"
 local pathFat = textPath.."Fat\\"
 local pathNormal = textPath.."Normal\\"
@@ -233,6 +233,15 @@ local function PostUpdateRestingIndicator(element, isResting)
 		self.RestingIndicator:Hide()
 		self.Level:Show()
 		self.Level:UpdateTag()
+	end
+end
+
+local function UpdatePartyFrame()
+	if (oUF_AbuParty) then return end
+	if IsActiveBattlefieldArena() then
+		RegisterStateDriver(Roth_UIPartyHeader, "visibility", "show")
+	else
+		RegisterStateDriver(Roth_UIPartyHeader, "visibility", "custom [group:party,nogroup:raid] show; hide")
 	end
 end
 
@@ -838,6 +847,12 @@ local function CreateUnitLayout(self, unit)
 		end)
 	end
 
+	--[[	Party Fraem		]]
+	if (config.showParty) then
+		self:RegisterEvent("PLAYER_ENTERING_WORLD", UpdatePartyFrame)
+		self:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", UpdatePartyFrame, true)
+	end
+
 	--[[ 	Auras		]]
 	if (self.cUnit == "focus") or (self.cUnit == "target") then
 		local isFocus = self.cUnit == "focus"
@@ -953,6 +968,7 @@ function _G.PlayerFrame_ToPlayerArt() end
 
 oUF:Factory(function(self)
 	playerClass = select(2, UnitClass("player"))
+	playerRole = GetSpecializationRole(GetSpecialization())
 	config = ns.config
 
 	self:RegisterStyle("oUF_Abu", CreateUnitLayout)
@@ -986,7 +1002,7 @@ oUF:Factory(function(self)
 	end
 
 	if (config.showParty) then
-		local party = oUF:SpawnHeader("oUF_AbuParty", nil, config.showPartyInRaid and "custom [group:party] show; [@raid4,exists] hide; [@raid3,exists] show; hide" or "party",
+		local party = oUF:SpawnHeader("oUF_AbuParty", nil, "party",
 			"oUF-initialConfigFunction", [[
 				self:SetWidth(105)
 				self:SetHeight(30)

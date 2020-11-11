@@ -46,7 +46,7 @@ L.Auras_InvalidSpellID = "Invalid Spell ID!"
 L.General = "Basic"
 
 L.General_Party = "Enable Party Frames"
-L.General_PartyInRaid = "Display Party Frames in Raid"
+L.General_PartyInArena = "Display Party Frames in Arena"
 L.General_SelfInParty = "Display yourself in Party"
 L.General_Arena = "Enable Arena Frames"
 L.General_Boss = "Enable Boss Frames"
