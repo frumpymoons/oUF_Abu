@@ -1,8 +1,8 @@
-## Interface: 90001
+## Interface: 90002
 ## Author: Abu
 ## Title: oUF_|cffffffffAbu|r
 ## RequiredDeps: oUF
-## Version: 9.0-0
+## Version: 9.0-1
 ## SavedVariables: oUFAbuSettings, oUFAbuAuraFilters
 ## SavedVariablesPerCharacter: oUFAbuProfile
 
