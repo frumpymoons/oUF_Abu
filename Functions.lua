@@ -309,8 +309,8 @@ do
 		if not Power.Value then return end
 
 		if (not cur) then
-			max = UnitPower(unit) or 1
-			cur = UnitPowerMax(unit)
+			cur = UnitPower(unit) or 1
+			max = UnitPowerMax(unit)
 		end
 
 		local _, powerToken = UnitPowerType(unit)
@@ -326,7 +326,7 @@ do
 
 		if uconfig.PowerTag == "DISABLE" then
 			Power.Value:SetText(nil)
-		elseif self.isMouseOver then
+		elseif self.isMouseOver or powerToken == "ENERGY" or powerToken == "RAGE" then
 			SetValueText(Power.Value, tagtable[uconfig.PowerTag][1], cur, max, color)
 		elseif cur < max then
 			SetValueText(Power.Value, tagtable[uconfig.PowerTag][2], cur, max, color)
@@ -479,7 +479,7 @@ function ns.CreateStatusBar(parent, layer, name, AddBackdrop)
 	if AddBackdrop then
 		bar:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8"})
 		local r,g,b,a = unpack(ns.config.backdropColor)
-		bar:SetBackdropColor(r,g,b,a)
+		bar:SetBackdropColor(r, g, b, a)
 	end
 
 	table.insert(ns.statusbars, bar)
@@ -527,6 +527,8 @@ end
 -- [[ Font Functions ]] --
 function ns.CreateFontStringNumber(parent, size, justify, outline)
 	local fs = parent:CreateFontString(nil, "OVERLAY")
+	-- fs:SetScale(UIParent:GetScale())
+	-- fs:SetIgnoreParentScale(true)
 	fs:SetFont(ns.config.fontNumber, (size * ns.config.fontNumberSize), outline or ns.config.fontNumberOutline)
 	fs:SetJustifyH(justify or "CENTER")
 	fs:SetShadowOffset(1, -1)
@@ -541,6 +543,8 @@ end
 
 function ns.CreateFontStringName(parent, size, justify, outline)
 	local fs = parent:CreateFontString(nil, "OVERLAY")
+	fs:SetScale(UIParent:GetScale())
+	fs:SetIgnoreParentScale(true)
 	fs:SetFont(ns.config.fontName, (size * ns.config.fontNameSize), outline or ns.config.fontNameOutline)
 	fs:SetJustifyH(justify or "CENTER")
 	fs:SetShadowOffset(1, -1)
