@@ -246,7 +246,8 @@ local function PostUpdateCombatIndicator(element, inCombat)
 	if inCombat then
 		self.RestingIndicator:Hide()
 		self.Level:Hide()
-	elseif self.RestingIndicator:IsVisible() then
+	elseif IsResting() then
+		self.RestingIndicator:Show()
 		self.Level:Hide()
 	else
 		self.Level:Show()
@@ -256,7 +257,10 @@ end
 
 local function PostUpdateRestingIndicator(element, isResting)
 	local self = element.__owner
-	if isResting then
+	if UnitAffectingCombat("player") then
+		self.RestingIndicator:Hide()
+		self.Level:Hide()
+	elseif isResting then
 		self.RestingIndicator:Show()
 		self.Level:Hide()
 	else
@@ -376,7 +380,9 @@ local function UpdatePlayerFrame(self)
 		end
 	else
 		self.Name:Hide()
-		self.Level:Show()
+		if not UnitAffectingCombat("player") then
+			self.Level:Show()
+		end
 
 		self.GroupRoleIndicator:SetAlpha(1)
 		self.PvPIndicator:SetPoint("TOPLEFT", self.Texture, 25, -23)
