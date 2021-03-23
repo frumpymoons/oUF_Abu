@@ -881,7 +881,7 @@ local function CreateUnitLayout(self, unit)
 				end
 				initialAnchor, relAnchor, offX, offY = "TOPRIGHT", "TOPLEFT", -8, -1.5
 			end
-			size = isFocus and 26 or 20
+			size = 26
 			gap = 4.5
 			return size, gap, columns, rows, initialAnchor, relAnchor, offX, offY
 		end
