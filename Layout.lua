@@ -271,11 +271,11 @@ local function PostUpdateRestingIndicator(element, isResting)
 end
 
 local function UpdatePartyFrame()
-	if (oUF_AbuParty) then return end
+	if (not oUF_AbuParty) then return end
 	if IsActiveBattlefieldArena() then
-		RegisterStateDriver(Roth_UIPartyHeader, "visibility", "show")
+		RegisterStateDriver(oUF_AbuParty, "visibility", "show")
 	else
-		RegisterStateDriver(Roth_UIPartyHeader, "visibility", "custom [group:party,nogroup:raid] show; hide")
+		RegisterStateDriver(oUF_AbuParty, "visibility", "custom [group:party,nogroup:raid] show; hide")
 	end
 end
 
