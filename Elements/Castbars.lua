@@ -136,9 +136,10 @@ function ns.CreateCastbars(self)
 	local Castbar = ns.CreateStatusBar(self, "BORDER", self:GetName().."Castbar")
 	Castbar.__owner = self
 	Castbar:SetSize(uconfig.cbwidth, uconfig.cbheight)
-	Castbar:SetScale(uconfig.cbscale or 1)
+	Castbar:SetScale((uconfig.cbscale or 1) * UIParent:GetScale())
+	Castbar:SetIgnoreParentScale(true)
 	Castbar:SetFrameStrata("HIGH")
-	ns.CreateBorder(Castbar, 12, 3)
+	ns.CreateBorder(Castbar, 13, 3)
 	Castbar:SetBorderPadding(3, 3, 3, 3)
 
 	if (BasePos[self.cUnit]) then
@@ -182,14 +183,14 @@ function ns.CreateCastbars(self)
 		Castbar.Icon = Icon
 	end
 
-	Castbar.Time = ns.CreateFontStringBar(Castbar, 13, "RIGHT")
+	Castbar.Time = ns.CreateFontStringBar(Castbar, 16, "RIGHT")
 	Castbar.Time:SetPoint("RIGHT", Castbar, -5, 0)
-	Castbar.Time:SetFont(ns.config.fontBar, 12, ns.config.fontBarOutline)
+	Castbar.Time:SetFont(ns.config.fontBar, 16, ns.config.fontBarOutline)
 
-	Castbar.Text = ns.CreateFontStringBar(Castbar, 13, "LEFT")
+	Castbar.Text = ns.CreateFontStringBar(Castbar, 16, "LEFT")
 	Castbar.Text:SetPoint("LEFT", Castbar, 4, 0)
 	Castbar.Text:SetPoint("RIGHT", Castbar, "RIGHT", -40, 0)
-	Castbar.Text:SetFont(ns.config.fontBar, 12, ns.config.fontBarOutline)
+	Castbar.Text:SetFont(ns.config.fontBar, 16, ns.config.fontBarOutline)
 	Castbar.Text:SetWordWrap(false)
 
 	Castbar.PostCastStart = ns.PostCastStart
