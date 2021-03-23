@@ -543,8 +543,8 @@ end
 
 function ns.CreateFontStringName(parent, size, justify, outline)
 	local fs = parent:CreateFontString(nil, "OVERLAY")
-	fs:SetScale(UIParent:GetScale())
-	fs:SetIgnoreParentScale(true)
+	-- fs:SetScale(UIParent:GetScale())
+	-- fs:SetIgnoreParentScale(true)
 	fs:SetFont(ns.config.fontName, (size * ns.config.fontNameSize), outline or ns.config.fontNameOutline)
 	fs:SetJustifyH(justify or "CENTER")
 	fs:SetShadowOffset(1, -1)
