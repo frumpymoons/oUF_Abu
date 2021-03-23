@@ -47,7 +47,7 @@ local DataNormal = {
 		por = { w = 64,  h = 64,  x = -41,  y = 6,   },
 		glo = { w = 242, h = 92,  x = 13,   y = 0,   t = pathNormal.."Target-Flash", c = {0.945, 0, 0, 0.182}},
 	},
-	target = { -- and focus
+	target = {
 		siz = { w = 175, h = 42   },
 		tex = { w = 230, h = 100, x = 20,   y = -7,  t = pathNormal.."Target", c = {0.09375, 1, 0, 0.78125}},
 		hpb = { w = 117, h = 19,  x = -51,  y = 16,  },
@@ -58,7 +58,29 @@ local DataNormal = {
 		por = { w = 64,  h = 64,  x = 41,   y = 6,   },
 		glo = { w = 239, h = 94,  x = -24,  y = 1,   t = pathNormal.."Target-Flash", c = {0, 0.945, 0, 0.182}},
 	},
-	targettarget = { -- and focus target
+	targettarget = {
+		siz = { w = 85,  h = 20   },
+		tex = { w = 128, h = 64,  x = 16,   y = -10, t = pathNormal.."TargetOfTarget", c = {0, 1, 0, 1}},
+		hpb = { w = 43,  h = 6,   x = 2,    y = 14,  },
+		hpt = {                   x = -4,   y = -3,  j = "CENTER", s = 12 },
+		mpb = { w = 37,  h = 7,   x = -1,   y = 0,   },
+		-----------------------------------------------
+		nam = { w = 65,  h = 10,  x = 11,   y = -18, j = "LEFT",   s = 13 },
+		por = { w = 40,  h = 40,  x = -40,  y = 10,  },
+		------------------------------------------------
+	},
+	focus = {
+		siz = { w = 175, h = 42   },
+		tex = { w = 230, h = 100, x = 20,   y = -7,  t = pathNormal.."Target", c = {0.09375, 1, 0, 0.78125}},
+		hpb = { w = 117, h = 19,  x = -51,  y = 16,  },
+		hpt = {                   x = 0,    y = 1,   j = "CENTER", s = 14 },
+		mpb = { w = 117, h = 20,  x = 0,    y = 0,   },
+		mpt = {                   x = 0,    y = 0,   j = "CENTER", s = 14 },
+		nam = { w = 110, h = 10,  x = 0,    y = 17,  j = "CENTER", s = 14 },
+		por = { w = 64,  h = 64,  x = 41,   y = 6,   },
+		-- glo = { w = 239, h = 94,  x = -24,  y = 1,   t = pathNormal.."Target-Flash", c = {0, 0.945, 0, 0.182}},
+	},
+	focustarget = {
 		siz = { w = 85,  h = 20   },
 		tex = { w = 128, h = 64,  x = 16,   y = -10, t = pathNormal.."TargetOfTarget", c = {0, 1, 0, 1}},
 		hpb = { w = 43,  h = 6,   x = 2,    y = 14,  },
@@ -137,6 +159,18 @@ local DataFat = {
 		glo = { w = 239, h = 94,  x = -24,  y = 1,   t = pathNormal.."Target-Flash", c = {0, 0.945, 0, 0.182}},
 	},
 	targettarget = DataNormal.targettarget, --same for now
+	focus = {
+		siz = { w = 175, h = 42   },
+		tex = { w = 230, h = 100, x = 20,   y = -7,  t = pathFat.."Target", c = {0.09375, 1, 0, 0.78125}},
+		hpb = { w = 117, h = 26,  x = -51,  y = 13,  },
+		hpt = {                   x = 0,    y = 0,   j = "CENTER", s = 14 },
+		mpb = { w = 117, h = 14,  x = 0,    y = 0,   },
+		mpt = {                   x = 0,    y = -1,   j = "CENTER", s = 14 },
+		nam = { w = 110, h = 10,  x = 0,    y = 18,  j = "CENTER", s = 16 },
+		por = { w = 64,  h = 64,  x = 41,   y = 6,   },
+		-- glo = { w = 239, h = 94,  x = -24,  y = 1,   t = pathNormal.."Target-Flash", c = {0, 0.945, 0, 0.182}},
+	},
+	focustarget = DataNormal.focustarget,
 	pet = {
 		siz = { w = 110, h = 37   },
 		tex = { w = 128, h = 64,  x = 4,    y = -10, t = pathFat.."Pet", c = {0, 1, 0, 1}},
@@ -163,11 +197,7 @@ local DataFat = {
 }
 
 local function GetDBUnit(cUnit)
-	if cUnit == "focus" then
-		return "target"
-	elseif cUnit == "focustarget" then
-		return "targettarget"
-	elseif cUnit == "player" then -- can player be vehicle? no it cant
+	if cUnit == "player" then -- can player be vehicle? no it cant
 		if ns.Classic then return "player" end
 		if UnitHasVehicleUI("player") then
 			if (UnitVehicleSkin("player") == "Natural") then
@@ -378,7 +408,7 @@ local function UpdateUnitFrameLayout(frame)
 	local data = GetData(cUnit)
 	local uconfig = ns.config[cUnit]
 
-	if (frame.cUnit == "pet" or frame.IsMainFrame or frame.IsTargetFrame) then
+	if (frame.cUnit == "pet" or frame.IsMainFrame or frame.IsTargetFrame or frame.IsFocusFrame or frame.IsFocusTargetFrame) then
 		frame.CombatFade = ns.config.combatFade
 	end
 
@@ -461,8 +491,10 @@ end
 
 local function CreateUnitLayout(self, unit)
 	self.cUnit = ns.cUnit(unit)
-	self.IsMainFrame = ns.MultiCheck(self.cUnit, "player", "target", "focus")
-	self.IsTargetFrame = ns.MultiCheck(self.cUnit, "targettarget", "focustarget")
+	self.IsMainFrame = ns.MultiCheck(self.cUnit, "player", "target")
+	self.IsFocusFrame = ns.MultiCheck(self.cUnit, "focus")
+	self.IsTargetFrame = ns.MultiCheck(self.cUnit, "targettarget")
+	self.IsFocusTargetFrame = ns.MultiCheck(self.cUnit, "focustarget")
 	self.IsPartyFrame = self.cUnit:match("party")
 
 	if (self.IsTargetFrame) then
@@ -568,7 +600,7 @@ local function CreateUnitLayout(self, unit)
 		end
 	end
 
-	if (self.IsMainFrame) then
+	if (self.IsMainFrame or self.IsFocusFrame) then
 		--[[ 	Level text		]]
 		self.Level = ns.CreateFontStringNumber(self, 13, "CENTER")
 		self.Level:SetPoint("CENTER", self.Texture, (self.cUnit == "player" and -62) or 64, -16.5)
@@ -847,7 +879,7 @@ local function CreateUnitLayout(self, unit)
 		end)
 	end
 
-	--[[	Party Fraem		]]
+	--[[	Party Frame		]]
 	if (config.showParty) then
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", UpdatePartyFrame)
 		self:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", UpdatePartyFrame, true)
