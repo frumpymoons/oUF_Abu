@@ -42,7 +42,7 @@ oUF.Tags.Methods["abu:level"] = function(unit)
 	end
 
 	if (level <= 0 or UnitIsCorpse(unit)) and (unit == "player" or unit == "target" or unit == "focus") then
-		return "|TInterface\\TargetingFrame\\UI-TargetingFrame-Skull:12:12:0:0|t" -- boss skull icon
+		return "|TInterface\\TargetingFrame\\UI-TargetingFrame-Skull:12:12:-3:0|t" -- boss skull icon
 	end
 
 	local colorL = GetQuestDifficultyColor(level)
