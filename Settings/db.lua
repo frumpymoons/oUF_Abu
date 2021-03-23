@@ -52,7 +52,7 @@ ns.defaultConfig = {
 
 	powercolormode = "TYPE",
 	powerUseAtlas = true, --todo
-	powerPredictionBar = true, --todoo
+	powerPredictionBar = true, --todo
 	builderSpender = true, --todo
 	powercolor = { 0.0, 0.1, 0.0 },
 
@@ -201,7 +201,7 @@ ns.defaultConfig = {
 
 	focus = {
 		style = "fat",
-		scale = 1.2,
+		scale = 1.0,
 		HealthTag = "BOTH",
 		PowerTag = "PERCENT",
 		enableDebuff = true,
