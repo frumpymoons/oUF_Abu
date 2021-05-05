@@ -271,8 +271,11 @@ local function PostUpdateRestingIndicator(element, isResting)
 end
 
 local function UpdatePartyFrame()
+	if InCombatLockdown() then return end
 	if (not oUF_AbuParty) then return end
-	if IsActiveBattlefieldArena() then
+	if GetCVarBool("useCompactPartyFrames") then
+		RegisterStateDriver(oUF_AbuParty, "visibility", "hide")
+	elseif IsActiveBattlefieldArena() then
 		RegisterStateDriver(oUF_AbuParty, "visibility", "show")
 	else
 		RegisterStateDriver(oUF_AbuParty, "visibility", "custom [group:party,nogroup:raid] show; hide")
@@ -889,6 +892,8 @@ local function CreateUnitLayout(self, unit)
 	if (config.showParty) then
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", UpdatePartyFrame)
 		self:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", UpdatePartyFrame, true)
+		self:RegisterEvent("GROUP_ROSTER_UPDATE", UpdatePartyFrame, true)
+		self:RegisterEvent("UPDATE_ACTIVE_BATTLEFIELD", UpdatePartyFrame, true)
 	end
 
 	--[[ 	Auras		]]
