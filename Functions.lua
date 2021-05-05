@@ -298,19 +298,13 @@ do
 		local self = Power:GetParent()
 		local uconfig = ns.config[self.cUnit]
 
-		if (UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit)) or (max == 0) then
-			Power:SetValue(0)
-			if Power.Value then
-				Power.Value:SetText("")
-			end
-			return
+		if UnitIsDead(unit) then
+			cur = max
+			Power:SetValue(cur)
 		end
 
-		if not Power.Value then return end
-
-		if (not cur) then
-			cur = UnitPower(unit) or 1
-			max = UnitPowerMax(unit)
+		if (not Power.Value) then
+			return
 		end
 
 		local _, powerToken = UnitPowerType(unit)
@@ -325,7 +319,7 @@ do
 		end
 
 		if uconfig.PowerTag == "DISABLE" then
-			Power.Value:SetText(nil)
+			Power.Value:SetText("")
 		elseif self.isMouseOver or powerToken == "ENERGY" or powerToken == "RAGE" then
 			SetValueText(Power.Value, tagtable[uconfig.PowerTag][1], cur, max, color)
 		elseif cur < max then
