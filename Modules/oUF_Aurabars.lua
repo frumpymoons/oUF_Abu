@@ -77,38 +77,24 @@ local Visibility = function(self, event, unit)
 
 	shouldshow = bar.Visibility and bar.Visibility(self, event, unit)
 
-	if ns.Classic then
-		if (shouldshow) then
-			if (not bar.active) then
-				bar.active = true
-				self:RegisterEvent("UNIT_AURA", Path)
-				bar:ForceUpdate()
-			end
-		elseif (bar.active) then
-			bar.active = false
+	if not ns.Classic and (UnitHasVehicleUI("player")
+		or ((HasVehicleActionBar() and UnitVehicleSkin("player") and UnitVehicleSkin("player") ~= "")
+		or (HasOverrideActionBar() and GetOverrideBarSkin() and GetOverrideBarSkin() ~= "")))
+	then
+		if bar:IsShown() then
 			bar:Hide()
 			self:UnregisterEvent("UNIT_AURA", Path)
 		end
-	else
-		if UnitHasVehicleUI("player")
-			or ((HasVehicleActionBar() and UnitVehicleSkin("player") and UnitVehicleSkin("player") ~= "")
-			or (HasOverrideActionBar() and GetOverrideBarSkin() and GetOverrideBarSkin() ~= ""))
-		then
-			if bar:IsShown() then
-				bar:Hide()
-				self:UnregisterEvent("UNIT_AURA", Path)
-			end
-		elseif (shouldshow) then
-			if (not bar.active) then
-				bar.active = true
-				self:RegisterEvent("UNIT_AURA", Path)
-				bar:ForceUpdate()
-			end
-		elseif (bar.active) then
-			bar.active = false
-			bar:Hide()
-			self:UnregisterEvent("UNIT_AURA", Path)
+	elseif (shouldshow) then
+		if (not bar.active) then
+			bar.active = true
+			self:RegisterEvent("UNIT_AURA", Path)
+			bar:ForceUpdate()
 		end
+	elseif (bar.active) then
+		bar.active = false
+		bar:Hide()
+		self:UnregisterEvent("UNIT_AURA", Path)
 	end
 end
 

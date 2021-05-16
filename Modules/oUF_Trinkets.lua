@@ -50,8 +50,10 @@ end
 local Enable = function(self)
 	if self.Trinket then
 		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", Update, true)
-		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Update, true)
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", Update, true)
+		if not ns.Classic then
+			self:RegisterEvent("ARENA_OPPONENT_UPDATE", Update, true)
+		end
 
 		if not self.Trinket.cooldownFrame then
 			self.Trinket.cooldownFrame = CreateFrame("Cooldown", nil, self.Trinket)
@@ -72,8 +74,10 @@ end
 local Disable = function(self)
 	if self.Trinket then
 		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", Update)
-		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)
+		if not ns.Classic then
+			self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
+		end
 		self.Trinket:Hide()
 	end
 end

@@ -1,4 +1,5 @@
 local _, ns = ...
+if ns.Classic then return end
 local AuraList = {}
 
 AuraList.Immunity = {
@@ -16,11 +17,9 @@ AuraList.CCImmunity = {
 	115018,	-- Desecrated Ground
 	31224,	-- Cloak of Shadows
 	31821,	-- Aura Mastery
-	--49039,	-- Lichborne
 	51271,	-- Pillar of Frost
 	53271,	-- Masters Call
 	8178,	-- Grounding Totem Effect (Grounding Totem)
-	--114028,	-- Mass Spell Reflection
 	23920,	-- Spell Reflection (warrior)
 }
 
@@ -28,7 +27,6 @@ AuraList.Defensive = {
 	122470,	--Touch of Karma
 	115176,	-- Zen Meditation
 	115203,	-- Fortifying Brew
-	--115610,	-- Temporal Shield
 	116888,	-- Shroud of Purgatory
 	122278,	-- Dampen Harm
 	122783,	-- Diffuse Magic
@@ -46,7 +44,6 @@ AuraList.Defensive = {
 	6940,	-- Hand of Sacrifice
 	195181, -- Bone Shield
 	192081, -- IronFur
-	--192083, -- Mark of Ursol
 	212800, -- blur
 }
 
@@ -56,7 +53,6 @@ AuraList.Offensive = {
 	1719,	-- Recklessness
 	12472,	-- Icy Veins
 	102342,	-- Ironbark
-
 	102543,	-- Incarnation: King of the Jungle
 	102560,	-- Incarnation: Chosen of Elune
 	162264, -- Metamorphosis
@@ -72,14 +68,12 @@ AuraList.Helpful = {
 	118922,	-- Posthaste
 	1850, 	-- Dash
 	2983,	-- Sprint
-	--3411,	-- Intervene
 	66,		-- Invisibility
 	68992,	-- Darkflight (Worgen racial)
 	740,	-- Tranquility
 	77761,	-- Stampeding Roar (bear)
 	77764,	-- Stampeding Roar (cat)
 	85499,	-- Speed of Light
-	--96268 removed,	-- Deaths Advance
 	188501, -- Speci
 }
 
@@ -88,30 +82,25 @@ AuraList.Misc = {
 }
 
 AuraList.Stun = {
-	--105593 removed,	-- Fist of Justice
 	107570,	-- Storm Bolt
 	108194,	-- Asphyxiate
 	117526,	-- Binding Shot
 	119381,	-- Leg Sweep
-	--119392 removed,	-- Charging Ox Wave
 	1833,	-- Cheap Shot
 	24394,	-- Intimidation
 	30283,	-- Shadowfury
 	408,	-- Kidney Shot
-	--44572 removed,	-- Deep Freeze
 	46968,	-- Shockwave
 	47481,	-- Gnaw
 	5211,	-- Bash
 	65929,	-- Charge Stun
 	6770,	-- Sap
 	853,	-- Hammer of Justice
-	--87195 removed,	-- Paralysis
 	88625,	-- Holy Word: Chastis
 	89766,	-- Axe Toss
 	91797,	-- Monstrous Blow (Gnaw with DT)
 	163505,	-- Rake
 	22570,	-- Maim
-	--115001 removed,	-- Remorseless Winter
 	200166,	-- Metamorphosis stun
 	211881,	-- Fel Eruption
 	179057,	-- Chaos Nova
@@ -119,17 +108,14 @@ AuraList.Stun = {
 
 AuraList.CC = {
 	33786,	-- Cyclone
-	--102051 removed,	-- Frostjaw
 	102359,	-- Mass Entanglement
-	--10326 removed,	-- Turn Evil
 	105421,	-- Blinding Light
-	--107566,	-- Staggering Shout
 	114404,	-- Void Tendrils
 	115078,	-- Paralysis
 	116706,	-- Disable (2x)
 	118, 	-- Polymorph
 	128405,	-- Narrow Escape
-	--1499 removed,	-- Freezing Trap
+	1499,	-- Freezing Trap
 	19386,	-- Wyvern Sting
 	19387, 	-- Entrapment
 	20066,	-- Repentance

@@ -105,17 +105,18 @@ local is_showing
 local function Update(self, event)
 	local show
 	local force = event == "OnShow"
+	local CastingInfo = not ns.Classic and UnitCastingInfo("player") or CastingInfo()
+	local ChannelInfo = not ns.Classic and UnitChannelInfo("player") or ChannelInfo()
 
 	if event == "OnUpdate" then -- not needed, usually used for targettarget frames
 		return
-	elseif (UnitCastingInfo("player") or UnitChannelInfo("player")) or --casting
+	elseif (CastingInfo or ChannelInfo) or --casting
 		(UnitHealth("player") ~= UnitHealthMax("player")) or 		--not full health
 		(UnitExists("target") or UnitExists("focus")) or 			--have target or focus
 		UnitAffectingCombat("player") or							--combat
 		mouseOver or
 		(UnitPowerType("player") == Enum.PowerType.Mana and UnitPower("player") ~= UnitPowerMax("player"))
 	then
-
 		if not is_showing or force then
 			show = true
 		end
@@ -154,7 +155,6 @@ local function Enable(self)
 		eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 		eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 		eventFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
-		eventFrame:RegisterEvent("PLAYER_FOCUS_CHANGED")
 		eventFrame:RegisterUnitEvent("UNIT_HEALTH", "player")
 		eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_START", "player")
 		eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", "player")
@@ -164,6 +164,9 @@ local function Enable(self)
 		eventFrame:RegisterUnitEvent("UNIT_MODEL_CHANGED", "player")
 		eventFrame:RegisterUnitEvent("UNIT_POWER_UPDATE", "player")
 		eventFrame:RegisterUnitEvent("UNIT_MAXPOWER", "player")
+		if not ns.Classic then
+			eventFrame:RegisterEvent("PLAYER_FOCUS_CHANGED")
+		end
 	end
 
 	if not self.CombatFadehooked then
@@ -192,7 +195,6 @@ local function Disable(self)
 		eventFrame:UnregisterEvent("PLAYER_REGEN_ENABLED")
 		eventFrame:UnregisterEvent("PLAYER_REGEN_DISABLED")
 		eventFrame:UnregisterEvent("PLAYER_TARGET_CHANGED")
-		eventFrame:UnregisterEvent("PLAYER_FOCUS_CHANGED")
 		eventFrame:UnregisterEvent("UNIT_HEALTH")
 		eventFrame:UnregisterEvent("UNIT_SPELLCAST_START")
 		eventFrame:UnregisterEvent("UNIT_SPELLCAST_STOP")
@@ -203,6 +205,9 @@ local function Disable(self)
 		eventFrame:UnregisterEvent("UNIT_MODEL_CHANGED")
 		eventFrame:UnregisterEvent("UNIT_POWER_UPDATE")
 		eventFrame:UnregisterEvent("UNIT_MAXPOWER")
+		if not ns.Classic then
+			eventFrame:UnregisterEvent("PLAYER_FOCUS_CHANGED")
+		end
 	end
 end
 

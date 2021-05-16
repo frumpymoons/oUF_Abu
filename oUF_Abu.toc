@@ -11,6 +11,7 @@ Libs\libs.xml
 Init.lua
 Localization\localization.xml
 AuraList.lua
+AuraList-Classic.lua
 
 Modules\modules.xml
 Settings\settings.xml

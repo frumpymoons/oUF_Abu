@@ -1,6 +1,6 @@
 
 local _, ns = ...
-local config, playerClass, playerRole
+local config, playerClass
 local textPath = "Interface\\AddOns\\oUF_Abu\\Media\\Frames\\"
 local pathFat = textPath.."Fat\\"
 local pathNormal = textPath.."Normal\\"
@@ -636,41 +636,40 @@ local function CreateUnitLayout(self, unit)
 		healAbsorbBar:SetVertexColor(.9, 0, 0, .9)
 		self.Health.healAbsorbBar = healAbsorbBar
 
-		--if (config.absorbBar) then
-		local absorbBar = ns.CreateStatusBarTexture(self.Health, "OVERLAY", "Absorb")
-		absorbBar:SetVertexColor(1,1,1,1)
-
-		absorbBar.overlay = self.Health:CreateTexture(nil, "OVERLAY", nil, 1)
-		absorbBar.overlay:SetTexture("Interface\\RaidFrame\\Shield-Overlay", true, true)
-		absorbBar.overlay:SetAllPoints(absorbBar)
-		absorbBar.overlay.tileSize = 32
-
-		absorbBar.glow = self.Health:CreateTexture(nil, "OVERLAY", "OverAbsorbGlowTemplate")
-		absorbBar.glow:ClearAllPoints()
-		absorbBar.glow:SetPoint("TOPLEFT", self.Health, "TOPRIGHT", -6, 0)
-		absorbBar.glow:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", -6, 0)
-		absorbBar.glow:SetWidth(13)
-		absorbBar.glow:Show()
-		self.Health.absorbBar = absorbBar
-
-		-- Over absorb bar
-		local overAbsorbBar = CreateFrame("StatusBar", nil, self.Health)
-		overAbsorbBar:SetStatusBarTexture(config.absorbtexture, "OVERLAY")
-		overAbsorbBar:SetFrameLevel(self:GetFrameLevel() - 1)
-		overAbsorbBar:SetStatusBarColor(1,1,1,1)
-		overAbsorbBar:GetStatusBarTexture():SetBlendMode("ADD")
-		overAbsorbBar:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMLEFT")
-		overAbsorbBar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 5)
-		self.Health.overAbsorbBar = overAbsorbBar
-
-		local spark = overAbsorbBar:CreateTexture(nil, "ARTWORK")
-		spark:SetTexture(config.absorbspark)
-		spark:SetBlendMode("ADD")
-		spark:SetPoint("BOTTOMLEFT", overAbsorbBar:GetStatusBarTexture(),"BOTTOMRIGHT")
-		spark:SetSize(5,5)
-		overAbsorbBar.spark = spark
-
 		if not ns.Classic then
+			local absorbBar = ns.CreateStatusBarTexture(self.Health, "OVERLAY", "Absorb")
+			absorbBar:SetVertexColor(1,1,1,1)
+
+			absorbBar.overlay = self.Health:CreateTexture(nil, "OVERLAY", nil, 1)
+			absorbBar.overlay:SetTexture("Interface\\RaidFrame\\Shield-Overlay", true, true)
+			absorbBar.overlay:SetAllPoints(absorbBar)
+			absorbBar.overlay.tileSize = 32
+
+			absorbBar.glow = self.Health:CreateTexture(nil, "OVERLAY", "OverAbsorbGlowTemplate")
+			absorbBar.glow:ClearAllPoints()
+			absorbBar.glow:SetPoint("TOPLEFT", self.Health, "TOPRIGHT", -6, 0)
+			absorbBar.glow:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", -6, 0)
+			absorbBar.glow:SetWidth(13)
+			absorbBar.glow:Show()
+			self.Health.absorbBar = absorbBar
+
+			-- Over absorb bar
+			local overAbsorbBar = CreateFrame("StatusBar", nil, self.Health)
+			overAbsorbBar:SetStatusBarTexture(config.absorbtexture, "OVERLAY")
+			overAbsorbBar:SetFrameLevel(self:GetFrameLevel() - 1)
+			overAbsorbBar:SetStatusBarColor(1,1,1,1)
+			overAbsorbBar:GetStatusBarTexture():SetBlendMode("ADD")
+			overAbsorbBar:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMLEFT")
+			overAbsorbBar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, 5)
+			self.Health.overAbsorbBar = overAbsorbBar
+
+			local spark = overAbsorbBar:CreateTexture(nil, "ARTWORK")
+			spark:SetTexture(config.absorbspark)
+			spark:SetBlendMode("ADD")
+			spark:SetPoint("BOTTOMLEFT", overAbsorbBar:GetStatusBarTexture(),"BOTTOMRIGHT")
+			spark:SetSize(5,5)
+			overAbsorbBar.spark = spark
+
 			self:RegisterEvent("UNIT_HEAL_PREDICTION", ns.UpdateHealthOverride)
 			self:RegisterEvent("UNIT_ABSORB_AMOUNT_CHANGED", ns.UpdateHealthOverride)
 			self:RegisterEvent("UNIT_HEAL_ABSORB_AMOUNT_CHANGED", ns.UpdateHealthOverride)
@@ -810,7 +809,7 @@ local function CreateUnitLayout(self, unit)
 		self.Aurabar = ns.classModule.addAuraBar(self, config, uconfig)
 
 		--builderspender (white overlay when gaining/losing power)
-		if (config.builderSpender) then
+		if (not ns.Classic and config.builderSpender) then
 			local FeedbackFrame = CreateFrame("Frame", nil, self.Power, "BuilderSpenderFrame")
 			FeedbackFrame.BarTexture:SetTexture()
 
@@ -1011,7 +1010,6 @@ function _G.PlayerFrame_ToPlayerArt() end
 
 oUF:Factory(function(self)
 	playerClass = select(2, UnitClass("player"))
-	playerRole = GetSpecializationRole(GetSpecialization())
 	config = ns.config
 
 	self:RegisterStyle("oUF_Abu", CreateUnitLayout)

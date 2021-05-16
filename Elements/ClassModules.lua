@@ -36,6 +36,7 @@ local function updateTotemPosition()
 end
 
 function ns.classModule.Totems(self, config, uconfig)
+	if ns.Classic then return end
 	TotemFrame:ClearAllPoints()
 	TotemFrame:SetParent(self)
 	TotemFrame:SetScale(uconfig.scale * 0.81)
